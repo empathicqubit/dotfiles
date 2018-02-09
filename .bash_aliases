@@ -3,6 +3,7 @@ function getmac {
     echo 00:$(head -c5 /dev/urandom | hexdump -e '"%02x"' | sed -r 's/(..)/\1:/g;s/:$//;')
 }
 
+# This is here so we don't have to modify the distro provided bashrc.
 if [ -d "$HOME/.bashrc.d" ] ; then
     while read FILE ; do
         . "$FILE"
