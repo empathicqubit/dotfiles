@@ -17,6 +17,8 @@ set showcmd hlsearch
 
 set pastetoggle=<F2>
 
+set hidden
+
 let mapleader=","
 
 map <Leader>ev :e $HOME/.vimrc<CR>
