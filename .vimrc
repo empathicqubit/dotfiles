@@ -15,6 +15,8 @@ set shiftwidth=4 expandtab tabstop=8 softtabstop=4 smartindent
 
 set showcmd hlsearch
 
+set pastetoggle=<F2>
+
 let mapleader=","
 
 map <Leader>ev :e $HOME/.vimrc<CR>
