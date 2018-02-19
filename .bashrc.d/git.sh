@@ -4,11 +4,19 @@ function git {
         git log @{upstream}..
     fi
 
-    local GITOUT="$(mktemp)"
-    local GITERR="$(mktemp)"
+    local CAPTURE=
 
-    command git "$@" > >(tee "$GITOUT") 2> >(tee "$GITERR" >&2)
+    # This causes git to behave differently, so we only do it when we need it.
+    if [ ! -z "$CAPTURE" ] ; then
+        local GITOUT="$(mktemp)"
+        local GITERR="$(mktemp)"
 
-    rm "$GITOUT"
-    rm "$GITERR"
+        command git "$@" > >(tee "$GITOUT") 2> >(tee "$GITERR" >&2)
+
+        rm "$GITOUT"
+        rm "$GITERR"
+    else
+        command git "$@"
+    fi
+
 }

@@ -2,7 +2,7 @@
 
 function icanhazgitconfig {
     local DIR="${@: -1}"
-    if [ -f "$DIR/.gitconfig"] ; then
+    if [ -f "$DIR/.gitconfig" ] ; then
         export GIT_CONFIG="$DIR/.gitconfig"
 
         true
