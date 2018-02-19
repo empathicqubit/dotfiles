@@ -1,3 +1,4 @@
 *.s??
 node_modules/
 .netrwhist
+.bashrc.local.d/

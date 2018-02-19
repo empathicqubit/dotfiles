@@ -12,7 +12,16 @@ if [ -d "$HOME/.bashrc.d" ] ; then
     done < <( find "$HOME/.bashrc.d/." -type f -executable )
 fi
 
+# For secrets and commands we don't want to commit to git.
+if [ -d "$HOME/.bashrc.local.d" ] ; then
+    while read FILE ; do
+        . "$FILE"
+
+    done < <( find "$HOME/.bashrc.local.d/." -type f -executable )
+fi
+
 alias 'xo=xdg-open'
 alias 'rlbashrc=source $HOME/.bashrc'
+alias 'hub=git-hub'
 
 export EDITOR='vim'
