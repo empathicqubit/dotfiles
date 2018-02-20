@@ -1,3 +1,5 @@
 [user]
-name=Jessica
-email=jessica@allons.me
+    name=Jessica
+    email=jessica@allons.me
+[branch]
+    autosetuprebase=always
