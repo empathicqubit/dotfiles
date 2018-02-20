@@ -7,3 +7,10 @@ find "$CURDIR/.." -maxdepth 1 -not -iname setup -not -iname .. -not -iname . -no
     fi
     ln -v -s "$each" "$DEST"
 done
+
+(
+    cd "$CURDIR/../script"
+    yarn install
+)
+
+pip3 install --upgrade neovim
