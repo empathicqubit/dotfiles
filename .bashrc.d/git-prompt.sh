@@ -318,7 +318,7 @@ __posh_git_echo () {
                 git describe --tags --exact-match HEAD ;;
             esac 2>/dev/null) ||
 
-            IFS= read -r b < <(cut -c1-7 "$g/HEAD" 2>/dev/null)... ||
+            { IFS= read -r b < <(cut -c1-7 "$g/HEAD" 2>/dev/null) && b+='...' ; } ||
             b='unknown'
             b="($b)"
         }
