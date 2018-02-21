@@ -5,3 +5,4 @@ node_modules/
 .vim/plugged
 .tmux/plugins/
 !.tmux/plugins/tpm/
+*.log
