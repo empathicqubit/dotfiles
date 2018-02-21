@@ -14,7 +14,7 @@ function icanhazgitconfig {
 
 function prompt_command {
     local GARBAGE=""
-    time __posh_git_ps1 "\u@\h:\w " "\\\$ "
+    __posh_git_ps1 "\u@\h:\w " "\\\$ "
 
     walktoroot "$PWD" icanhazgitconfig
 }
