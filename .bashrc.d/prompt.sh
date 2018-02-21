@@ -16,8 +16,6 @@ function prompt_command {
     local GARBAGE=""
     __posh_git_ps1 "\u@\h:\w " "\\\$ "
 
-    date
-
     walktoroot "$PWD" icanhazgitconfig
 }
 
