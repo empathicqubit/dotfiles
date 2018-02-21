@@ -120,7 +120,8 @@ __posh_git_ps1 ()
             return
             ;;
     esac
-    local gitstring=$(__posh_git_echo)
+    local gitstring
+    IFS= read -r gitstring < <(__posh_git_echo)
     PS1=$ps1pc_prefix$gitstring$ps1pc_suffix
 }
 
