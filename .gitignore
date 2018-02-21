@@ -3,6 +3,9 @@ node_modules/
 .netrwhist
 .bashrc.local.d/
 .vim/plugged
-.tmux/plugins/
+
+!.tmux/
+.tmux/plugins/*
 !.tmux/plugins/tpm/
+
 *.log
