@@ -45,3 +45,4 @@ esac
 )
 
 pip3 install --upgrade neovim
+vim '+PlugInstall' '+qall!'

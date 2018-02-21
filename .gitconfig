@@ -3,3 +3,6 @@
     email=jessica@allons.me
 [branch]
     autosetuprebase=always
+[bash]
+	enableGitStatus = true
+	enableStatusSymbol = true

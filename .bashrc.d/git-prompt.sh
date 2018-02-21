@@ -137,69 +137,100 @@ __posh_color () {
 
 # Echoes the git status string.
 __posh_git_echo () {
-    if [ "$(git config --bool bash.enableGitStatus)" = 'false' ]; then
+    local EnableFileStatus
+    local ShowStatusWhenZero
+    local ShowStashState
+    local EnableStatusSymbol
+    local DescribeStyle
+    local EnableGitStatus
+
+    local name
+    local val
+    while IFS='=' read -r name val ; do
+        case "$name" in
+            bash.enablefilestatus) EnableFileStatus="$val" ;;
+            bash.showstatuswhenzero) ShowStatusWhenZero="$val" ;;
+            bash.showstashstate) ShowStashState="$val" ;;
+            bash.enablestatussymbol) EnableStatusSymbol="$val" ;;
+            bash.describestyle) DescribeStyle="$val" ;;
+            bash.enablegitstatus) EnableGitStatus="$val" ;;
+        esac
+    done < <(git config --includes -l)
+
+    if [ "$EnableGitStatus" = 'false' ]; then
         return;
     fi
 
-    local DefaultForegroundColor=$(__posh_color '\e[m') # Default no color
+    local DefaultForegroundColor
+    IFS= read -r DefaultForegroundColor < <(__posh_color '\e[m') # Default no color
+
     local DefaultBackgroundColor=
 
     local BeforeText='['
-    local BeforeForegroundColor=$(__posh_color '\e[1;33m') # Yellow
+    local BeforeForegroundColor
+    IFS= read -r BeforeForegroundColor < <(__posh_color '\e[1;33m') # Yellow
+
     local BeforeBackgroundColor=
     local DelimText=' |'
-    local DelimForegroundColor=$(__posh_color '\e[1;33m') # Yellow
+    local DelimForegroundColor
+    IFS= read -r DelimForegroundColor < <(__posh_color '\e[1;33m') # Yellow
     local DelimBackgroundColor=
 
     local AfterText=']'
-    local AfterForegroundColor=$(__posh_color '\e[1;33m') # Yellow
+    local AfterForegroundColor
+    IFS= read -r AfterForegroundColor < <(__posh_color '\e[1;33m') # Yellow
     local AfterBackgroundColor=
 
-    local BranchForegroundColor=$(__posh_color '\e[1;36m')  # Cyan
+    local BranchForegroundColor
+    IFS= read -r BranchForegroundColor < <(__posh_color '\e[1;36m')  # Cyan
     local BranchBackgroundColor=
-    local BranchAheadForegroundColor=$(__posh_color '\e[1;32m') # Green
+    local BranchAheadForegroundColor
+    IFS= read -r BranchAheadForegroundColor < <(__posh_color '\e[1;32m') # Green
     local BranchAheadBackgroundColor=
-    local BranchBehindForegroundColor=$(__posh_color '\e[0;31m') # Red
+    local BranchBehindForegroundColor
+    IFS= read -r BranchBehindForegroundColor < <(__posh_color '\e[0;31m') # Red
     local BranchBehindBackgroundColor=
-    local BranchBehindAndAheadForegroundColor=$(__posh_color '\e[1;33m') # Yellow
+    local BranchBehindAndAheadForegroundColor
+    IFS= read -r BranchBehindAndAheadForegroundColor < <(__posh_color '\e[1;33m') # Yellow
     local BranchBehindAndAheadBackgroundColor=
 
     local BeforeIndexText=''
-    local BeforeIndexForegroundColor=$(__posh_color '\e[1;32m') # Dark green
+    local BeforeIndexForegroundColor
+    IFS= read -r BeforeIndexForegroundColor < <(__posh_color '\e[1;32m') # Dark green
     local BeforeIndexBackgroundColor=
 
-    local IndexForegroundColor=$(__posh_color '\e[1;32m') # Dark green
+    local IndexForegroundColor
+    IFS= read -r IndexForegroundColor < <(__posh_color '\e[1;32m') # Dark green
     local IndexBackgroundColor=
 
-    local WorkingForegroundColor=$(__posh_color '\e[0;31m') # Dark red
+    local WorkingForegroundColor
+    IFS= read -r WorkingForegroundColor < <(__posh_color '\e[0;31m') # Dark red
     local WorkingBackgroundColor=
 
-    local StashForegroundColor=$(__posh_color '\e[0;34m') # Darker blue
+    local StashForegroundColor
+    IFS= read -r StashForegroundColor < <(__posh_color '\e[0;34m') # Darker blue
     local StashBackgroundColor=
     local StashText='$'
 
-    local RebaseForegroundColor=$(__posh_color '\e[0m') # reset
+    local RebaseForegroundColor
+    IFS= read -r RebaseForegroundColor < <(__posh_color '\e[0m') # reset
     local RebaseBackgroundColor=
 
-    local EnableFileStatus=`git config --bool bash.enableFileStatus`
     case "$EnableFileStatus" in
         true)  EnableFileStatus=true ;;
         false) EnableFileStatus=false ;;
         *)     EnableFileStatus=true ;;
     esac
-    local ShowStatusWhenZero=`git config --bool bash.showStatusWhenZero`
     case "$ShowStatusWhenZero" in
         true)  ShowStatusWhenZero=true ;;
         false) ShowStatusWhenZero=false ;;
         *)     ShowStatusWhenZero=false ;;
     esac
-    local ShowStashState=`git config --bool bash.showStashState`
     case "$ShowStashState" in
         true)  ShowStashState=true ;;
         false) ShowStashState=false ;;
         *)     ShowStashState=true ;;
     esac
-    local EnableStatusSymbol=`git config --bool bash.enableStatusSymbol`
     case "$EnableStatusSymbol" in
         true)  EnableStatusSymbol=true ;;
         false) EnableStatusSymbol=false ;;
@@ -223,7 +254,8 @@ __posh_git_echo () {
 
     local is_detached=false
 
-    local g=$(__posh_gitdir)
+    local g
+    IFS= read -r g < <(__posh_gitdir)
     if [ -z "$g" ]; then
         return # not a git directory
     fi
@@ -232,9 +264,9 @@ __posh_git_echo () {
     local step=''
     local total=''
     if [ -d "$g/rebase-merge" ]; then
-        b=$(cat "$g/rebase-merge/head-name" 2>/dev/null)
-        step=$(cat "$g/rebase-merge/msgnum" 2>/dev/null)
-        total=$(cat "$g/rebase-merge/end" 2>/dev/null)
+        IFS= read -r b < <(cat "$g/rebase-merge/head-name" 2>/dev/null)
+        IFS= read -r step < <(cat "$g/rebase-merge/msgnum" 2>/dev/null)
+        IFS= read -r total < <(cat "$g/rebase-merge/end" 2>/dev/null)
         if [ -f "$g/rebase-merge/interactive" ]; then
             rebase='|REBASE-i'
         else
@@ -242,8 +274,8 @@ __posh_git_echo () {
         fi
     else
         if [ -d "$g/rebase-apply" ]; then
-            step=$(cat "$g/rebase-apply/next")
-            total=$(cat "$g/rebase-apply/last")
+            IFS= read -r step < <(cat "$g/rebase-apply/next")
+            IFS= read -r total < <(cat "$g/rebase-apply/last")
             if [ -f "$g/rebase-apply/rebasing" ]; then
                 rebase='|REBASE'
             elif [ -f "$g/rebase-apply/applying" ]; then
@@ -261,13 +293,12 @@ __posh_git_echo () {
             rebase='|BISECTING'
         fi
 
-        b=$(git symbolic-ref HEAD 2>/dev/null) || {
+        IFS= read -r b < <(git symbolic-ref HEAD 2>/dev/null) || {
             is_detached=true
-            local output=$(git config -z --get bash.describeStyle)
-            if [ -n "$output" ]; then
-                GIT_PS1_DESCRIBESTYLE=$output
+            if [ -n "$DescribeStyle" ]; then
+                GIT_PS1_DESCRIBESTYLE=$DescribeStyle
             fi
-            b=$(
+            IFS= read -r b < <(
             case "${GIT_PS1_DESCRIBESTYLE-}" in
             (contains)
                 git describe --contains HEAD ;;
@@ -279,7 +310,7 @@ __posh_git_echo () {
                 git describe --tags --exact-match HEAD ;;
             esac 2>/dev/null) ||
 
-            b=$(cut -c1-7 "$g/HEAD" 2>/dev/null)... ||
+            IFS= read -r b < <(cut -c1-7 "$g/HEAD" 2>/dev/null)... ||
             b='unknown'
             b="($b)"
         }
@@ -292,17 +323,25 @@ __posh_git_echo () {
     local hasStash=false
     local isBare=''
 
-    if [ 'true' = "$(git rev-parse --is-inside-git-dir 2>/dev/null)" ]; then
-        if [ 'true' = "$(git rev-parse --is-bare-repository 2>/dev/null)" ]; then
+    local insideGitDir
+    local insideWorkTree
+    IFS= read -r insideGitDir < <(git rev-parse --is-inside-git-dir 2>/dev/null)
+    if [ 'true' = "$insideGitDir" ]; then
+        local bareRepo
+        IFS= read -r bareRepo < <(git rev-parse --is-bare-repository 2>/dev/null)
+        if [ 'true' = "$bareRepo" ]; then
             isBare='BARE:'
         else
             b='GIT_DIR!'
         fi
-    elif [ 'true' = "$(git rev-parse --is-inside-work-tree 2>/dev/null)" ]; then
-        if $ShowStashState; then
-            git rev-parse --verify refs/stash >/dev/null 2>&1 && hasStash=true
+    else
+        IFS= read -r insideWorkTree < <(git rev-parse --is-inside-work-tree 2>/dev/null)
+        if [ 'true' = "$insideWorkTree" ]; then
+            if $ShowStashState; then
+                git rev-parse --verify refs/stash >/dev/null 2>&1 && hasStash=true
+            fi
+            __posh_git_ps1_upstream_divergence
         fi
-        __posh_git_ps1_upstream_divergence
     fi
 
     # show index status and working directory status
@@ -354,7 +393,7 @@ __posh_git_echo () {
                     (( filesUnmerged++ ))
                     ;;
             esac
-        done <<< "`git status --porcelain 2>/dev/null`"
+        done < <(git status --porcelain 2>/dev/null)
     fi
 
     local gitstring=
@@ -439,7 +478,6 @@ __posh_git_ps1_upstream_divergence ()
 
     svn_remote=()
     # get some config options from git-config
-    local output="$(git config -z --get-regexp '^(svn-remote\..*\.url|bash\.showUpstream)$' 2>/dev/null | tr '\0\n' '\n ')"
     while read -r key value; do
         case "$key" in
         bash.showUpstream)
@@ -454,7 +492,7 @@ __posh_git_ps1_upstream_divergence ()
             upstream=svn+git # default upstream is SVN if available, else git
             ;;
         esac
-    done <<< "$output"
+    done < <(git config -z --get-regexp '^(svn-remote\..*\.url|bash\.showUpstream)$' 2>/dev/null | tr '\0\n' '\n ')
 
     # parse configuration values
     for option in ${GIT_PS1_SHOWUPSTREAM}; do
