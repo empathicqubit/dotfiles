@@ -4,3 +4,4 @@ node_modules/
 .bashrc.local.d/
 .vim/plugged
 .tmux/plugins/
+!.tmux/plugins/tpm/
