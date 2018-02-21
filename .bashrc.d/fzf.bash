@@ -1,7 +1,7 @@
 #! /bin/bash
 # Setup fzf
 # ---------
-if [[ ! "$PATH" == */$HOME/.vim/plugged/fzf/bin* ]]; then
+if [[ ! "$PATH" == *$HOME/.vim/plugged/fzf/bin* ]]; then
   export PATH="$PATH:$HOME/.vim/plugged/fzf/bin"
 fi
 
