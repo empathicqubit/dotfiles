@@ -323,19 +323,19 @@ __posh_git_echo () {
     local hasStash=false
     local isBare=''
 
-    local insideGitDir
-    local insideWorkTree
-    IFS= read -r insideGitDir < <(git rev-parse --is-inside-git-dir 2>/dev/null)
+    local multi
+    mapfile -t -n 3 multi < <(git rev-parse --is-inside-git-dir --is-bare-repository --is-inside-work-tree 2>/dev/null)
+    local insideGitDir="${multi[0]}"
+    local bareRepo="${multi[1]}"
+    local insideWorkTree="${multi[2]}"
+
     if [ 'true' = "$insideGitDir" ]; then
-        local bareRepo
-        IFS= read -r bareRepo < <(git rev-parse --is-bare-repository 2>/dev/null)
         if [ 'true' = "$bareRepo" ]; then
             isBare='BARE:'
         else
             b='GIT_DIR!'
         fi
     else
-        IFS= read -r insideWorkTree < <(git rev-parse --is-inside-work-tree 2>/dev/null)
         if [ 'true' = "$insideWorkTree" ]; then
             if $ShowStashState; then
                 git rev-parse --verify refs/stash >/dev/null 2>&1 && hasStash=true
@@ -535,7 +535,7 @@ __posh_git_ps1_upstream_divergence ()
     __POSH_BRANCH_BEHIND_BY=0
     # Find how many commits we are ahead/behind our upstream
     if [ -z "$legacy" ]; then
-        IFS=$' \t\n' read -r __POSH_BRANCH_BEHIND_BY __POSH_BRANCH_AHEAD_BY <<< "`git rev-list --count --left-right $upstream...HEAD 2>/dev/null`"
+        IFS=$' \t\n' read -r __POSH_BRANCH_BEHIND_BY __POSH_BRANCH_AHEAD_BY < <(git rev-list --count --left-right $upstream...HEAD 2>/dev/null)
     else
         # produce equivalent output to --count for older versions of git
         while IFS=$' \t\n' read -r commit; do
@@ -543,7 +543,7 @@ __posh_git_ps1_upstream_divergence ()
             "<*") (( __POSH_BRANCH_BEHIND_BY++ )) ;;
             ">*") (( __POSH_BRANCH_AHEAD_BY++ ))  ;;
             esac
-        done <<< "`git rev-list --left-right $upstream...HEAD 2>/dev/null`"
+        done < <(git rev-list --left-right $upstream...HEAD 2>/dev/null)
     fi
     : ${__POSH_BRANCH_AHEAD_BY:=0}
     : ${__POSH_BRANCH_BEHIND_BY:=0}
