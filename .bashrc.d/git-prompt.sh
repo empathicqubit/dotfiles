@@ -108,6 +108,10 @@
 # This function should be called in PROMPT_COMMAND or similar.
 __posh_git_ps1 ()
 {
+    #local OLDPS=4"$PS4"
+    #N=`date +%s%N`
+    #export PS4='+[$(((`date +%s%N`-$N)/1000000))ms][${BASH_SOURCE}:${LINENO}]: ${FUNCNAME[0]:+${FUNCNAME[0]}(): }'; set -x;
+
     local ps1pc_prefix=
     local ps1pc_suffix=
     case "$#" in
@@ -123,6 +127,9 @@ __posh_git_ps1 ()
     local gitstring
     IFS= read -r gitstring < <(__posh_git_echo)
     PS1=$ps1pc_prefix$gitstring$ps1pc_suffix
+
+    #unset N
+    #export PS4="$OLDPS4"
 }
 
 __posh_color () {
