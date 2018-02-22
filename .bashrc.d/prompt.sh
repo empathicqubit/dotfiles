@@ -17,7 +17,7 @@ tmux_set_title () {
 
 preexec () { 
     local this_command="$1"
-    tmux_set_title "$(tmux-pathpart.js "$PWD" "$1")"
+    tmux_set_title "$(tmux-pathpart.js "$PWD" "$this_command")"
 }
 
 preexec_invoke_exec () {
