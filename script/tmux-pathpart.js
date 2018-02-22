@@ -9,7 +9,7 @@ module.exports = (params) => {
     return Promise.resolve()
         .then(() => {
             let pwd = params.pwd;
-            let cmd = params.cwd || '';
+            let cmd = params.cmd || '';
 
             const skipTmux = () => {
                 return pwd + ' ' + cmd.trim().split(' ')[0];
