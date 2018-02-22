@@ -16,7 +16,7 @@ tmux_set_title () {
 
 preexec () { 
     local this_command="$1"
-    tmux_set_title "$(tmux-pathpart.js "$PWD" "$this_command")"
+    tmux_set_title "$(promptutil tmux-pathpart "pwd=$PWD" "cmd=$this_command")"
 }
 
 preexec_invoke_exec () {
