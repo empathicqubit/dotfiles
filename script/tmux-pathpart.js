@@ -4,17 +4,16 @@ const q = require('q');
 const _ = require('lodash');
 const execFile = q.denodeify(require('child_process').execFile);
 
-const skipTmux = () => {
-    return pwd + ' ' + cmd.trim().split(' ')[0];
-}
-
 // Wrap the entire program in a promise in case it barfs. We don't want to dump garbage on the terminal.
 module.exports = (params) => {
     return Promise.resolve()
         .then(() => {
-
             let pwd = params.pwd;
             let cmd = params.cwd || '';
+
+            const skipTmux = () => {
+                return pwd + ' ' + cmd.trim().split(' ')[0];
+            }
 
             if(process.platform == 'win32') {
                 return skipTmux();
@@ -64,6 +63,7 @@ module.exports = (params) => {
                 })
         })
         .catch(e => {
-            return 'ERROR';
+            return e.message + ' ' + e.stack;
+            //return 'ERROR';
         });
 };

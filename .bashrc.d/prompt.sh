@@ -44,12 +44,12 @@ function __start_promptutil {
         __kill_promptutil
     fi
 
-    PROMPTUTIL_PORT="$(openport.js)"
+    PROMPTUTIL_PORT=$((RANDOM+1024))
     PROMPTUTIL_PORT="$PROMPTUTIL_PORT" promptutil.js &
     PROMPTUTIL_PID=$!
 }
 
-function _kill_promptutil {
+function __kill_promptutil {
     kill "$PROMPTUTIL_PID"
     PROMPTUTIL_PORT=
     PROMPTUTIL_PID=
