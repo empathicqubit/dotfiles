@@ -11,10 +11,24 @@ function icanhazgitconfig {
     fi
 }
 
+preexec () { 
+    local this_command="$1"
+    tmux_set_title "$(tmux-pathpart.js "$PWD" "$1")"
+}
+
+preexec_invoke_exec () {
+    [ -n "$COMP_LINE" ] && return  # do nothing if completing
+    [ "$BASH_COMMAND" = "$PROMPT_COMMAND" ] && return # don't cause a preexec for $PROMPT_COMMAND
+    local this_command=`HISTTIMEFORMAT= history 1 | sed -e "s/^[ ]*[0-9]*[ ]*//"`;
+    preexec "$this_command"
+}
+trap 'preexec_invoke_exec' DEBUG
 
 function prompt_command {
     local GARBAGE=""
     __posh_git_ps1 "\u@\h:\w " "\\\$ "
+
+    tmux_set_title "$(tmux-pathpart.js "$PWD" "bash")"
 
     walktoroot "$PWD" icanhazgitconfig
 }

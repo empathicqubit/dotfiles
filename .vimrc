@@ -1,7 +1,6 @@
 call plug#begin('~/.vim/plugged')
 
 Plug 'kien/ctrlp.vim'
-Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
 Plug 'junegunn/fzf'
 
 if has('nvim')
@@ -12,9 +11,16 @@ else
     Plug 'roxma/vim-hug-neovim-rpc'
 endif
 
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
+
 call plug#end()
 
 let g:deoplete#enable_at_startup = 1
+
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_theme='simple'
 
 let g:tern#is_show_argument_hints_enabled = 1
 
@@ -36,6 +42,8 @@ set hidden
 
 set modeline
 set secure
+
+set laststatus=2
 
 let mapleader=","
 
