@@ -1,5 +1,4 @@
 #! /bin/bash
-
 function icanhazgitconfig {
     local DIR="${@: -1}"
     if [ -f "$DIR/.gitconfig" ] ; then
@@ -32,13 +31,47 @@ function prompt_command {
     local GARBAGE=""
     __posh_git_ps1 "\u@\h:\w " "\\\$ "
 
-    tmux_set_title "$(tmux-pathpart.js "$PWD" "bash")"
+    tmux_set_title "$(promptutil tmux-pathpart "pwd=$PWD" "cmd=bash")"
 
     walktoroot "$PWD" icanhazgitconfig
 }
 
+PROMPTUTIL_PORT=
+PROMPTUTIL_PID=
+
+function __start_promptutil {
+    if [ ! -z "$PROMPTUTIL_PID" ] ; then
+        __kill_promptutil
+    fi
+
+    PROMPTUTIL_PORT="$(openport.js)"
+    PROMPTUTIL_PORT="$PROMPTUTIL_PORT" promptutil.js &
+    PROMPTUTIL_PID=$!
+}
+
+function _kill_promptutil {
+    kill "$PROMPTUTIL_PID"
+    PROMPTUTIL_PORT=
+    PROMPTUTIL_PID=
+}
+
+function promptutil {
+    local PATHNAME="$1"
+    shift
+
+    local DATA_ARGS=()
+    for i in "$@" ; do
+        DATA_ARGS+=('--data-urlencode' "$1")
+        shift
+    done
+
+    curl -s -G 'http://localhost:'"$PROMPTUTIL_PORT"'/'"$PATHNAME" "${DATA_ARGS[@]}"
+}
+
 function __main {
     local CURDIR="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"
+
+    __start_promptutil
 
     PROMPT_COMMAND="prompt_command"
 }
