@@ -11,6 +11,10 @@ function icanhazgitconfig {
     fi
 }
 
+tmux_set_title () {
+    printf '\033]2;%s\033\\' "$1"
+}
+
 preexec () { 
     local this_command="$1"
     tmux_set_title "$(tmux-pathpart.js "$PWD" "$1")"
