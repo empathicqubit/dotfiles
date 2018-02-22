@@ -63,7 +63,6 @@ module.exports = (params) => {
                 })
         })
         .catch(e => {
-            return e.message + ' ' + e.stack;
-            //return 'ERROR';
+            return 'ERROR';
         });
 };
