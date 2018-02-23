@@ -20,6 +20,7 @@ preexec () {
 }
 
 preexec_invoke_exec () {
+    [ -z "$PROMPT_COMMAND_ONCE" ] && return
     [ -n "$COMP_LINE" ] && return  # do nothing if completing
     [ "$BASH_COMMAND" = "$PROMPT_COMMAND" ] && return # don't cause a preexec for $PROMPT_COMMAND
     local this_command=`HISTTIMEFORMAT= history 1 | sed -e "s/^[ ]*[0-9]*[ ]*//"`;
@@ -29,6 +30,8 @@ trap 'preexec_invoke_exec' DEBUG
 
 function prompt_command {
     local GARBAGE=""
+    PROMPT_COMMAND_ONCE=1
+
     __posh_git_ps1 "\u@\h:\w " "\\\$ "
 
     tmux_set_title "$(promptutil tmux-pathpart "pwd=$PWD" "cmd=bash")"
