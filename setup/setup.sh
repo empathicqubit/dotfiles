@@ -3,7 +3,7 @@ setuplinks () {
     local SRC="$1"
     local DESTBASE="$2"
 
-    find "$SRC" -maxdepth 1 -not -iname setup -not -iname .. -not -iname . -not -iname .git -not -iname .config -not -iname xfce4 | while read each ; do
+    find "$SRC" -maxdepth 1 -not -iname setup -not -iname .. -not -iname . -not -iname .git -not -iname .config -not -iname xfce4 -not -iname '.tern-*' | while read each ; do
         DEST="$DESTBASE/$(basename "$each")"
         if [ -e "$DEST" ] ; then
            mv -v "$DEST" "$DEST.bak" || echo "$DEST already exists."
