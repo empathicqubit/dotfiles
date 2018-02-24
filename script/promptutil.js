@@ -6,7 +6,7 @@ const tmuxPathpart = require('./tmux-pathpart');
 
 const app = express();
 
-app.use(bodyParser.urlencoded());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/tmux-pathpart', (req, res) => {
     tmuxPathpart(req.query)
