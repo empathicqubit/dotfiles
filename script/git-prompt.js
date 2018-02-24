@@ -460,7 +460,6 @@ const poshGitEcho = (params) => {
 
                 return cstat(merge)
                     .then((isRebaseMerge) => {
-                        // FIXME The b variable may encounter race conditions here
                         return q.all([
                             rebaseInfoPromise(isRebaseMerge),
                             detachedHeadInfoPromise(isRebaseMerge, params.pwd),
