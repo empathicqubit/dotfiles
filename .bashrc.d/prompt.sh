@@ -32,9 +32,9 @@ function prompt_command {
     local GARBAGE=""
     PROMPT_COMMAND_ONCE=1
 
-    __posh_git_ps1 "\u@\h:\w " "\\\$ "
-
     tmux_set_title "$(promptutil tmux-pathpart "pwd=$PWD" "cmd=bash")"
+
+    export PS1='\u@\h:\w '"$(promptutil git-prompt "pwd=$PWD")"'\$ '
 
     walktoroot "$PWD" icanhazgitconfig
 }

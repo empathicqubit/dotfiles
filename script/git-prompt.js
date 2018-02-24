@@ -197,7 +197,7 @@ const poshGitStatus = (pwd) => {
 
     return cexecGit(pwd, 'status', '--porcelain')
         .spread((stdout, stderr) => {
-            let files = stdout.trim().split(/[\r\n]+/g);
+            let files = stdout.split(/[\r\n]+/g);
             files.forEach(file => {
                 switch(file[0]) {
                     case 'A':
@@ -458,80 +458,80 @@ const poshGitEcho = (params) => {
                 g = gd;
                 merge = g + '/rebase-merge';
 
-                return cstat(merge);
+                return cstat(merge)
+                    .then((isRebaseMerge) => {
+                        // FIXME The b variable may encounter race conditions here
+                        return q.all([
+                            rebaseInfoPromise(isRebaseMerge),
+                            detachedHeadInfoPromise(isRebaseMerge, params.pwd),
+                            whereAreWePromise(config, params.pwd),
+                            statusPromise(config, params.pwd),
+                        ]);
+                    })
+                    .spread((rebaseInfo, detachedHeadInfo, whereAreWe, stats) => {
+                        let b = whereAreWe.b || detachedHeadInfo.b || rebaseInfo.b;
+
+                        // Assemble *everything*
+                        let gitString;
+                        let branchString = `${whereAreWe.isBare}${b.replace('refs/heads/', '')}`;
+
+                        // before-branch text
+                        gitString = style.beforeBackgroundColor(style.beforeForegroundColor(style.beforeText));
+
+                        // branch
+                        if(poshBranchBehindBy && poshBranchAheadBy) {
+                            gitString += style.branchBehindAndAheadBackgroundColor(style.branchBehindAndAheadForegroundColor(branchString + config.branchBehindAndAheadStatusSymbol));
+                        }
+                        else if(poshBranchBehindBy) {
+                            gitString += style.branchBehindBackgroundColor(style.branchBehindForegroundColor(branchString + config.branchBehindStatusSymbol));
+                        }
+                        else if(poshBranchAheadBy) {
+                            gitString += style.branchAheadBackgroundColor(style.branchAheadForegroundColor(branchString + config.branchAheadStatusSymbol));
+                        }
+                        else {
+                            gitString += style.branchBackgroundColor(style.branchForegroundColor(branchString + config.branchIdenticalStatusSymbol));
+                        }
+
+                        // index status
+                        if(config.enableFileStatus) {
+                            if(stats.indexCount || config.showStatusWhenZero) {
+                                gitString += style.indexBackgroundColor(style.indexForegroundColor(` +${stats.indexAdded} ~${stats.indexModified} -${stats.indexDeleted}`));
+                            }
+
+                            if(stats.indexUnmerged) {
+                                gitString += ' ' + style.indexBackgroundColor(style.indexForegroundColor(`!${stats.indexUnmerged}`));
+                            }
+
+                            if(stats.indexCount && (stats.workingCount || config.showStatusWhenZero)) {
+                                gitString += style.delimBackgroundColor(style.delimForegroundColor(style.delimText));
+                            }
+
+                            if(stats.workingCount || config.showStatusWhenZero) {
+                                gitString += style.workingBackgroundColor(style.workingForegroundColor(` +${stats.filesAdded} ~${stats.filesModified} -${stats.filesDeleted}`));
+                            }
+
+                            if(stats.filesUnmerged) {
+                                gitString += ' ' + style.workingBackgroundColor(style.workingForegroundColor(`!${stats.filesUnmerged}`));
+                            }
+                        }
+
+                        if(rebaseInfo.rebase) {
+                            gitString += style.rebaseBackgroundColor(style.rebaseForegroundColor(rebaseInfo.rebase));
+                        }
+
+                        // after-branch text
+                        gitString += style.afterBackgroundColor(style.afterForegroundColor(style.afterText));
+
+                        // stash
+                        if(config.showStashState && whereAreWe.hasStash) {
+                            gitString += style.stashBackgroundColor(style.stashForegroundColor(style.stashText));
+                        }
+
+                        gitString += style.defaultBackgroundColor(style.defaultForegroundColor('\0'));
+
+                        return gitString;
+                    });
             })
-            .then((isRebaseMerge) => {
-                // FIXME The b variable may encounter race conditions here
-                return q.all([
-                    rebaseInfoPromise(isRebaseMerge),
-                    detachedHeadInfoPromise(isRebaseMerge, params.pwd),
-                    whereAreWePromise(config, params.pwd),
-                    statusPromise(config, params.pwd),
-                ]);
-            })
-            .spread((rebaseInfo, detachedHeadInfo, whereAreWe, stats) => {
-                let b = whereAreWe.b || detachedHeadInfo.b || rebaseInfo.b;
-
-                // Assemble *everything*
-                let gitString;
-                let branchString = `${whereAreWe.isBare}${b.replace('refs/heads/', '')}`;
-
-                // before-branch text
-                gitString = style.beforeBackgroundColor(style.beforeForegroundColor(style.beforeText));
-
-                // branch
-                if(poshBranchBehindBy && poshBranchAheadBy) {
-                    gitString += style.branchBehindAndAheadBackgroundColor(style.branchBehindAndAheadForegroundColor(branchString + config.branchBehindAndAheadStatusSymbol));
-                }
-                else if(poshBranchBehindBy) {
-                    gitString += style.branchBehindBackgroundColor(style.branchBehindForegroundColor(branchString + config.branchBehindStatusSymbol));
-                }
-                else if(poshBranchAheadBy) {
-                    gitString += style.branchAheadBackgroundColor(style.branchAheadForegroundColor(branchString + config.branchAheadStatusSymbol));
-                }
-                else {
-                    gitString += style.branchBackgroundColor(style.branchForegroundColor(branchString + config.branchIdenticalStatusSymbol));
-                }
-
-                // index status
-                if(config.enableFileStatus) {
-                    if(stats.indexCount || config.showStatusWhenZero) {
-                        gitString += style.indexBackgroundColor(style.indexForegroundColor(` +${stats.indexAdded} ~${stats.indexModified} -${stats.indexDeleted}`));
-                    }
-
-                    if(stats.indexUnmerged) {
-                        gitString += ' ' + style.indexBackgroundColor(style.indexForegroundColor(`!${stats.indexUnmerged}`));
-                    }
-
-                    if(stats.indexCount && (stats.workingCount || config.showStatusWhenZero)) {
-                        gitString += style.delimBackgroundColor(style.delimForegroundColor(style.delimText));
-                    }
-
-                    if(stats.workingCount || config.showStatusWhenZero) {
-                        gitString += style.workingBackgroundColor(style.workingForegroundColor(` +${stats.filesAdded} ~${stats.filesModified} -${stats.filesDeleted}`));
-                    }
-
-                    if(stats.filesUnmerged) {
-                        gitString += ' ' + style.workingBackgroundColor(style.workingForegroundColor(`!${stats.filesUnmerged}`));
-                    }
-                }
-
-                if(rebaseInfo.rebase) {
-                    gitString += style.rebaseBackgroundColor(style.rebaseForegroundColor(rebaseInfo.rebase));
-                }
-
-                // after-branch text
-                gitString += style.afterBackgroundColor(style.afterForegroundColor(style.afterText));
-
-                // stash
-                if(config.showStashState && whereAreWe.hasStash) {
-                    gitString += style.stashBackgroundColor(style.stashForegroundColor(style.stashText));
-                }
-
-                gitString += style.defaultBackgroundColor(style.defaultForegroundColor('\0'));
-
-                return gitString;
-            });
     };
 
     return poshGetConfig(params.pwd)
@@ -645,8 +645,8 @@ const poshGitPs1UpstreamDivergence = (pwd) => {
         });
 }
 
-poshGitEcho({
-    pwd: process.cwd(),
-})
-    .then(str => console.log(str))
-    .catch(console.error);
+
+module.exports = (params) => {
+    return poshGitEcho(params)
+        .catch(() => '[ERROR]');
+}
