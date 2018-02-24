@@ -526,7 +526,7 @@ const poshGitEcho = (params) => {
                             gitString += style.stashBackgroundColor(style.stashForegroundColor(style.stashText));
                         }
 
-                        gitString += style.defaultBackgroundColor(style.defaultForegroundColor('\0'));
+                        gitString += style.defaultBackgroundColor(style.defaultForegroundColor(''));
 
                         return gitString;
                     });
