@@ -14,6 +14,10 @@ endif
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
+Plug 'editorconfig/editorconfig-vim'
+Plug 'hashivim/vim-terraform'
+Plug 'vim-syntastic/syntastic'
+Plug 'juliosueiras/vim-terraform-completion'
 
 call plug#end()
 
@@ -22,6 +26,9 @@ if has('win32')
 endif
 
 let g:deoplete#enable_at_startup = 1
+
+let g:deoplete#omni_patterns = {}
+let g:deoplete#omni_patterns.terraform = '[^ *\t"{=$]\w*'
 
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_theme='simple'
