@@ -1,4 +1,4 @@
-*.s??
+*.s[^c]?
 node_modules/
 .netrwhist
 .bashrc.local.d/
