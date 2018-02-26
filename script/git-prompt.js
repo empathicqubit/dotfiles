@@ -17,51 +17,63 @@ const creadFile = (...args) => readFile(...args).catch(() => '');
 const stat = q.denodeify(fs.stat);
 const cstat = (name) => stat(name).catch(() => false);
 
-const style = {
-    defaultForegroundColor: colors.reset,
+const wrapColor = (colorFunc) => {
+    return (text) => {
+        return '\\[' + colorFunc('\\]' + text + '\\[') + '\\]';
+    };
+};
 
-    defaultBackgroundColor: colors.reset,
+const bashColors = {};
+
+for(let c in colors.styles) {
+    bashColors[c] = wrapColor(colors[c]);
+};
+
+const style = {
+    defaultForegroundColor: bashColors.reset,
+
+    defaultBackgroundColor: bashColors.reset,
 
     beforeText: '[',
-    beforeForegroundColor: colors.yellow,
-    beforeBackgroundColor: colors.reset,
+    beforeForegroundColor: bashColors.yellow,
+    beforeBackgroundColor: bashColors.reset,
 
     delimText: ' |',
-    delimForegroundColor: colors.yellow,
-    delimBackgroundColor: colors.reset,
+    delimForegroundColor: bashColors.yellow,
+    delimBackgroundColor: bashColors.reset,
 
     afterText: ']',
-    afterForegroundColor: colors.yellow,
-    afterBackgroundColor: colors.reset,
+    afterForegroundColor: bashColors.yellow,
+    afterBackgroundColor: bashColors.reset,
 
-    branchForegroundColor: colors.cyan,
-    branchBackgroundColor: colors.reset,
+    branchForegroundColor: bashColors.cyan,
+    branchBackgroundColor: bashColors.reset,
 
-    branchAheadForegroundColor: colors.green,
-    branchAheadBackgroundColor: colors.reset,
+    branchAheadForegroundColor: bashColors.green,
+    branchAheadBackgroundColor: bashColors.reset,
 
-    branchBehindForegroundColor: colors.red,
-    branchBehindBackgroundColor: colors.reset,
+    branchBehindForegroundColor: bashColors.red,
+    branchBehindBackgroundColor: bashColors.reset,
 
-    branchBehindAndAheadForegroundColor: colors.yellow,
-    branchBehindAndAheadBackgroundColor: colors.reset,
+    branchBehindAndAheadForegroundColor: bashColors.yellow,
+    branchBehindAndAheadBackgroundColor: bashColors.reset,
 
     beforeIndexText: '',
-    beforeIndexForegroundColor: colors.green,
-    beforeIndexBackgroundColor: colors.reset,
+    beforeIndexForegroundColor: bashColors.green,
+    beforeIndexBackgroundColor: bashColors.reset,
 
-    indexForegroundColor: colors.green,
-    indexBackgroundColor: colors.reset,
+    indexForegroundColor: bashColors.green,
+    indexBackgroundColor: bashColors.reset,
 
-    workingForegroundColor: colors.red,
-    workingBackgroundColor: colors.reset,
+    workingForegroundColor: bashColors.red,
+    workingBackgroundColor: bashColors.reset,
 
-    stashForegroundColor: colors.blue,
-    stashBackgroundColor: colors.reset,
+    stashForegroundColor: bashColors.blue,
+    stashBackgroundColor: bashColors.reset,
     stashText: '$',
 
-    rebaseForegroundColor: colors.reset,
-    rebaseBackgroundColor: colors.reset,
+    rebaseForegroundColor: bashColors.reset,
+    rebaseBackgroundColor: bashColors.reset,
 };
 
 // these globals are updated by __posh_git_ps1_upstream_divergence
@@ -647,5 +659,5 @@ const poshGitPs1UpstreamDivergence = (pwd) => {
 
 module.exports = (params) => {
     return poshGitEcho(params)
-        .catch(() => '[ERROR]');
+        .catch(console.error);
 }
