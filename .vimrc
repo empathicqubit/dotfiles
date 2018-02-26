@@ -14,6 +14,7 @@ endif
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
+Plug 'editorconfig/editorconfig-vim'
 
 call plug#end()
 
