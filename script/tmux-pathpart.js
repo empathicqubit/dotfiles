@@ -79,7 +79,7 @@ module.exports = (params) => {
             let pieces = [];
             gitFolderName && pieces.push(gitFolderName);
             shortPwd != gitFolderName && pieces.push(shortPwd);
-            return pieces.join(' - ') + ' (' + params.cmd.split(/\s+/g)[0] + ')';
+            return pieces.join(' - ') + ' (' + params.cmd.split(/\s+/g).find(x => x != 'sudo') + ')';
         })
         .catch(e => {
             return 'ERROR';
