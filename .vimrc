@@ -17,6 +17,10 @@ Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
 
 call plug#end()
 
+if has('win32')
+    let g:python3_host_prog = 'C:/Python36/python.exe'
+endif
+
 let g:deoplete#enable_at_startup = 1
 
 let g:airline#extensions#tabline#enabled = 1
@@ -44,6 +48,8 @@ set modeline
 set secure
 
 set laststatus=2
+
+set encoding=utf8
 
 let mapleader=","
 
