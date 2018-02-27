@@ -19,6 +19,9 @@ Plug 'hashivim/vim-terraform'
 Plug 'vim-syntastic/syntastic'
 Plug 'juliosueiras/vim-terraform-completion'
 
+" Not actually vim plugins
+Plug 'ofavre/vimcat', { 'do': 'make -j$(nproc)' }
+
 call plug#end()
 
 if has('win32')

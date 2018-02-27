@@ -3,7 +3,7 @@ direnv() {
     if [ "$1" == "allow" ] || [ "$1" == "check" ] ; then
         cat "$2/.envrc"
         echo
-        echo 'If you really want to allow the above file, use `direnv really`'
+        echo -e "${YELLOW}If you really want to allow the above file, use \`direnv really\`${COLORSOFF}"
 
         return
     fi
