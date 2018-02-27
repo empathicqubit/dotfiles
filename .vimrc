@@ -18,9 +18,14 @@ Plug 'editorconfig/editorconfig-vim'
 Plug 'hashivim/vim-terraform'
 Plug 'vim-syntastic/syntastic'
 Plug 'juliosueiras/vim-terraform-completion'
+Plug 'drewtempelmeyer/palenight.vim'
 
-" Not actually vim plugins
+" NOT ACTUALLY VIM PLUGINS
+" ========================
 Plug 'ofavre/vimcat', { 'do': 'make -j$(nproc)' }
+" ========================
+" END OF NON-VIM PLUGINS
+
 
 call plug#end()
 
@@ -60,6 +65,11 @@ set secure
 set laststatus=2
 
 set encoding=utf8
+
+set background=dark
+colorscheme palenight
+
+let g:palenight_terminal_italics=1
 
 let mapleader=","
 
