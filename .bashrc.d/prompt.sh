@@ -34,9 +34,12 @@ function prompt_command {
 
     tmux_set_title "$(promptutil tmux-pathpart "pwd=$PWD" "cmd=bash")"
 
-    export PS1='\u@\h:\w '"$(promptutil git-prompt "pwd=$PWD")"'\$ '
-
     walktoroot "$PWD" icanhazgitconfig
+
+    local GIT_PROMPT
+    IFS= read -r GIT_PROMPT < <(promptutil git-prompt "pwd=$PWD")
+
+    export PS1='\u@\h:\w '"${GIT_PROMPT}\n\$ "
 }
 
 PROMPTUTIL_PORT=

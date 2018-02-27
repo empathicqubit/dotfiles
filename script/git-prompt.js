@@ -17,9 +17,9 @@ const creadFile = (...args) => readFile(...args).catch(() => '');
 const stat = q.denodeify(fs.stat);
 const cstat = (name) => stat(name).catch(() => false);
 
-const wrapColor = (colorFunc) => {
+const wrapColor = (colorFunc, inner) => {
     return (text) => {
-        return '\\[' + colorFunc('\\]' + text + '\\[') + '\\]';
+        return (inner ? '' : '\\[') + colorFunc('\\]' + text + '\\[') + (inner ? '' : '\\]');
     };
 };
 
@@ -487,58 +487,58 @@ const poshGitEcho = (params) => {
                         let branchString = `${whereAreWe.isBare}${b.replace('refs/heads/', '')}`;
 
                         // before-branch text
-                        gitString = style.beforeBackgroundColor(style.beforeForegroundColor(style.beforeText));
+                        gitString = style.beforeBackgroundColor(style.beforeForegroundColor(style.beforeText, true));
 
                         // branch
                         if(poshBranchBehindBy && poshBranchAheadBy) {
-                            gitString += style.branchBehindAndAheadBackgroundColor(style.branchBehindAndAheadForegroundColor(branchString + config.branchBehindAndAheadStatusSymbol));
+                            gitString += style.branchBehindAndAheadBackgroundColor(style.branchBehindAndAheadForegroundColor(branchString + config.branchBehindAndAheadStatusSymbol, true));
                         }
                         else if(poshBranchBehindBy) {
-                            gitString += style.branchBehindBackgroundColor(style.branchBehindForegroundColor(branchString + config.branchBehindStatusSymbol));
+                            gitString += style.branchBehindBackgroundColor(style.branchBehindForegroundColor(branchString + config.branchBehindStatusSymbol, true));
                         }
                         else if(poshBranchAheadBy) {
-                            gitString += style.branchAheadBackgroundColor(style.branchAheadForegroundColor(branchString + config.branchAheadStatusSymbol));
+                            gitString += style.branchAheadBackgroundColor(style.branchAheadForegroundColor(branchString + config.branchAheadStatusSymbol, true));
                         }
                         else {
-                            gitString += style.branchBackgroundColor(style.branchForegroundColor(branchString + config.branchIdenticalStatusSymbol));
+                            gitString += style.branchBackgroundColor(style.branchForegroundColor(branchString + config.branchIdenticalStatusSymbol, true));
                         }
 
                         // index status
                         if(config.enableFileStatus) {
                             if(stats.indexCount || config.showStatusWhenZero) {
-                                gitString += style.indexBackgroundColor(style.indexForegroundColor(` +${stats.indexAdded} ~${stats.indexModified} -${stats.indexDeleted}`));
+                                gitString += style.indexBackgroundColor(style.indexForegroundColor(` +${stats.indexAdded} ~${stats.indexModified} -${stats.indexDeleted}`, true));
                             }
 
                             if(stats.indexUnmerged) {
-                                gitString += ' ' + style.indexBackgroundColor(style.indexForegroundColor(`!${stats.indexUnmerged}`));
+                                gitString += ' ' + style.indexBackgroundColor(style.indexForegroundColor(`!${stats.indexUnmerged}`, true));
                             }
 
                             if(stats.indexCount && (stats.workingCount || config.showStatusWhenZero)) {
-                                gitString += style.delimBackgroundColor(style.delimForegroundColor(style.delimText));
+                                gitString += style.delimBackgroundColor(style.delimForegroundColor(style.delimText, true));
                             }
 
                             if(stats.workingCount || config.showStatusWhenZero) {
-                                gitString += style.workingBackgroundColor(style.workingForegroundColor(` +${stats.filesAdded} ~${stats.filesModified} -${stats.filesDeleted}`));
+                                gitString += style.workingBackgroundColor(style.workingForegroundColor(` +${stats.filesAdded} ~${stats.filesModified} -${stats.filesDeleted}`, true));
                             }
 
                             if(stats.filesUnmerged) {
-                                gitString += ' ' + style.workingBackgroundColor(style.workingForegroundColor(`!${stats.filesUnmerged}`));
+                                gitString += ' ' + style.workingBackgroundColor(style.workingForegroundColor(`!${stats.filesUnmerged}`, true));
                             }
                         }
 
                         if(rebaseInfo.rebase) {
-                            gitString += style.rebaseBackgroundColor(style.rebaseForegroundColor(rebaseInfo.rebase));
+                            gitString += style.rebaseBackgroundColor(style.rebaseForegroundColor(rebaseInfo.rebase, true));
                         }
 
                         // after-branch text
-                        gitString += style.afterBackgroundColor(style.afterForegroundColor(style.afterText));
+                        gitString += style.afterBackgroundColor(style.afterForegroundColor(style.afterText, true));
 
                         // stash
                         if(config.showStashState && whereAreWe.hasStash) {
-                            gitString += style.stashBackgroundColor(style.stashForegroundColor(style.stashText));
+                            gitString += style.stashBackgroundColor(style.stashForegroundColor(style.stashText, true));
                         }
 
-                        gitString += style.defaultBackgroundColor(style.defaultForegroundColor(''));
+                        gitString += style.defaultBackgroundColor(style.defaultForegroundColor('', true));
 
                         return gitString;
                     });
@@ -659,5 +659,5 @@ const poshGitPs1UpstreamDivergence = (pwd) => {
 
 module.exports = (params) => {
     return poshGitEcho(params)
-        .catch(console.error);
+        .catch(() => '[ERROR]');
 }
