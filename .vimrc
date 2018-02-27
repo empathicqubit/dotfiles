@@ -21,6 +21,10 @@ Plug 'juliosueiras/vim-terraform-completion'
 
 call plug#end()
 
+if has('win32')
+    let g:python3_host_prog = 'C:/Python36/python.exe'
+endif
+
 let g:deoplete#enable_at_startup = 1
 
 let g:deoplete#omni_patterns = {}
@@ -51,6 +55,8 @@ set modeline
 set secure
 
 set laststatus=2
+
+set encoding=utf8
 
 let mapleader=","
 
