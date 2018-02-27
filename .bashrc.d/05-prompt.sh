@@ -1,22 +1,21 @@
 #! /bin/bash
-function icanhazgitconfig {
-    local DIR="${@: -1}"
-    if [ -f "$DIR/.gitconfig" ] ; then
-        export GIT_CONFIG="$DIR/.gitconfig"
-
-        true
-    else
-        false
-    fi
-}
-
 tmux_set_title () {
     printf '\033]2;%s\033\\' "$1"
+}
+
+PREEXEC_HOOKS=()
+
+add_preexec_hook() {
+    PREEXEC_HOOKS+=("$1")
 }
 
 preexec () { 
     local this_command="$1"
     tmux_set_title "$(promptutil tmux-pathpart "pwd=$PWD" "cmd=$this_command")"
+
+    for each in "${PREEXEC_HOOKS[@]}" ; do
+        $each "$this_command"
+    done
 }
 
 preexec_invoke_exec () {
@@ -28,6 +27,12 @@ preexec_invoke_exec () {
 }
 trap 'preexec_invoke_exec' DEBUG
 
+PROMPT_HOOKS=()
+
+function add_prompt_hook {
+    PROMPT_HOOKS+=("$1")
+}
+
 function prompt_command {
     local GARBAGE=""
     PROMPT_COMMAND_ONCE=1
@@ -38,13 +43,20 @@ function prompt_command {
 
     tmux_set_title "$(promptutil tmux-pathpart "pwd=$PWD" "cmd=bash")"
 
-    walktoroot "$PWD" icanhazgitconfig
-
     local GIT_PROMPT
     IFS= read -r GIT_PROMPT < <(promptutil git-prompt "pwd=$PWD")
 
-    export PS1='\u@\h:\w '"${GIT_PROMPT}\n\$ "
+    local NEW_PROMPT='\u@\h:\w '"${GIT_PROMPT}\n\$ "
+
+    for each in "${PROMPT_HOOKS[@]}" ; do
+        $each "$NEW_PROMPT"
+
+        NEW_PROMPT="${PROMPT_HOOK_RESULT:-${NEW_PROMPT}}"
+    done
+
+    export PS1="$NEW_PROMPT"
 }
+
 
 PROMPTUTIL_PORT=
 PROMPTUTIL_PID=
