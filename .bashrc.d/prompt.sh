@@ -32,6 +32,10 @@ function prompt_command {
     local GARBAGE=""
     PROMPT_COMMAND_ONCE=1
 
+    if [ -z "$PROMPTUTIL_PID" ] || [ ! -d "/proc/$PROMPTUTIL_PID" ] ; then
+        __start_promptutil
+    fi 
+
     tmux_set_title "$(promptutil tmux-pathpart "pwd=$PWD" "cmd=bash")"
 
     walktoroot "$PWD" icanhazgitconfig
