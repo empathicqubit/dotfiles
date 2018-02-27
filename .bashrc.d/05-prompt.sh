@@ -46,7 +46,7 @@ function prompt_command {
     local GIT_PROMPT
     IFS= read -r GIT_PROMPT < <(promptutil git-prompt "pwd=$PWD")
 
-    local NEW_PROMPT='\u@\h:\w '"${GIT_PROMPT}\n\$ "
+    local NEW_PROMPT='\u@\h:\w '"${GIT_PROMPT}\n${GREEN}\$${COLORSOFF} "
 
     for each in "${PROMPT_HOOKS[@]}" ; do
         $each "$NEW_PROMPT"

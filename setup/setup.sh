@@ -52,8 +52,7 @@ setuplink "$CURDIR/../.vim" "$HOME/vimfiles"
 case "$OSTYPE" in
     linux-gnu)
         sudo npm install -g tern
-	sudo apt install python3-pip
-        sudo apt install fonts-powerline
+	sudo apt install python3-pip fonts-powerline direnv
     ;;
     *)
         # Windows stuff. Not clear all the environment types that are possible here, so assuming Windows if we don't know.
