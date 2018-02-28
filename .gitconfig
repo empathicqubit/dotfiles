@@ -1,6 +1,8 @@
 [user]
     name=Jessica
     email=jessica@allons.me
+[core]
+    autoclrf=input
 [branch]
     autosetuprebase=always
 [bash]
