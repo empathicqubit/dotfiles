@@ -31,6 +31,7 @@ call plug#end()
 
 if has('win32')
     let g:python3_host_prog = 'C:/Python36/python.exe'
+    set guifont=Liberation_Mono:h10:cANSI:qDRAFT
 endif
 
 let g:deoplete#enable_at_startup = 1
