@@ -26,6 +26,22 @@ Plug 'ofavre/vimcat', { 'do': 'make -j$(nproc)' }
 " ========================
 " END OF NON-VIM PLUGINS
 
+function! _GitDiffWindowSetup() abort
+    setlocal buftype=nofile 
+    setlocal bufhidden=hide 
+    setlocal noswapfile
+    .!git diff && git diff --staged
+    setlocal filetype=diff
+endfunction
+
+function! GitDiffWindow() abort
+    vert new +call\ _GitDiffWindowSetup()
+    wincmd J
+    wincmd p
+    resize 10
+endfunction
+
+autocmd BufRead */.git/COMMIT_EDITMSG call GitDiffWindow()
 
 call plug#end()
 
