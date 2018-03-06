@@ -19,6 +19,7 @@ Plug 'hashivim/vim-terraform'
 Plug 'vim-syntastic/syntastic'
 Plug 'juliosueiras/vim-terraform-completion'
 Plug 'drewtempelmeyer/palenight.vim'
+Plug 'junegunn/rainbow_parentheses.vim'
 
 " NOT ACTUALLY VIM PLUGINS
 " ========================
