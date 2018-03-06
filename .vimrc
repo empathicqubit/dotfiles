@@ -27,6 +27,12 @@ Plug 'ofavre/vimcat', { 'do': 'make -j$(nproc)' }
 " ========================
 " END OF NON-VIM PLUGINS
 
+call plug#end()
+
+let g:rainbow#pairs = [['(', ')'], ['<', '>'], ['{', '}'], ['[', ']']]
+
+autocmd BufRead * RainbowParentheses
+
 function! _GitDiffWindowSetup() abort
     setlocal buftype=nofile 
     setlocal bufhidden=hide 
@@ -43,8 +49,6 @@ function! GitDiffWindow() abort
 endfunction
 
 autocmd BufRead */.git/COMMIT_EDITMSG call GitDiffWindow()
-
-call plug#end()
 
 if has('win32')
     let g:python3_host_prog = 'C:/Python36/python.exe'
