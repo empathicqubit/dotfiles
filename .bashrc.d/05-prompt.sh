@@ -43,7 +43,7 @@ add_precmd_function __precmd_ran_once
 
 function __precmd_tmux_title {
     local title
-    IFS= read -r title < <(promptutil tmux-pathpart "pwd=$PWD" "cmd=bash")
+    IFS= read -r title < <(promptutil tmux-pathpart "pwd=$PWD" "cmd=.")
     tmux_set_title "$title"
 }
 
