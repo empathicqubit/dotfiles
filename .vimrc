@@ -67,10 +67,12 @@ set laststatus=2
 
 set encoding=utf8
 
-set background=dark
-colorscheme palenight
+if(!has('win32') || has('gui_running'))
+    set background=dark
+    colorscheme palenight
 
-let g:palenight_terminal_italics=1
+    let g:palenight_terminal_italics=1
+endif
 
 let mapleader=","
 
