@@ -17,7 +17,9 @@ function seconds_since_epoch {
 
 function __preexec_tmux_title { 
     local this_command="$1"
-    tmux_set_title "$(promptutil tmux-pathpart "pwd=$PWD" "cmd=$this_command")"
+    local title
+    IFS= read -r title < <(promptutil tmux-pathpart "pwd=$PWD" "cmd=$this_command")
+    tmux_set_title "$title"
 }
 
 add_preexec_function __preexec_tmux_title
@@ -40,7 +42,9 @@ function __precmd_ran_once {
 add_precmd_function __precmd_ran_once
 
 function __precmd_tmux_title {
-    tmux_set_title "$(promptutil tmux-pathpart "pwd=$PWD" "cmd=bash")"
+    local title
+    IFS= read -r title < <(promptutil tmux-pathpart "pwd=$PWD" "cmd=bash")
+    tmux_set_title "$title"
 }
 
 add_precmd_function __precmd_tmux_title
