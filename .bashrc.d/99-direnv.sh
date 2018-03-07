@@ -18,14 +18,17 @@ direnv() {
     command direnv "$@"
 }
 
+__precmd_direnv_hook() {
+    eval "$(direnv export bash)"
+}
+
 __main() {
     alias dea='direnv allow'
     alias der='direnv really'
 
     local DIRENV
-    # The things I do to avoid forking... :/
-    mapfile DIRENV < <(direnv hook bash)
-    eval "${DIRENV[@]}"
+
+    add_precmd_function __precmd_direnv_hook
 }
 
 __main
