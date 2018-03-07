@@ -19,7 +19,7 @@ direnv() {
 }
 
 __precmd_direnv_hook() {
-    which direnv 2>/dev/null || return
+    which direnv 2>&1 1>/dev/null || return
     eval "$(direnv export bash)"
 }
 
