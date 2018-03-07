@@ -19,6 +19,7 @@ Plug 'hashivim/vim-terraform'
 Plug 'vim-syntastic/syntastic'
 Plug 'juliosueiras/vim-terraform-completion'
 Plug 'drewtempelmeyer/palenight.vim'
+Plug 'junegunn/rainbow_parentheses.vim'
 
 " NOT ACTUALLY VIM PLUGINS
 " ========================
@@ -26,8 +27,28 @@ Plug 'ofavre/vimcat', { 'do': 'make -j$(nproc)' }
 " ========================
 " END OF NON-VIM PLUGINS
 
-
 call plug#end()
+
+let g:rainbow#pairs = [['(', ')'], ['<', '>'], ['{', '}'], ['[', ']']]
+
+autocmd BufRead * RainbowParentheses
+
+function! _GitDiffWindowSetup() abort
+    setlocal buftype=nofile 
+    setlocal bufhidden=hide 
+    setlocal noswapfile
+    .!git diff && git diff --staged
+    setlocal filetype=diff
+endfunction
+
+function! GitDiffWindow() abort
+    vert new +call\ _GitDiffWindowSetup()
+    wincmd J
+    wincmd p
+    resize 10
+endfunction
+
+autocmd BufRead */.git/COMMIT_EDITMSG call GitDiffWindow()
 
 if has('win32')
     let g:python3_host_prog = 'C:/Python36/python.exe'

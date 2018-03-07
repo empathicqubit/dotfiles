@@ -1,48 +1,55 @@
 #! /bin/bash
-tmux_set_title () {
+function tmux_set_title {
     printf '\033]2;%s\033\\' "$1"
 }
 
-PREEXEC_HOOKS=()
-
-add_preexec_hook() {
-    PREEXEC_HOOKS+=("$1")
+function add_preexec_function {
+    preexec_functions+=("$1")
 }
 
-preexec () { 
+function add_precmd_function {
+    precmd_functions+=("$1")
+}
+
+function seconds_since_epoch {
+    date '+%s'
+}
+
+function __preexec_tmux_title { 
     local this_command="$1"
-    tmux_set_title "$(promptutil tmux-pathpart "pwd=$PWD" "cmd=$this_command")"
-
-    for each in "${PREEXEC_HOOKS[@]}" ; do
-        $each "$this_command"
-    done
+    local title
+    IFS= read -r title < <(promptutil tmux-pathpart "pwd=$PWD" "cmd=$this_command")
+    tmux_set_title "$title"
 }
 
-preexec_invoke_exec () {
-    [ -z "$PROMPT_COMMAND_ONCE" ] && return
-    [ -n "$COMP_LINE" ] && return  # do nothing if completing
-    [ "$BASH_COMMAND" = "$PROMPT_COMMAND" ] && return # don't cause a preexec for $PROMPT_COMMAND
-    local this_command=`HISTTIMEFORMAT= history 1 | sed -e "s/^[ ]*[0-9]*[ ]*//"`;
-    preexec "$this_command"
-}
-trap 'preexec_invoke_exec' DEBUG
+add_preexec_function __preexec_tmux_title
 
-PROMPT_HOOKS=()
+PROMPTUTIL_PORT=
+PROMPTUTIL_PID=
 
-function add_prompt_hook {
-    PROMPT_HOOKS+=("$1")
-}
-
-function prompt_command {
-    local GARBAGE=""
-    PROMPT_COMMAND_ONCE=1
-
+function __precmd_start_promptutil {
     if [ -z "$PROMPTUTIL_PID" ] || [ ! -d "/proc/$PROMPTUTIL_PID" ] ; then
         __start_promptutil
     fi 
+}
 
-    tmux_set_title "$(promptutil tmux-pathpart "pwd=$PWD" "cmd=bash")"
+add_precmd_function __precmd_start_promptutil
 
+function __precmd_ran_once {
+    PROMPT_COMMAND_ONCE=1
+}
+
+add_precmd_function __precmd_ran_once
+
+function __precmd_tmux_title {
+    local title
+    IFS= read -r title < <(promptutil tmux-pathpart "pwd=$PWD" "cmd=bash")
+    tmux_set_title "$title"
+}
+
+add_precmd_function __precmd_tmux_title
+
+function __precmd_git_prompt {
     local GIT_PROMPT
     IFS= read -r GIT_PROMPT < <(promptutil git-prompt "pwd=$PWD")
 
@@ -57,9 +64,7 @@ function prompt_command {
     export PS1="$NEW_PROMPT"
 }
 
-
-PROMPTUTIL_PORT=
-PROMPTUTIL_PID=
+add_precmd_function __precmd_git_prompt
 
 function __start_promptutil {
     if [ ! -z "$PROMPTUTIL_PID" ] ; then
@@ -94,8 +99,6 @@ function __main {
     local CURDIR="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"
 
     __start_promptutil
-
-    PROMPT_COMMAND="prompt_command"
 }
 
 __main
