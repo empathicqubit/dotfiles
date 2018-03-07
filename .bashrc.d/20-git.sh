@@ -8,8 +8,11 @@ function git {
 
     # This causes git to behave differently, so we only do it when we need it.
     if [ ! -z "$CAPTURE" ] ; then
-        local GITOUT="$(mktemp)"
-        local GITERR="$(mktemp)"
+        local GITOUT
+        IFS= read -r GITOUT < <(mktemp)
+
+        local GITERR
+        IFS= read -r GITERR < <(mktemp)
 
         command git "$@" > >(tee "$GITOUT") 2> >(tee "$GITERR" >&2)
 
