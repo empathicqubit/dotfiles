@@ -83,6 +83,7 @@ set hidden
 
 set modeline
 set secure
+set autoread
 
 set laststatus=2
 
