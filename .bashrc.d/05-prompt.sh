@@ -6,11 +6,25 @@ function tmux_set_title {
 }
 
 function add_preexec_function {
-    preexec_functions+=("$1")
+    local func="$1"
+    for each in "${preexec_functions[@]}" ; do
+        [ "$each" = "$func" ] && return 1
+    done
+
+    preexec_functions+=("$func")
+
+    return 0
 }
 
 function add_precmd_function {
-    precmd_functions+=("$1")
+    local func="$1"
+    for each in "${precmd_functions[@]}" ; do
+        [ "$each" = "$func" ] && return 1
+    done
+
+    precmd_functions+=("$func")
+
+    return 0
 }
 
 function seconds_since_epoch {
@@ -51,6 +65,8 @@ function __precmd_tmux_title {
 
 add_precmd_function __precmd_tmux_title
 
+PROMPT_HOOKS=()
+
 function __precmd_git_prompt {
     local GIT_PROMPT
     IFS= read -r GIT_PROMPT < <(promptutil git-prompt "pwd=$PWD")
@@ -64,7 +80,7 @@ function __precmd_git_prompt {
 
     local RANDOM_CHAR="${RANDOM_CHARS[RANDOM % ${#RANDOM_CHARS[@]}]}"
 
-    local NEW_PROMPT='\u@\h:\w '"${GIT_PROMPT}\n\[${GREEN}\]${PROMPT_CHAR:-${RANDOM_CHAR}}\[${COLORSOFF}\] "
+    local NEW_PROMPT='\u@\h:\w '"${GIT_PROMPT}\n\[${GREEN}\]${PROMPT_CHAR:-$RANDOM_CHAR}\[${COLORSOFF}\] "
 
     for each in "${PROMPT_HOOKS[@]}" ; do
         $each "$NEW_PROMPT"
