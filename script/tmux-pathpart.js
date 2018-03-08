@@ -85,7 +85,7 @@ const shortenPwd = (pwd) => {
 const getCmd = (cmd) => {
     return q.resolve()
         .then(() => {
-            let parts = cmd.split(/\s+/g).filter(x => x != 'sudo');
+            let parts = (cmd || '').split(/\s+/g).filter(x => x != 'sudo');
 
             let exe = parts[0];
 
@@ -94,7 +94,11 @@ const getCmd = (cmd) => {
             }
 
             if(exe == 'vim') {
-                return '\u{1f4dd}';
+                return '\u{270f}\u{fe0f}';
+            }
+
+            if(exe.includes('build')) {
+                return '\u{1f477}\u{200d}\u{2640}\u{fe0f}';
             }
 
             return exe;

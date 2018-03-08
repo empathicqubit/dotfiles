@@ -43,7 +43,7 @@ add_precmd_function __precmd_ran_once
 
 function __precmd_tmux_title {
     local title
-    IFS= read -r title < <(promptutil tmux-pathpart "pwd=$PWD" "cmd=.")
+    IFS= read -r title < <(promptutil tmux-pathpart "pwd=$PWD" "cmd=bash")
     tmux_set_title "$title"
 }
 
@@ -53,7 +53,16 @@ function __precmd_git_prompt {
     local GIT_PROMPT
     IFS= read -r GIT_PROMPT < <(promptutil git-prompt "pwd=$PWD")
 
-    local NEW_PROMPT='\u@\h:\w '"${GIT_PROMPT}\n\[${GREEN}\]\$\[${COLORSOFF}\] "
+    local RANDOM_CHARS=(
+        # Mermaid
+        $'\U0001f9dc\U0000200d\U00002640\U0000fe0f'
+        # Female technologist
+        $'\U0001f469\U0000200d\U0001f4bb'
+    )
+
+    local RANDOM_CHAR="${RANDOM_CHARS[RANDOM % ${#RANDOM_CHARS[@]}]}"
+
+    local NEW_PROMPT='\u@\h:\w '"${GIT_PROMPT}\n\[${GREEN}\]${PROMPT_CHAR:-${RANDOM_CHAR}}\[${COLORSOFF}\] "
 
     for each in "${PROMPT_HOOKS[@]}" ; do
         $each "$NEW_PROMPT"
