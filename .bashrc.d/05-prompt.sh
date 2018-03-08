@@ -1,6 +1,8 @@
 #! /bin/bash
 function tmux_set_title {
-    printf '\033]2;%s\033\\' "$1"
+    if [ ! -z "$TMUX" ] ; then
+        printf '\033]2;%s\033\\' "$1"
+    fi
 }
 
 function add_preexec_function {
