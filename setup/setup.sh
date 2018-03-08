@@ -11,7 +11,7 @@ setuplink () {
         local MDIR
         case "$OSTYPE" in
             linux-gnu)
-                ln -v -s "$each" "$DEST"
+                ln -v -s "$SRCPATH" "$DEST"
             ;;
             *)
                 echo "$DEST -> $SRCPATH"
@@ -39,6 +39,9 @@ setuplinks () {
 }
 
 CURDIR="$(dirname $(readlink -f "$0"))"
+CACHEDIR="$HOME/.cache/dotfiles"
+
+mkdir -p "$CACHEDIR"
 
 # This will probably get annoying...
 setuplinks "$CURDIR/.." "$HOME"
@@ -53,6 +56,14 @@ case "$OSTYPE" in
     linux-gnu)
         sudo npm install -g tern
 	sudo apt install python3-pip fonts-powerline direnv vim-nox
+
+        curl -L https://releases.hyper.is/download/deb > "$CACHEDIR/hyper.deb"
+	sudo dpkg -i "$CACHEDIR/hyper.deb"
+	sudo apt install -f
+
+        curl -L http://http.us.debian.org/debian/pool/main/f/fonts-noto-color-emoji/fonts-noto-color-emoji_0~20180102-1_all.deb > "$CACHEDIR/noto-emoji.deb"
+        sudo dpkg -i "$CACHEDIR/noto-emoji.deb"
+        sudo apt install -f
     ;;
     *)
         # Windows stuff. Not clear all the environment types that are possible here, so assuming Windows if we don't know.
