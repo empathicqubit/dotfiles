@@ -89,7 +89,7 @@ set laststatus=2
 
 set encoding=utf8
 
-if(!has('win32') || has('gui_running'))
+if(!has('win32') || ( has('win32') && has('gui_running') ))
     set background=dark
     colorscheme palenight
 
