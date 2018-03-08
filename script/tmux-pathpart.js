@@ -78,7 +78,7 @@ const shortenPwd = (pwd) => {
                 }
             }
 
-            return windows.find(x => x.path == pwd).partial;
+            return (windows.find(x => x.path == pwd) || {}).partial;
         });
 };
 
@@ -100,10 +100,6 @@ const getCmd = (cmd) => {
             return exe;
         });
 };
-
-shortenPwd('/home/jessica/dotfiles')
-    .then(x => console.error(x))
-    .catch(e => console.error(e));
 
 // Wrap the entire program in a promise in case it barfs. We don't want to dump garbage on the terminal.
 module.exports = (params) => {
