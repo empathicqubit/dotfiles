@@ -121,7 +121,7 @@ module.exports = (params) => {
         .spread((gitFolderName, shortPwd, cmd) => {
             let pieces = [];
             gitFolderName && pieces.push(gitFolderName);
-            shortPwd != gitFolderName && pieces.push(shortPwd);
+            shortPwd && shortPwd != gitFolderName && pieces.push(shortPwd);
             return pieces.join(' - ') + ' (' + cmd + ')';
         })
         .catch(e => {
