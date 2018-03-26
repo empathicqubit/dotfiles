@@ -30,6 +30,8 @@ Plug 'ofavre/vimcat', { 'do': 'make -j$(nproc)' }
 
 call plug#end()
 
+let g:javascript_plugin_jsdoc = 1
+
 let g:syntastic_terraform_tffilter_plan = 1
 
 let g:rainbow#pairs = [['(', ')'], ['<', '>'], ['{', '}'], ['[', ']']]
