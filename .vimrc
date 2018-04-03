@@ -73,6 +73,10 @@ let g:ctrlp_user_command = [
 " Tabs
 set shiftwidth=4 expandtab tabstop=8 softtabstop=4 smartindent
 
+if has('win32')
+    set bs=2
+endif
+
 set showcmd hlsearch
 
 command W :%!sudo tee %
