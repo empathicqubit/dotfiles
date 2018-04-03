@@ -20,6 +20,7 @@ Plug 'vim-syntastic/syntastic'
 Plug 'juliosueiras/vim-terraform-completion'
 Plug 'drewtempelmeyer/palenight.vim'
 Plug 'junegunn/rainbow_parentheses.vim'
+Plug 'pangloss/vim-javascript'
 
 " NOT ACTUALLY VIM PLUGINS
 " ========================
@@ -28,6 +29,10 @@ Plug 'ofavre/vimcat', { 'do': 'make -j$(nproc)' }
 " END OF NON-VIM PLUGINS
 
 call plug#end()
+
+let g:javascript_plugin_jsdoc = 1
+
+let g:syntastic_terraform_tffilter_plan = 1
 
 let g:rainbow#pairs = [['(', ')'], ['<', '>'], ['{', '}'], ['[', ']']]
 
