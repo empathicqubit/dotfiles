@@ -19,8 +19,8 @@ Plug 'hashivim/vim-terraform'
 Plug 'vim-syntastic/syntastic'
 Plug 'juliosueiras/vim-terraform-completion'
 Plug 'drewtempelmeyer/palenight.vim'
+Plug 'isRuslan/vim-es6'
 Plug 'junegunn/rainbow_parentheses.vim'
-Plug 'pangloss/vim-javascript'
 
 " NOT ACTUALLY VIM PLUGINS
 " ========================
@@ -35,8 +35,6 @@ let g:javascript_plugin_jsdoc = 1
 let g:syntastic_terraform_tffilter_plan = 1
 
 let g:rainbow#pairs = [['(', ')'], ['<', '>'], ['{', '}'], ['[', ']']]
-
-autocmd BufRead * RainbowParentheses
 
 function! _GitDiffWindowSetup() abort
     setlocal buftype=nofile 
@@ -118,3 +116,6 @@ imap hh <ESC>
 
 inoremap <expr><tab> pumvisible() ? "\<C-n>" : "\<TAB>"
 inoremap <expr><s-tab> pumvisible() ? "\<C-p>" : "\<TAB>"
+
+autocmd BufRead * RainbowParentheses
+
