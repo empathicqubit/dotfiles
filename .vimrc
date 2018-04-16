@@ -21,6 +21,7 @@ Plug 'juliosueiras/vim-terraform-completion'
 Plug 'drewtempelmeyer/palenight.vim'
 Plug 'isRuslan/vim-es6'
 Plug 'junegunn/rainbow_parentheses.vim'
+Plug 'mzlogin/vim-smali'
 
 " NOT ACTUALLY VIM PLUGINS
 " ========================
