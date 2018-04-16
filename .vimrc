@@ -89,6 +89,14 @@ set pastetoggle=<F2>
 
 set hidden
 
+if has('win32')
+    silent exec "!mkdir $HOME/.vimswap"
+else
+    silent exec "!mkdir $HOME/.vimswap 2>/dev/null"
+endif
+
+set directory=$HOME/.vimswap//
+
 set modeline
 set secure
 set autoread
