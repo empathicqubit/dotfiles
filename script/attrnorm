@@ -1,0 +1,16 @@
+#! /bin/bash
+find "$1" | while read FILENAME ; do
+    PERMS="$(getfacl -t "$FILENAME" | grep USER)"
+    ACTUAL="$(echo "$PERMS" | awk '{ print $3 }')"
+    DEFAULTS="$(echo "$PERMS" | awk '{ print $4 }')"
+
+    ACTUAL_OTHER="${ACTUAL//[w]/-}"
+    setfacl -R -m "group::$ACTUAL" "$FILENAME"
+    setfacl -R -m "other::$ACTUAL_OTHER" "$FILENAME"
+
+    if [[ ! -z "$DEFAULTS" ]] ; then
+        DEFAULTS_OTHER="${DEFAULTS//[w]/-}"
+        setfacl -R -d -m "group::$DEFAULTS" "$FILENAME"
+        setfacl -R -d -m "other::$DEFAULTS_OTHER" "$FILENAME"
+    fi
+done

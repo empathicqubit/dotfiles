@@ -21,6 +21,7 @@ Plug 'juliosueiras/vim-terraform-completion'
 Plug 'drewtempelmeyer/palenight.vim'
 Plug 'isRuslan/vim-es6'
 Plug 'junegunn/rainbow_parentheses.vim'
+Plug 'mzlogin/vim-smali'
 
 " NOT ACTUALLY VIM PLUGINS
 " ========================
@@ -87,6 +88,14 @@ command W :%!sudo tee %
 set pastetoggle=<F2>
 
 set hidden
+
+if has('win32')
+    silent exec "!mkdir $HOME/.vimswap"
+else
+    silent exec "!mkdir $HOME/.vimswap 2>/dev/null"
+endif
+
+set directory=$HOME/.vimswap//
 
 set modeline
 set secure
