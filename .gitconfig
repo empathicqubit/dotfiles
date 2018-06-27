@@ -3,6 +3,8 @@
     email=empathicqubit@allons.me
 [core]
     autoclrf=input
+[merge]
+    tool=vimdiff
 [branch]
     autosetuprebase=always
 [bash]
