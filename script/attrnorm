@@ -1,16 +1,42 @@
 #! /bin/bash
-find "$1" | while read FILENAME ; do
-    PERMS="$(getfacl -t "$FILENAME" | grep USER)"
-    ACTUAL="$(echo "$PERMS" | awk '{ print $3 }')"
-    DEFAULTS="$(echo "$PERMS" | awk '{ print $4 }')"
 
-    ACTUAL_OTHER="${ACTUAL//[w]/-}"
-    setfacl -R -m "group::$ACTUAL" "$FILENAME"
-    setfacl -R -m "other::$ACTUAL_OTHER" "$FILENAME"
+## file: app/appointment-messenger/node_modules/lodash/fp/pullAllBy.js                                                        
+#USER   jessica   rw-                                          
+#GROUP  jessica   rw-                                          
+#other            r--   
 
-    if [[ ! -z "$DEFAULTS" ]] ; then
-        DEFAULTS_OTHER="${DEFAULTS//[w]/-}"
-        setfacl -R -d -m "group::$DEFAULTS" "$FILENAME"
-        setfacl -R -d -m "other::$DEFAULTS_OTHER" "$FILENAME"
+FILE_REGEX="^#[[:space:]]+file:[[:space:]]+(.*)$"
+PERMS_REGEX="USER[[:space:]]+([[:alnum:]]+)[[:space:]]+(([r\-])([w\-])([x\-]))([[:space:]]+(([r\-])([w\-])([x\-])))?"
+FILE_UNUSED=0
+
+getfacl -p -R -t "$1" | while read LINE ; do
+    if [[ "$LINE" =~ $FILE_REGEX ]] ; then
+        FILENAME="${BASH_REMATCH[1]}"
+
+        FILE_UNUSED=1
     fi
+
+    if [[ "$LINE" =~ $PERMS_REGEX ]] ; then
+        PERMS="$LINE"
+        PERMS_READ="${BASH_REMATCH[3]}"
+        PERMS_WRITE="${BASH_REMATCH[4]}"
+        PERMS_EXEC="${BASH_REMATCH[5]}"
+
+        ACTUAL="${BASH_REMATCH[2]}"
+        DEFAULTS="${BASH_REMATCH[7]}"
+
+        ACTUAL_OTHER="${ACTUAL//[w]/-}"
+
+        if ((FILE_UNUSED)) ; then
+            setfacl -m "group::$ACTUAL" "$FILENAME"
+            setfacl -m "other::$ACTUAL_OTHER" "$FILENAME"
+
+            if [[ ! -z "$DEFAULTS" ]] ; then
+                DEFAULTS_OTHER="${DEFAULTS//[w]/-}"
+                setfacl -d -m "group::$DEFAULTS" "$FILENAME"
+                setfacl -d -m "other::$DEFAULTS_OTHER" "$FILENAME"
+            fi
+        fi
+    fi
+
 done
