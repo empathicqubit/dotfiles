@@ -120,8 +120,22 @@ module.exports = (params) => {
         })
         .spread((gitFolderName, shortPwd, cmd) => {
             let pieces = [];
-            gitFolderName && pieces.push(gitFolderName);
-            shortPwd && shortPwd != gitFolderName && pieces.push(shortPwd);
+            if(shortPwd && shortPwd != gitFolderName) {
+                if(gitFolderName) {
+                    let match;
+                    const gitPieces = [];
+                    let re = /(^|[\W\-]+)[a-z]/ig;
+                    while(match = re.exec(gitFolderName)) {
+                        gitPieces.push(match[0]);
+                    }
+                    pieces.push(gitPieces.join(''));
+                }
+                pieces.push(shortPwd);
+            }
+            else if(gitFolderName) {
+                pieces.push(gitFolderName);
+            } 
+
             return pieces.join(' - ') + ' (' + cmd + ')';
         })
         .catch(e => {

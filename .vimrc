@@ -11,7 +11,7 @@ else
     Plug 'roxma/vim-hug-neovim-rpc'
 endif
 
-Plug 'empathicqubit/vim-document-currentpath'
+Plug 'empathicqubit/vim-document-currentpath', { 'do': 'yarn install' }
 
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
