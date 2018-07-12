@@ -11,6 +11,8 @@ else
     Plug 'roxma/vim-hug-neovim-rpc'
 endif
 
+Plug 'empathicqubit/vim-document-currentpath'
+
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
@@ -31,6 +33,8 @@ Plug 'ofavre/vimcat', { 'do': 'make -j$(nproc)' }
 call plug#end()
 
 let g:javascript_plugin_jsdoc = 1
+
+let g:airline_section_b = '%{g:document_currentpath_path}'
 
 let g:syntastic_terraform_tffilter_plan = 1
 
