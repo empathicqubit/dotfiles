@@ -1,0 +1,4 @@
+#! /bin/bash
+setfacl -R -d -m group::--- "$1"
+setfacl -R -d -m other::--- "$1"
+chmod -R go-rwx "$1"
