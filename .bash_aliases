@@ -28,5 +28,6 @@ fi
 alias 'xo=xdg-open'
 alias 'rlbashrc=source $HOME/.bashrc'
 alias 'hub=git-hub'
+alias 'cdg=cd "$(git rev-parse --show-toplevel)"'
 
 export EDITOR='vim'
