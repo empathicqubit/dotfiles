@@ -13,6 +13,7 @@ endif
 
 Plug 'empathicqubit/vim-document-currentpath', { 'do': 'yarn install' }
 
+Plug 'tpope/vim-fugitive'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
