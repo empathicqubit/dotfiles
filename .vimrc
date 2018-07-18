@@ -11,7 +11,7 @@ else
     Plug 'roxma/vim-hug-neovim-rpc'
 endif
 
-Plug 'empathicqubit/vim-document-currentpath', { 'do': 'yarn install' }
+"Plug 'empathicqubit/vim-document-currentpath', { 'do': 'yarn install' }
 
 Plug 'tpope/vim-fugitive'
 Plug 'vim-airline/vim-airline'
@@ -35,6 +35,8 @@ Plug 'ofavre/vimcat', { 'do': 'make -j$(nproc)' }
 call plug#end()
 
 let g:javascript_plugin_jsdoc = 1
+
+let g:document_currentpath_path = ''
 
 let g:airline_section_b = '%{g:document_currentpath_path}'
 
