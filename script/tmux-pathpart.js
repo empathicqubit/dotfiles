@@ -8,6 +8,12 @@ const cexecFile = (...args) => execFile(...args)
     .catch(e => ['', '', e])
     .spread((stdout, stderr, error) => ({stdout, stderr, error}));
 
+const sh = require('mvdan-sh');
+
+const syntax = sh.syntax;
+
+const parser = syntax.NewParser();
+
 const cexecGit = (cwd, ...args) => execFile('git', args, {
     cwd: cwd,
 }).catch((e) => ['', '', e]);
@@ -85,15 +91,15 @@ const shortenPwd = (pwd) => {
 const getCmd = (cmd) => {
     return q.resolve()
         .then(() => {
-            let parts = (cmd || '').split(/\s+/g).filter(x => x != 'sudo');
+            const tree = parser.Parse(cmd, null);
 
-            let exe = parts[0];
+            const exe = tree.StmtList.Stmts[0].Cmd.Args[0].Parts.map(x => x.Value).join('');
 
-            if(exe == 'bash') {
+            if(/^bash/gi.test(exe)) {
                 return '\u{1f41a}';
             }
 
-            if(exe == 'vim') {
+            if(/^vim/gi.test(exe)) {
                 return '\u{270f}\u{fe0f}';
             }
 
