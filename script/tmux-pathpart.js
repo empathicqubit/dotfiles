@@ -111,6 +111,17 @@ const getCmd = (cmd) => {
         });
 };
 
+const compressPathName = (name) => {
+    let match;
+    const pathPieces = [];
+    let re = /([a-z0-9]?(^|[\W\-_]+)[a-z0-9]|.$)/ig;
+    while(match = re.exec(name)) {
+        pathPieces.push(match[0]);
+    }
+
+    return pathPieces.join('');
+};
+
 // Wrap the entire program in a promise in case it barfs. We don't want to dump garbage on the terminal.
 module.exports = (params) => {
     return q.resolve()
@@ -127,14 +138,8 @@ module.exports = (params) => {
         .spread((gitFolderName, shortPwd, cmd) => {
             let pieces = [];
             if(gitFolderName) {
-                if( (shortPwd && shortPwd != gitFolderName) || cmd ) {
-                    let match;
-                    const gitPieces = [];
-                    let re = /([a-z0-9]?(^|[\W\-_]+)[a-z0-9]|.$)/ig;
-                    while(match = re.exec(gitFolderName)) {
-                        gitPieces.push(match[0]);
-                    }
-                    pieces.push(gitPieces.join(''));
+                if( gitFolderName.length > 20 || (shortPwd && shortPwd != gitFolderName) || cmd ) {
+                    pieces.push(compressPathName(gitFolderName));
                 }
                 else {
                     pieces.push(gitFolderName);
