@@ -96,7 +96,7 @@ const getCmd = (cmd) => {
             const exe = tree.StmtList.Stmts[0].Cmd.Args[0].Parts.map(x => x.Value).join('');
 
             if(/^bash/gi.test(exe)) {
-                return '\u{1f41a}';
+                return null;
             }
 
             if(/^vim/gi.test(exe)) {
@@ -126,23 +126,28 @@ module.exports = (params) => {
         })
         .spread((gitFolderName, shortPwd, cmd) => {
             let pieces = [];
-            if(shortPwd && shortPwd != gitFolderName) {
-                if(gitFolderName) {
+            if(gitFolderName) {
+                if( (shortPwd && shortPwd != gitFolderName) || cmd ) {
                     let match;
                     const gitPieces = [];
-                    let re = /(^|[\W\-]+)[a-z]/ig;
+                    let re = /([a-z0-9]?(^|[\W\-_]+)[a-z0-9]|.$)/ig;
                     while(match = re.exec(gitFolderName)) {
                         gitPieces.push(match[0]);
                     }
                     pieces.push(gitPieces.join(''));
                 }
+                else {
+                    pieces.push(gitFolderName);
+                } 
+            }
+
+            if(shortPwd != gitFolderName) {
                 pieces.push(shortPwd);
             }
-            else if(gitFolderName) {
-                pieces.push(gitFolderName);
-            } 
 
-            return pieces.join(' - ') + ' (' + cmd + ')';
+            const finalCmd = cmd ? ' #[bg=magenta]#[fg=black]' + cmd + '#[bg=default]#[fg=default]' : '';
+
+            return pieces.filter(x => x).join(' - ') + finalCmd;
         })
         .catch(e => {
             return 'ERROR';
