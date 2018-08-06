@@ -3,8 +3,10 @@
     email=empathicqubit@allons.me
 [core]
     autoclrf=input
+[mergetool.fugitive]
+    cmd=vim -f -c Gdiff "$MERGED"
 [merge]
-    tool=vimdiff
+    tool=fugitive
 [branch]
     autosetuprebase=always
 [bash]
