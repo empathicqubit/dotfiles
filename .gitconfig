@@ -4,7 +4,7 @@
 [core]
     autoclrf=input
 [mergetool.fugitive]
-    cmd=vim -f -c Gdiff "$MERGED"
+    cmd=vim -f -c Gvdiff "$MERGED"
 [merge]
     tool=fugitive
 [branch]
