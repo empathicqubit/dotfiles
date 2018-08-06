@@ -3,6 +3,7 @@
     email=empathicqubit@allons.me
 [core]
     autoclrf=input
+    trustctime=false
 [mergetool.fugitive]
     cmd=vim -f -c Gvdiff "$MERGED"
 [merge]
