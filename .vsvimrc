@@ -1,0 +1,3 @@
+inoremap jj <ESC>
+inoremap kk <ESC>
+inoremap hh <ESC>
