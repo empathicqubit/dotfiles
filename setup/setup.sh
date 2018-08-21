@@ -79,7 +79,6 @@ esac
     yarn install
 )
 
-"$CURDIR/../.vim/plugged/fzf/install" --bin
 pip3 install --upgrade neovim 
 pip install --upgrade neovim
 vim '+PlugInstall' '+qall!'

@@ -13,3 +13,4 @@ fi
 # ------------
 source "$HOME/.vim/plugged/fzf/shell/key-bindings.bash"
 
+bind -x '"\C-p":"fzf-file-widget"'
