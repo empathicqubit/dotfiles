@@ -6,6 +6,9 @@
     trustctime=false
 [mergetool.fugitive]
     cmd=vim -f -c Gvdiff "$MERGED"
+[mergetool.kdiff3]
+    path="C:/Program Files/KDiff3/kdiff3.exe"
+    trustExitCode=false
 [merge]
     tool=fugitive
 [branch]
