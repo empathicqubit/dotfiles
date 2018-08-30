@@ -52,6 +52,8 @@ setuplinks "$CURDIR/../.config/xfce4" "$HOME/.config/xfce4"
 
 setuplink "$CURDIR/../.vim" "$HOME/vimfiles"
 
+mkdir "$HOME/.bashrc.local.d"
+
 case "$OSTYPE" in
     linux-gnu)
         sudo npm install -g tern
