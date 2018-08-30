@@ -41,6 +41,9 @@ setuplinks () {
 CURDIR="$(dirname $(readlink -f "$0"))"
 CACHEDIR="$HOME/.cache/dotfiles"
 
+which pacman 2>&1 >/dev/null && ((im_pacman=1)) || ((im_pacman=0))
+which apt 2>&1 >/dev/null && ((im_supercow=1)) || ((im_supercow=0))
+
 mkdir -p "$CACHEDIR"
 
 # This will probably get annoying...
@@ -57,21 +60,27 @@ mkdir "$HOME/.bashrc.local.d"
 case "$OSTYPE" in
     linux-gnu)
         sudo npm install -g tern
-	sudo apt install python3-pip fonts-powerline direnv vim-nox
 
-        curl -L https://releases.hyper.is/download/deb > "$CACHEDIR/hyper.deb"
-	sudo dpkg -i "$CACHEDIR/hyper.deb"
-	sudo apt install -f
+        if ((im_pacman)) ; then
+            sudo pacman -S python-pip python2-pip vim yarn
+            yay direnv
+        elif ((im_supercow)) ; then
+            sudo apt install python3-pip fonts-powerline direnv vim-nox
 
-        curl -L http://http.us.debian.org/debian/pool/main/f/fonts-noto-color-emoji/fonts-noto-color-emoji_0~20180102-1_all.deb > "$CACHEDIR/noto-emoji.deb"
-        sudo dpkg -i "$CACHEDIR/noto-emoji.deb"
-        sudo apt install -f
+            curl -L https://releases.hyper.is/download/deb > "$CACHEDIR/hyper.deb"
+            sudo dpkg -i "$CACHEDIR/hyper.deb"
+            sudo apt install -f
+
+            curl -L http://http.us.debian.org/debian/pool/main/f/fonts-noto-color-emoji/fonts-noto-color-emoji_0~20180102-1_all.deb > "$CACHEDIR/noto-emoji.deb"
+            sudo dpkg -i "$CACHEDIR/noto-emoji.deb"
+            sudo apt install -f
+        fi
     ;;
     *)
         # Windows stuff. Not clear all the environment types that are possible here, so assuming Windows if we don't know.
 	# Also, screw darwin.
         # Git Bash: 'msys'
-	choco upgrade python nodejs
+	choco upgrade python nodejs yarn
         npm install -g tern
     ;;
 esac
@@ -81,7 +90,6 @@ esac
     yarn install
 )
 
-"$CURDIR/../.vim/plugged/fzf/install" --bin
-pip3 install --upgrade neovim 
-pip install --upgrade neovim
+pip3 install --upgrade --user neovim 
+pip install --upgrade --user neovim
 vim '+PlugInstall' '+qall!'
