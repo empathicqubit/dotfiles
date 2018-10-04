@@ -62,10 +62,10 @@ case "$OSTYPE" in
         sudo npm install -g tern
 
         if ((im_pacman)) ; then
-            sudo pacman -S python-pip python2-pip vim yarn
+            sudo pacman -S python-pip python2-pip vim yarn ruby
             yay direnv
         elif ((im_supercow)) ; then
-            sudo apt install python3-pip fonts-powerline direnv vim-nox
+            sudo apt install python3-pip fonts-powerline direnv vim-nox ruby
 
             curl -L https://releases.hyper.is/download/deb > "$CACHEDIR/hyper.deb"
             sudo dpkg -i "$CACHEDIR/hyper.deb"
