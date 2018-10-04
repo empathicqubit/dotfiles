@@ -14,7 +14,7 @@ if [ -d "$HOME/.bashrc.d" ] ; then
         . "$FILE"
 
     # It's a bit stupid that I need to do this.
-    done < <( find "$HOME/.bashrc.d/." -type f -executable | sort )
+    done < <( find "$HOME/.bashrc.d/." -maxdepth 1 -type f -executable | sort )
 fi
 
 # For secrets and commands we don't want to commit to git.

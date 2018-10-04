@@ -85,10 +85,18 @@ case "$OSTYPE" in
     ;;
 esac
 
-(
-    cd "$CURDIR/../script"
-    yarn install
-)
+# Find package.jsons and reinstall all node packages
+find "$CURDIR" -iname package.json | while read FILENAME ; do
+    PACKAGEDIR="$(dirname "$FILENAME")"
+    if [[ -e "$PACKAGEDIR/node_modules" ]] ; then
+        continue
+    fi
+
+    (
+        cd "$PACKAGEDIR"
+        yarn install
+    )
+done
 
 pip3 install --upgrade --user neovim 
 pip install --upgrade --user neovim
