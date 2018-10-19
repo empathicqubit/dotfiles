@@ -3,6 +3,22 @@ function getmac {
     echo 00:$(head -c5 /dev/urandom | hexdump -e '"%02x"' | sed -r 's/(..)/\1:/g;s/:$//;')
 }
 
+function find {
+    if which gfind 2>&1 >/dev/null ; then
+        gfind "$@"
+    else
+        find "$@"
+    fi
+}
+
+function readlink {
+    if which greadlink 2>&1 >/dev/null ; then
+        greadlink "$@"
+    else
+        readlink "$@"
+    fi
+}
+
 __bashrc_debug_order=${__bashrc_debug_order:-0}
 
 # This is here so we don't have to modify the distro provided bashrc.
