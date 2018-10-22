@@ -81,6 +81,8 @@ set shiftwidth=4 expandtab tabstop=8 softtabstop=4 smartindent
 
 if has('win32')
     set bs=2
+else
+    set backspace=indent,eol,start
 endif
 
 set showcmd hlsearch
