@@ -44,7 +44,8 @@ PROMPTUTIL_PORT=
 PROMPTUTIL_PID=
 
 function __precmd_start_promptutil {
-    if [ -z "$PROMPTUTIL_PID" ] || [ ! -d "/proc/$PROMPTUTIL_PID" ] ; then
+    kill -0 "$PROMPTUTIL_PID" 2>&1 >/dev/null
+    if (($?)) ; then
         __start_promptutil
     fi 
 }
