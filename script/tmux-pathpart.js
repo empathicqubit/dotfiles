@@ -155,6 +155,7 @@ module.exports = (params) => {
             return pieces.filter(x => x).join(' - ') + finalCmd;
         })
         .catch(e => {
-            return 'ERROR';
+            let match = new RegExp('^.*' + __filename + '.*$', 'gi').exec(error.stack)
+            return 'ERROR ' + match[0];
         });
 };

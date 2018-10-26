@@ -659,5 +659,8 @@ const poshGitPs1UpstreamDivergence = (pwd) => {
 
 module.exports = (params) => {
     return poshGitEcho(params)
-        .catch(() => '[ERROR]');
+        .catch(() => {
+            let match = new RegExp('^.*' + __filename + '.*$', 'gi').exec(error.stack)
+            return `[ERROR ${match[0]}]`
+        });
 }

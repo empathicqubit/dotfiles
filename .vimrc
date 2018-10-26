@@ -126,7 +126,6 @@ map <Leader>sp :set paste!<CR>
 noremap <C-p> :GFiles<CR>
 
 imap jj <ESC>
-imap kk <ESC>
 imap hh <ESC>
 
 inoremap <expr><tab> pumvisible() ? "\<C-n>" : "\<TAB>"
