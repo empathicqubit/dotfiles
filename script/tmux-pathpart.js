@@ -93,7 +93,12 @@ const getCmd = (cmd) => {
         .then(() => {
             const tree = parser.Parse(cmd, null);
 
-            const exe = tree.StmtList.Stmts[0].Cmd.Args[0].Parts.map(x => x.Value).join('');
+            let stmt = tree.StmtList.Stmts[0];
+            while(stmt.Cmd.$type.split('.*')[1] == 'BinaryCmd') {
+                stmt = stmt.Cmd.X
+            }
+
+            const exe = stmt.Cmd.Args[0].Parts.map(x => x.Value).join('');
 
             if(/^bash/gi.test(exe)) {
                 return null;
@@ -128,7 +133,6 @@ module.exports = (params) => {
         .then(() => {
             let pwd = params.pwd;
 
-            q.which
             return q.all([
                 gitFolderName(pwd),
                 shortenPwd(pwd),
@@ -155,7 +159,6 @@ module.exports = (params) => {
             return pieces.filter(x => x).join(' - ') + finalCmd;
         })
         .catch(e => {
-            let match = new RegExp('^.*' + __filename + '.*$', 'gi').exec(error.stack)
-            return 'ERROR ' + match[0];
+            return 'ERROR';
         });
 };
