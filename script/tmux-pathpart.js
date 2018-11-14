@@ -88,17 +88,38 @@ const shortenPwd = (pwd) => {
         });
 };
 
-const getCmd = (cmd) => {
+//        pstree -w $$ | grep -o '^[[:space:][:punct:]]\+[[:space:]][[:digit:]]\+[[:space:]]' | grep -o '[[:digit:]]\+' | xargs -I'{}' ps -p {} -o lstart=
+
+const getCmd = (cmd, pid) => {
     return q.resolve()
         .then(() => {
-            const tree = parser.Parse(cmd, null);
+            if(pid) {
+                return q.resolve()
+                    .then(() => cexecFile('pstree', ['-w', pid]))
+                    .then((res) => {
+                        let rex = /^\s*\W+\s+([0-9]+)\s+/gim ;
+                        let pids = []; 
+                        while(m = rex.exec(res.stdout)) pids.push(m[1]);
 
-            let stmt = tree.StmtList.Stmts[0];
-            while(stmt.Cmd.$type.split('.*')[1] == 'BinaryCmd') {
-                stmt = stmt.Cmd.X
+                        return q.all(cexecFile('ps', ['-p', pids.join(','), '-o', 'lstart=', '-o', 'comm=']))
+                    })
+                    .then(res => res.stdout.split(/\s*[\r\n]+\s*/g).sort().pop().split(/\s+/g).pop());
             }
+            else {
+                const tree = parser.Parse(cmd, null);
 
-            const exe = stmt.Cmd.Args[0].Parts.map(x => x.Value).join('');
+                let stmt = tree.StmtList.Stmts[0];
+                while(stmt.Cmd.$type.split('.*')[1] == 'BinaryCmd') {
+                    stmt = stmt.Cmd.X
+                }
+
+                const exe = stmt.Cmd.Args[0].Parts.map(x => x.Value).join('');
+
+                return exe;
+            }
+        })
+        .then((exe) => {
+            exe = path.basename(exe);
 
             if(/^bash/gi.test(exe)) {
                 return null;
@@ -136,7 +157,7 @@ module.exports = (params) => {
             return q.all([
                 gitFolderName(pwd),
                 shortenPwd(pwd),
-                getCmd(params.cmd),
+                getCmd(params.cmd, params.pid),
             ]);
         })
         .spread((gitFolderName, shortPwd, cmd) => {
@@ -159,6 +180,7 @@ module.exports = (params) => {
             return pieces.filter(x => x).join(' - ') + finalCmd;
         })
         .catch(e => {
+            console.error(e);
             return 'ERROR';
         });
 };

@@ -12,6 +12,14 @@ case "$OSTYPE" in
     *) IS_WINDOWS=$((1)) ;;
 esac
 
+USE_NPM=$((1))
+while [ -n "$1" ] ; do
+    case "$1" in
+        --skip-npm) USE_NPM=$((0))
+    esac
+    shift
+done
+
 setuplink () {
     local SRCPATH="$1"
     local DEST="$2"
@@ -75,15 +83,15 @@ mkdir "$HOME/.bashrc.local.d"
 if ((IS_WINDOWS)) ; then
     # Git Bash: 'msys'
     choco upgrade python nodejs yarn
-    npm install -g tern
+    ((USE_NPM)) && npm install -g tern
 else
-    sudo npm install -g tern
-
     if ((IS_PACMAN)) ; then
-        sudo pacman -S python-pip python2-pip vim yarn ruby
+        # pstree untested
+        sudo pacman -S python-pip python2-pip vim yarn ruby pstree
         yay direnv
     elif ((IS_SUPERCOW)) ; then
-        sudo apt install python3-pip fonts-powerline direnv vim-nox ruby
+        # pstree untested
+        sudo apt install python3-pip fonts-powerline direnv vim-nox ruby pstree
 
         curl -L https://releases.hyper.is/download/deb > "$CACHEDIR/hyper.deb"
         sudo dpkg -i "$CACHEDIR/hyper.deb"
@@ -93,9 +101,10 @@ else
         sudo dpkg -i "$CACHEDIR/noto-emoji.deb"
         sudo apt install -f
     elif ((IS_BREW)) ; then
-        brew install python python@2 direnv ruby vim
+        brew install python python@2 direnv ruby vim nodejs pstree
     fi
 
+    ((USE_NPM)) && sudo npm install -g tern
 fi
 
 # Find package.jsons and reinstall all node packages
@@ -111,6 +120,13 @@ find "$CURDIR" -iname package.json | while read FILENAME ; do
     )
 done
 
+PLUGINS_FILE="$HOME/.sbt/1.0/plugins/plugins.sbt"
+mkdir -p "$(dirname "$PLUGINS_FILE")"
+
+if ! grep '"sbt-ensime"' ; then
+    echo 'addSbtPlugin("org.ensime" % "sbt-ensime" % "2.5.1")' >> "$PLUGINS_FILE"
+fi
+
 pip3 install --upgrade --user neovim 
-pip install --upgrade --user neovim
+pip install --upgrade --user neovim websocket-client sexpdata
 vim '+PlugInstall' '+qall!'

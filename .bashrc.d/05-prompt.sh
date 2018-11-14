@@ -31,11 +31,35 @@ function seconds_since_epoch {
     date '+%s'
 }
 
+__update_title_loop_pid=
+
+function __kill_title_loop {
+    if [ -n "$__update_title_loop_pid" ] ; then
+        kill $__update_title_loop_pid 2>&1 >/dev/null
+    fi
+}
+
+function __update_title_loop {
+    __kill_title_loop
+
+    (
+        sleep 5
+        local title
+        IFS= read -r title < <(promptutil tmux-pathpart "pwd=$PWD" "cmd=bash" "pid=$$")
+        tmux_set_title "$title"
+        __update_title_loop_pid=
+        __update_title_loop
+    ) &
+    __update_title_loop_pid=$!
+}
+
 function __preexec_tmux_title { 
     local this_command="$1"
     local title
     IFS= read -r title < <(promptutil tmux-pathpart "pwd=$PWD" "cmd=$this_command")
     tmux_set_title "$title"
+
+    __update_title_loop
 }
 
 add_preexec_function __preexec_tmux_title
@@ -59,6 +83,8 @@ function __precmd_ran_once {
 add_precmd_function __precmd_ran_once
 
 function __precmd_tmux_title {
+    __kill_title_loop
+
     local title
     IFS= read -r title < <(promptutil tmux-pathpart "pwd=$PWD" "cmd=bash")
     tmux_set_title "$title"
