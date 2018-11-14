@@ -67,6 +67,13 @@ IS_PACMAN=$((!$?))
 which apt 2>&1 >/dev/null
 IS_SUPERCOW=$((!IS_BREW && !$?))
 
+PLUGINS_FILE="$HOME/.sbt/1.0/plugins/plugins.sbt"
+mkdir -p "$(dirname "$PLUGINS_FILE")"
+
+if ! grep '"sbt-ensime"' "$PLUGINS_FILE" ; then
+    echo 'addSbtPlugin("org.ensime" % "sbt-ensime" % "2.5.1")' | tee -a "$PLUGINS_FILE"
+fi
+
 mkdir -p "$CACHEDIR"
 
 # This will probably get annoying...
@@ -119,13 +126,6 @@ find "$CURDIR" -iname package.json | while read FILENAME ; do
         yarn install
     )
 done
-
-PLUGINS_FILE="$HOME/.sbt/1.0/plugins/plugins.sbt"
-mkdir -p "$(dirname "$PLUGINS_FILE")"
-
-if ! grep '"sbt-ensime"' ; then
-    echo 'addSbtPlugin("org.ensime" % "sbt-ensime" % "2.5.1")' >> "$PLUGINS_FILE"
-fi
 
 pip3 install --upgrade --user neovim 
 pip install --upgrade --user neovim websocket-client sexpdata
