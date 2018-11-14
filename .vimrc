@@ -25,6 +25,8 @@ Plug 'drewtempelmeyer/palenight.vim'
 Plug 'isRuslan/vim-es6'
 Plug 'junegunn/rainbow_parentheses.vim'
 Plug 'mzlogin/vim-smali'
+Plug 'ensime/ensime-vim'
+Plug 'derekwyatt/vim-scala'
 
 " NOT ACTUALLY VIM PLUGINS
 " ========================
@@ -133,3 +135,5 @@ inoremap <expr><s-tab> pumvisible() ? "\<C-p>" : "\<TAB>"
 
 autocmd BufRead * RainbowParentheses
 
+autocmd BufWritePost *.scala silent :EnTypeCheck
+nnoremap <Leader>t :EnType<CR>
