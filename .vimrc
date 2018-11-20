@@ -27,6 +27,7 @@ Plug 'junegunn/rainbow_parentheses.vim'
 Plug 'mzlogin/vim-smali'
 Plug 'ensime/ensime-vim'
 Plug 'derekwyatt/vim-scala'
+Plug 'pearofducks/ansible-vim'
 
 " NOT ACTUALLY VIM PLUGINS
 " ========================
