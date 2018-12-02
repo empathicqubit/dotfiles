@@ -15,7 +15,7 @@ function readlink {
     if which greadlink 2>&1 >/dev/null ; then
         greadlink "$@"
     else
-        readlink "$@"
+        command readlink "$@"
     fi
 }
 
