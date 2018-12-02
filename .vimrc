@@ -49,6 +49,10 @@ let g:syntastic_terraform_tffilter_plan = 1
 
 let g:rainbow#pairs = [['(', ')'], ['<', '>'], ['{', '}'], ['[', ']']]
 
+let g:LanguageClient_serverCommands = { 'haskell': ['hie-wrapper'] }
+
+let g:LanguageClient_rootMarkers = ['*.cabal', 'stack.yaml']
+
 function! _GitDiffWindowSetup() abort
     setlocal buftype=nofile 
     setlocal bufhidden=hide 
