@@ -7,7 +7,7 @@ function find {
     if which gfind 2>&1 >/dev/null ; then
         gfind "$@"
     else
-        find "$@"
+        command find "$@"
     fi
 }
 
