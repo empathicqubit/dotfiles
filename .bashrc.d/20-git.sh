@@ -25,7 +25,7 @@ function git {
         if [ "$1" == "pull" ] ; then
             IFS= read -r HASHES < <(command git pull | tee /dev/stdout | grep -i -o -E '[0-9a-f]{7}\.\.[0-9a-f]{7}')
 
-            PULLSTATUS=$PIPESTATUS[0]
+            PULLSTATUS="${PIPESTATUS[0]}"
 
             if ((PULLSTATUS)) ; then
                 return $PULLSTATUS
