@@ -5,23 +5,6 @@ function git {
         git log @{upstream}..
     fi
 
-    local HASHES=
-    local PULLWORKED=
-    if [ "$1" == "pull" ] ; then
-        IFS= read -r HASHES < <(command git pull | tee /dev/stdout | grep -i -o -E '[0-9a-f]{7}\.\.[0-9a-f]{7}')
-
-        PULLSTATUS=$PIPESTATUS[0]
-
-        if ((PULLSTATUS)) ; then
-            echo "Pull failed!"
-            return $PULLSTATUS
-        fi
-
-        echo "Pull succeeded"
-
-        git diff "$HASHES"
-    fi
-
     local CAPTURE=
 
     # This causes git to behave differently, so we only do it when we need it.
@@ -37,7 +20,21 @@ function git {
         rm "$GITOUT"
         rm "$GITERR"
     else
-        command git "$@"
+        local HASHES=
+        local PULLSTATUS=
+        if [ "$1" == "pull" ] ; then
+            IFS= read -r HASHES < <(command git pull | tee /dev/stdout | grep -i -o -E '[0-9a-f]{7}\.\.[0-9a-f]{7}')
+
+            PULLSTATUS=$PIPESTATUS[0]
+
+            if ((PULLSTATUS)) ; then
+                return $PULLSTATUS
+            fi
+
+            git diff "$HASHES"
+        else
+            command git "$@"
+        fi
     fi
 }
 
