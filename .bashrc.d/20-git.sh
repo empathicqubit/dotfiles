@@ -24,9 +24,9 @@ function git {
         local PULLSTATUS=
         if [ "$1" == "pull" ] ; then
             local SCRIPTTMP="$(mktemp)"
-            local SCRIPTCOMMAND=("script" "--return" "-c" "$*" "$SCRIPTTMP")
+            local SCRIPTCOMMAND=("script" "--return" "-c" "git $*" "$SCRIPTTMP")
             if [ "$(type -t script)" == "file" ] ; then
-                SCRIPTCOMMAND=("script" "-q" "$SCRIPTTMP" "$@")
+                SCRIPTCOMMAND=("script" "-q" "$SCRIPTTMP" "git" "$@")
             fi
 
             "${SCRIPTCOMMAND[@]}"
