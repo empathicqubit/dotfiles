@@ -1,6 +1,7 @@
 [user]
     name=empathicqubit
     email=empathicqubit@allons.me
+
 [core]
     autoclrf=input
     trustctime=false
