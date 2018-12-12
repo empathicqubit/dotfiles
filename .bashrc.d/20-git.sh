@@ -32,13 +32,9 @@ function git {
 
             IFS= read -r HASHES < <("${SCRIPTCOMMAND[@]}" | tee /dev/stdout | grep -i -o -E '[0-9a-f]{7}\.\.[0-9a-f]{7}')
 
-            PULLSTATUS="${PIPESTATUS[0]}"
-
-            if ((PULLSTATUS)) ; then
-                return $PULLSTATUS
+            if [! -z "$HASHES" ] ; then
+                git diff "$HASHES"
             fi
-
-            git diff "$HASHES"
         else
             command git "$@"
         fi
