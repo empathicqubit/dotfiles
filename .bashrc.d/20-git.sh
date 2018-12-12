@@ -32,6 +32,8 @@ function git {
 
             IFS= read -r HASHES < <("${SCRIPTCOMMAND[@]}" | tee /dev/stdout | grep -i -o -E '[0-9a-f]{7}\.\.[0-9a-f]{7}')
 
+            echo "HASHES $HASHES"
+
             if [ ! -z "$HASHES" ] ; then
                 git diff "$HASHES"
             fi
