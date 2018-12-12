@@ -108,7 +108,7 @@ else
         sudo dpkg -i "$CACHEDIR/noto-emoji.deb"
         sudo apt install -f
     elif ((IS_BREW)) ; then
-        brew install python python@2 direnv ruby vim nodejs pstree
+        brew install python python@2 direnv ruby vim nodejs pstree bash-completion
     fi
 
     ((USE_NPM)) && sudo npm install -g tern
