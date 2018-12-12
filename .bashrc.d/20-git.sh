@@ -23,14 +23,17 @@ function git {
         local HASHES=
         local PULLSTATUS=
         if [ "$1" == "pull" ] ; then
-            local SCRIPTCOMMAND=("script" "--return" "-c" "git pull" "/dev/null")
+            local SCRIPTTMP="$(mktemp)"
+            local SCRIPTCOMMAND=("script" "--return" "-c" "$*" "$SCRIPTTMP")
             if [ "$(type -t script)" == "file" ] ; then
-                SCRIPTCOMMAND=("script" "-q" "/dev/null" "git" "pull")
+                SCRIPTCOMMAND=("script" "-q" "$SCRIPTTMP" "$@")
             fi
 
             "${SCRIPTCOMMAND[@]}"
 
-            IFS= read -r HASHES < <("${SCRIPTCOMMAND[@]}" | tee /dev/stdout | grep -i -o -E '[0-9a-f]{7}\.\.[0-9a-f]{7}')
+            IFS= read -r HASHES < <(grep -i -o -E '[0-9a-f]{7}\.\.[0-9a-f]{7}' "$SCRIPTTMP")
+
+            rm "$SCRIPTTMP"
 
             echo "HASHES $HASHES"
 
