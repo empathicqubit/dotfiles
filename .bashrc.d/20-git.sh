@@ -31,11 +31,9 @@ function git {
 
             "${SCRIPTCOMMAND[@]}"
 
-            IFS= read -r HASHES < <(grep -i -o -E '[0-9a-f]{7}\.\.[0-9a-f]{7}' "$SCRIPTTMP")
+            IFS= read -r HASHES < <(grep -i -o -E '[0-9a-f]+\.\.[0-9a-f]+' "$SCRIPTTMP")
 
             rm "$SCRIPTTMP"
-
-            echo "HASHES $HASHES"
 
             if [ ! -z "$HASHES" ] ; then
                 git diff "$HASHES"
