@@ -101,8 +101,6 @@ set showcmd hlsearch
 
 command W :%!sudo tee %
 
-set pastetoggle=<F2>
-
 set hidden
 
 if has('win32')
@@ -134,6 +132,7 @@ map <Leader>ev :e $HOME/.vimrc<CR>
 map <Leader>rv :source $HOME/.vimrc<CR>
 map <Leader>pi :PlugInstall<CR>
 map <Leader>sp :set paste!<CR>
+map <Leader>ag :Ag<CR>
 
 noremap <C-p> :GFiles<CR>
 
