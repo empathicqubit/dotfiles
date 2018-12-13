@@ -94,11 +94,12 @@ if ((IS_WINDOWS)) ; then
 else
     if ((IS_PACMAN)) ; then
         # pstree untested
-        sudo pacman -S python-pip python2-pip vim yarn ruby pstree
+        # silversearcher-ag untested
+        sudo pacman -S python-pip python2-pip vim yarn ruby pstree silversearcher-ag
         yay direnv
     elif ((IS_SUPERCOW)) ; then
         # pstree untested
-        sudo apt install python3-pip fonts-powerline direnv vim-nox ruby pstree
+        sudo apt install python3-pip fonts-powerline direnv vim-nox ruby pstree silversearcher-ag
 
         curl -L https://releases.hyper.is/download/deb > "$CACHEDIR/hyper.deb"
         sudo dpkg -i "$CACHEDIR/hyper.deb"
@@ -108,7 +109,7 @@ else
         sudo dpkg -i "$CACHEDIR/noto-emoji.deb"
         sudo apt install -f
     elif ((IS_BREW)) ; then
-        brew install python python@2 direnv ruby vim nodejs pstree bash-completion
+        brew install python python@2 direnv ruby vim nodejs pstree bash-completion ag
     fi
 
     ((USE_NPM)) && sudo npm install -g tern
