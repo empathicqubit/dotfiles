@@ -1,4 +1,9 @@
 #! /bin/bash
+# This is just a bootstrap file for the .d folder. Don't put anything meaninguful here.
+function rlbashrc {
+    source "$HOME/.bashrc"
+}
+
 function getmac {
     echo 00:$(head -c5 /dev/urandom | hexdump -e '"%02x"' | sed -r 's/(..)/\1:/g;s/:$//;')
 }
@@ -40,11 +45,6 @@ if [ -d "$HOME/.bashrc.local.d" ] ; then
 
     done < <( find "$HOME/.bashrc.local.d/." -type f -executable | sort )
 fi
-
-alias 'xo=xdg-open'
-alias 'rlbashrc=source $HOME/.bashrc'
-alias 'hub=git-hub'
-alias 'cdg=cd "$(git rev-parse --show-toplevel)"'
 
 export EDITOR='vim'
 
