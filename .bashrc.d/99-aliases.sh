@@ -1,3 +1,9 @@
 #! /bin/bash
 # Random aliases without a home
-alias 'xo=xdg-open'
+function xo {
+    if which open 2>&1 /dev/null ; then
+        open "$@"
+    else
+        xdg-open "$@"
+    fi
+}
