@@ -31,3 +31,5 @@ Syntax: ${FUNCNAME[0]} <PROFILE NUMBER>
 "
     fi
 }
+
+alias ...='cd ..'
