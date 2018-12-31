@@ -15,6 +15,7 @@ endif
 
 "Plug 'empathicqubit/vim-document-currentpath', { 'do': 'yarn install' }
 
+Plug 'mhartington/nvim-typescript', {'do': 'npm install -g neovim && ./install.sh'}
 Plug 'tpope/vim-fugitive'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -131,7 +132,7 @@ let mapleader=","
 map <Leader>ev :e $HOME/.vimrc<CR>
 map <Leader>rv :source $HOME/.vimrc<CR>
 map <Leader>pi :PlugInstall<CR>
-map <Leader>sp :set paste!<CR>
+map <Leader>pt :set paste!<CR>
 map <Leader>ag :Ag<CR>
 
 noremap <C-p> :GFiles<CR>
