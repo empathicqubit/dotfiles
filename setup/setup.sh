@@ -91,17 +91,17 @@ mkdir "$HOME/.bashrc.local.d"
 
 if ((IS_WINDOWS)) ; then
     # Git Bash: 'msys'
-    choco upgrade python nodejs yarn
+    choco upgrade python nodejs yarn neovim
     ((USE_NPM)) && npm install -g tern
 else
     if ((IS_PACMAN)) ; then
         # pstree untested
         # silversearcher-ag untested
-        sudo pacman -S python-pip python2-pip vim yarn ruby pstree silversearcher-ag
+        sudo pacman -S python-pip python2-pip vim yarn ruby pstree silversearcher-ag neovim
         yay direnv
     elif ((IS_SUPERCOW)) ; then
         # pstree untested
-        sudo apt install python3-pip fonts-powerline direnv vim-nox ruby pstree silversearcher-ag
+        sudo apt install python3-pip fonts-powerline direnv vim-nox ruby pstree silversearcher-ag neovim
 
         curl -L https://releases.hyper.is/download/deb > "$CACHEDIR/hyper.deb"
         sudo dpkg -i "$CACHEDIR/hyper.deb"
@@ -111,7 +111,7 @@ else
         sudo dpkg -i "$CACHEDIR/noto-emoji.deb"
         sudo apt install -f
     elif ((IS_BREW)) ; then
-        brew install python python@2 direnv ruby vim nodejs pstree bash-completion ag
+        brew install python python@2 direnv ruby vim nodejs pstree bash-completion ag neovim
     fi
 
     ((USE_NPM)) && sudo npm install -g tern
@@ -129,6 +129,10 @@ find "$CURDIR" -iname package.json | while read FILENAME ; do
         yarn install
     )
 done
+
+# For neovim
+curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
+pyenv update
 
 pip3 install --upgrade --user neovim 
 pip install --upgrade --user neovim websocket-client sexpdata
