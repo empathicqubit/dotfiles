@@ -85,6 +85,8 @@ setuplinks "$CURDIR/../.config/xfce4" "$HOME/.config/xfce4"
 
 setuplink "$CURDIR/../.vim" "$HOME/vimfiles"
 
+setuplink "$CURDIR/../.nvim" "$HOME/.config/nvim"
+
 mkdir "$HOME/.bashrc.local.d"
 
 if ((IS_WINDOWS)) ; then
