@@ -92,7 +92,7 @@ mkdir "$HOME/.bashrc.local.d"
 if ((IS_WINDOWS)) ; then
     # Git Bash: 'msys'
     choco upgrade python nodejs yarn neovim
-    ((USE_NPM)) && npm install -g tern
+    ((USE_NPM)) && yarn install -g tern
 else
     if ((IS_PACMAN)) ; then
         # pstree untested
@@ -111,10 +111,10 @@ else
         sudo dpkg -i "$CACHEDIR/noto-emoji.deb"
         sudo apt install -f
     elif ((IS_BREW)) ; then
-        brew install python python@2 direnv ruby vim nodejs pstree bash-completion ag neovim
+        brew install python python@2 direnv ruby vim nodejs pstree bash-completion ag neovim pyenv
     fi
 
-    ((USE_NPM)) && sudo npm install -g tern
+    ((USE_NPM)) && sudo yarn global add tern
 fi
 
 # Find package.jsons and reinstall all node packages
@@ -131,9 +131,25 @@ find "$CURDIR" -iname package.json | while read FILENAME ; do
 done
 
 # For neovim
-curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
 pyenv update
+
+pyenv install 2.7.11
+pyenv install 3.4.4
+
+pyenv virtualenv 2.7.11 neovim2
+pyenv virtualenv 3.4.4 neovim3
+
+pyenv activate neovim2
+pip install neovim
+PYPATH2=$(pyenv which python)
+
+pyenv activate neovim3
+pip install neovim
+PYPATH3=$(pyenv which python)
 
 pip3 install --upgrade --user neovim 
 pip install --upgrade --user neovim websocket-client sexpdata
 vim '+PlugInstall' '+qall!'
+
+echo "$PYPATH2"
+echo "$PYPATH3"

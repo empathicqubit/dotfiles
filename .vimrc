@@ -15,6 +15,7 @@ endif
 
 "Plug 'empathicqubit/vim-document-currentpath', { 'do': 'yarn install' }
 
+Plug 'leafgarland/typescript-vim'
 Plug 'mhartington/nvim-typescript', {'do': 'npm install -g neovim && ./install.sh'}
 Plug 'tpope/vim-fugitive'
 Plug 'vim-airline/vim-airline'
