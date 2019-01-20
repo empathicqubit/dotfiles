@@ -33,3 +33,4 @@ Syntax: ${FUNCNAME[0]} <PROFILE NUMBER>
 }
 
 alias ...='cd ..'
+alias vim='nvim'

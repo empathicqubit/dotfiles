@@ -98,7 +98,12 @@ const getCmd = (cmd) => {
                 stmt = stmt.Cmd.X
             }
 
-            const exe = stmt.Cmd.Args[0].Parts.map(x => x.Value).join('');
+            const exe = _(stmt.Cmd.Args[0].Parts).map(x => x.Value).join('');
+            let firstArg;
+            try {
+                firstArg = _(stmt.Cmd.Args[1].Parts).map(x => x.Value).join('')
+            }
+            catch(e) { }
 
             if(/^bash/gi.test(exe)) {
                 return null;
@@ -106,6 +111,14 @@ const getCmd = (cmd) => {
 
             if(/^vim/gi.test(exe)) {
                 return '\u{270f}\u{fe0f}';
+            }
+
+            if(/^docker/gi.test(exe)) {
+                return `\u{1f433} ${firstArg}`;
+            }
+
+            if(/^yarn/gi.test(exe)) {
+                return '\u{1f9f6}'
             }
 
             if(exe.includes('build')) {
