@@ -18,6 +18,16 @@ function addpythonpath () {
 
 addpythonpath
 
+function addcondapath () {
+    local each
+
+    for each in "/usr/local/anaconda"*"/bin" ; do
+        export PATH="$PATH:$each"
+    done
+}
+
+addcondapath
+
 for gempath in $HOME/.gem/ruby/*/bin ; do
     export PATH="$PATH:$gempath"
 done
