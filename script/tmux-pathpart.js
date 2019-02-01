@@ -114,11 +114,11 @@ const getCmd = (cmd) => {
             }
 
             if(/^docker/gi.test(exe)) {
-                return `\u{1f433} ${firstArg}`;
+                return `\u{1f433}${firstArg}`;
             }
 
             if(/^yarn/gi.test(exe)) {
-                return '\u{1f9f6}'
+                return `\u{1f9f6}${firstArg}`;
             }
 
             if(exe.includes('build')) {
