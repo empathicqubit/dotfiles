@@ -100,8 +100,9 @@ else
         sudo pacman -S python-pip python2-pip vim yarn ruby pstree silversearcher-ag neovim
         yay direnv
     elif ((IS_SUPERCOW)) ; then
-        # pstree untested
-        sudo apt install python3-pip fonts-powerline direnv vim-nox ruby pstree silversearcher-ag neovim
+        curl -sL https://deb.nodesource.com/setup_11.x | sudo -E bash -
+
+        sudo apt install python3-pip fonts-powerline direnv vim-nox ruby silversearcher-ag neovim nodejs
 
         curl -L https://releases.hyper.is/download/deb > "$CACHEDIR/hyper.deb"
         sudo dpkg -i "$CACHEDIR/hyper.deb"
