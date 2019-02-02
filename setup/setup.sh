@@ -102,7 +102,10 @@ else
     elif ((IS_SUPERCOW)) ; then
         curl -sL https://deb.nodesource.com/setup_11.x | sudo -E bash -
 
-        sudo apt install python3-pip fonts-powerline direnv vim-nox ruby silversearcher-ag neovim nodejs
+        curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+
+        sudo apt install python3-pip fonts-powerline direnv vim-nox ruby silversearcher-ag neovim nodejs yarn
 
         curl -L https://releases.hyper.is/download/deb > "$CACHEDIR/hyper.deb"
         sudo dpkg -i "$CACHEDIR/hyper.deb"
