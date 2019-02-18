@@ -74,7 +74,7 @@ function __precmd_git_prompt {
 
     local RANDOM_CHARS=(
         # Mermaid
-        $'\U0001f9dc'
+        $'\U0001f9dc '
         # Grinning cat
         $'\U0001f63a'
     )
