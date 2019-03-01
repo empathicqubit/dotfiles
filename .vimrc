@@ -17,6 +17,7 @@ endif
 
 " Fuck this. Screws up copypasting and JSON files. Plug 'Yggdroot/indentLine'
 Plug 'leafgarland/typescript-vim'
+Plug 'tikhomirov/vim-glsl'
 Plug 'mhartington/nvim-typescript', {'do': 'npm install -g neovim && ./install.sh'}
 Plug 'tpope/vim-fugitive'
 Plug 'vim-airline/vim-airline'
