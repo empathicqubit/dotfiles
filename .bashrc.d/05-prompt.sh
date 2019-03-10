@@ -114,6 +114,12 @@ function promptutil {
     local PATHNAME="$1"
     shift
 
+    if ! which curl 2>/dev/null ; then
+        ((PROMPTUTIL_CURLMSG)) || echo 'Prompt needs curl to fully function.'
+        PROMPTUTIL_CURLMSG=1
+        return
+    fi
+
     local DATA_ARGS=()
     for i in "$@" ; do
         DATA_ARGS+=('--data-urlencode' "$1")
