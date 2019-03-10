@@ -99,7 +99,7 @@ function __start_promptutil {
         __kill_promptutil
     fi
 
-    if ! which node 2>/dev/null ; then
+    if ! which node 2>&1 >/dev/null ; then
         echo 'Please install node'
         return
     fi
@@ -110,7 +110,7 @@ function __start_promptutil {
 }
 
 function __kill_promptutil {
-    kill "$PROMPTUTIL_PID" 2>/dev/null
+    kill "$PROMPTUTIL_PID" 2>&1 >/dev/null
     PROMPTUTIL_PORT=
     PROMPTUTIL_PID=
 }
@@ -120,7 +120,7 @@ function promptutil {
     shift
 
     PROMPTUTIL_CURLMSG=0
-    if ! which curl 2>/dev/null ; then
+    if ! which curl 2>&1 >/dev/null ; then
         echo 'curl?'
         return
     fi
