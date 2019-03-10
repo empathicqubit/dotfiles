@@ -99,13 +99,18 @@ function __start_promptutil {
         __kill_promptutil
     fi
 
+    if ! which node 2>/dev/null ; then
+        echo 'Please install node'
+        return
+    fi
+
     PROMPTUTIL_PORT=$((RANDOM+1024))
     PROMPTUTIL_PORT="$PROMPTUTIL_PORT" promptutil.js &
     PROMPTUTIL_PID=$!
 }
 
 function __kill_promptutil {
-    kill "$PROMPTUTIL_PID"
+    kill "$PROMPTUTIL_PID" 2>/dev/null
     PROMPTUTIL_PORT=
     PROMPTUTIL_PID=
 }
