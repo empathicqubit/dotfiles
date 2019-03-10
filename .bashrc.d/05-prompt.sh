@@ -73,8 +73,6 @@ function __precmd_git_prompt {
     IFS= read -r GIT_PROMPT < <(promptutil git-prompt "pwd=$PWD")
 
     local RANDOM_CHARS=(
-        # Mermaid
-        $'\U0001f9dc '
         # Grinning cat
         $'\U0001f63a'
     )
