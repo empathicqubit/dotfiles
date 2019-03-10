@@ -114,9 +114,9 @@ function promptutil {
     local PATHNAME="$1"
     shift
 
+    PROMPTUTIL_CURLMSG=0
     if ! which curl 2>/dev/null ; then
-        ((PROMPTUTIL_CURLMSG)) || echo 'Prompt needs curl to fully function.'
-        PROMPTUTIL_CURLMSG=1
+        echo 'curl?'
         return
     fi
 
