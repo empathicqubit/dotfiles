@@ -5,11 +5,21 @@
   "license": "MIT",
   "dependencies": {
     "body-parser": "^1.18.2",
+    "child_pty": "^3.0.10",
     "colors": "^1.1.2",
     "express": "^4.16.2",
     "lodash": "^4.17.5",
     "mvdan-sh": "^0.1.0",
+    "node-pty": "^0.8.1",
     "openport": "^0.0.4",
     "q": "^1.5.1"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "debug:docker": "nodemon --inspect-brk -- ./docker.js --debug"
+  },
+  "devDependencies": {
+    "eslint": "^5.14.1",
+    "nodemon": "^1.18.10"
   }
 }
