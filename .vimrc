@@ -16,6 +16,7 @@ endif
 "Plug 'empathicqubit/vim-document-currentpath', { 'do': 'yarn install' }
 
 " Fuck this. Screws up copypasting and JSON files. Plug 'Yggdroot/indentLine'
+Plug 'lambdalisue/suda.vim'
 Plug 'leafgarland/typescript-vim'
 Plug 'tikhomirov/vim-glsl'
 Plug 'mhartington/nvim-typescript', {'do': 'npm install -g neovim && ./install.sh'}
@@ -103,7 +104,7 @@ endif
 
 set showcmd hlsearch
 
-command W :%!sudo tee %
+command W :w suda://%
 
 set hidden
 
