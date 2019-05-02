@@ -15,7 +15,7 @@ endif
 
 "Plug 'empathicqubit/vim-document-currentpath', { 'do': 'yarn install' }
 
-" Fuck this. Screws up copypasting and JSON files. Plug 'Yggdroot/indentLine'
+Plug 'maxbane/vim-asm_ca65'
 Plug 'lambdalisue/suda.vim'
 Plug 'leafgarland/typescript-vim'
 Plug 'tikhomirov/vim-glsl'
