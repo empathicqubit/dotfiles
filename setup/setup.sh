@@ -7,7 +7,7 @@ IS_DARWIN=$((0))
 IS_LINUX=$((0))
 IS_WINDOWS=$((0))
 case "$OSTYPE" in
-    linux-gnu) IS_LINUX=$((1)) ;;
+    linux-*) IS_LINUX=$((1)) ;;
     darwin*) IS_DARWIN=$((1)) ;;
     *) IS_WINDOWS=$((1)) ;;
 esac

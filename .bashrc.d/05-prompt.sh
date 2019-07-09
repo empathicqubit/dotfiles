@@ -73,8 +73,6 @@ function __precmd_git_prompt {
     IFS= read -r GIT_PROMPT < <(promptutil git-prompt "pwd=$PWD")
 
     local RANDOM_CHARS=(
-        # Mermaid
-        $'\U0001f9dc '
         # Grinning cat
         $'\U0001f63a'
     )
@@ -99,13 +97,18 @@ function __start_promptutil {
         __kill_promptutil
     fi
 
+    if ! which node 2>&1 >/dev/null ; then
+        echo 'Please install node'
+        return
+    fi
+
     PROMPTUTIL_PORT=$((RANDOM+1024))
     PROMPTUTIL_PORT="$PROMPTUTIL_PORT" promptutil.js &
     PROMPTUTIL_PID=$!
 }
 
 function __kill_promptutil {
-    kill "$PROMPTUTIL_PID"
+    kill "$PROMPTUTIL_PID" 2>&1 >/dev/null
     PROMPTUTIL_PORT=
     PROMPTUTIL_PID=
 }
@@ -113,6 +116,12 @@ function __kill_promptutil {
 function promptutil {
     local PATHNAME="$1"
     shift
+
+    PROMPTUTIL_CURLMSG=0
+    if ! which curl 2>&1 >/dev/null ; then
+        echo 'curl?'
+        return
+    fi
 
     local DATA_ARGS=()
     for i in "$@" ; do

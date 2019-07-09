@@ -33,4 +33,8 @@ Syntax: ${FUNCNAME[0]} <PROFILE NUMBER>
 }
 
 alias ...='cd ..'
-alias vim='nvim'
+function vim {
+    which nvim 2>&1 >/dev/null && nvim "$@" || vim "$@"
+}
+
+alias rm='rm -i'
