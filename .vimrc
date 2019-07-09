@@ -15,6 +15,8 @@ endif
 
 "Plug 'empathicqubit/vim-document-currentpath', { 'do': 'yarn install' }
 
+" Fuck this. Screws up copypasting and JSON files. Plug 'Yggdroot/indentLine'
+Plug 'chrisbra/Colorizer'
 Plug 'maxbane/vim-asm_ca65'
 Plug 'lambdalisue/suda.vim'
 Plug 'leafgarland/typescript-vim'
@@ -133,6 +135,7 @@ endif
 
 let mapleader=","
 
+map <Leader>cz :ColorHighlight<CR>
 map <Leader>ev :e $HOME/.vimrc<CR>
 map <Leader>rv :source $HOME/.vimrc<CR>
 map <Leader>pi :PlugInstall<CR>
