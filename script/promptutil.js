@@ -4,6 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const tmuxPathpart = require('./tmux-pathpart');
 const gitPrompt = require('./git-prompt');
+const emojiWord = require('./emoji-word');
 
 const app = express();
 
@@ -16,6 +17,11 @@ app.get('/tmux-pathpart', (req, res) => {
 
 app.get('/git-prompt', (req, res) => {
     gitPrompt(req.query)
+        .then(r => res.send(r));
+});
+
+app.get('/emoji-word', (req, res) => {
+    emojiWord(req.query)
         .then(r => res.send(r));
 });
 

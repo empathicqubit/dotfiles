@@ -79,7 +79,16 @@ function __precmd_git_prompt {
 
     local RANDOM_CHAR="${RANDOM_CHARS[RANDOM % ${#RANDOM_CHARS[@]}]}"
 
-    local NEW_PROMPT='\u@\h:\w '"${GIT_PROMPT}\n\[${GREEN}\]${PROMPT_CHAR:-$RANDOM_CHAR}\[${COLORSOFF}\] "
+    local HOSTY="$(hostname)"
+
+    local HOST_EMOJI
+    IFS= read -r HOST_EMOJI < <(promptutil emoji-word "word=$HOSTY")
+
+    if [ ! -z "$HOST_EMOJI" ] ; then
+        HOSTY="$HOST_EMOJI"
+    fi
+
+    local NEW_PROMPT='\u@'"$HOSTY"':\w '"${GIT_PROMPT}\n\[${GREEN}\]${PROMPT_CHAR:-$RANDOM_CHAR}\[${COLORSOFF}\] "
 
     for each in "${PROMPT_HOOKS[@]}" ; do
         $each "$NEW_PROMPT"
