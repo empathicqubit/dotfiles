@@ -9,3 +9,5 @@ node_modules/
 !.tmux/plugins/tpm/
 
 *.log
+*.orig
+*.rej
