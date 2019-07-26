@@ -15,6 +15,7 @@ endif
 
 "Plug 'empathicqubit/vim-document-currentpath', { 'do': 'yarn install' }
 
+Plug 'qpkorr/vim-renamer'
 Plug 'maxbane/vim-asm_ca65'
 Plug 'lambdalisue/suda.vim'
 Plug 'leafgarland/typescript-vim'
