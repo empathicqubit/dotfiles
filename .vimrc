@@ -54,6 +54,11 @@ let g:airline_section_b = '%{g:document_currentpath_path}'
 
 let g:syntastic_terraform_tffilter_plan = 1
 
+let g:syntastic_mode_map = {
+    \ "mode": "active",
+    \ "passive_filetypes": ["scala"]
+}
+
 let g:rainbow#pairs = [['(', ')'], ['<', '>'], ['{', '}'], ['[', ']']]
 
 let g:LanguageClient_serverCommands = { 'haskell': ['hie-wrapper'] }

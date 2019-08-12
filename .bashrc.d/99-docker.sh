@@ -1,1 +1,1 @@
-alias docker="docker.js"
+#alias docker="docker.js"

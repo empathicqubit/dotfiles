@@ -283,15 +283,6 @@ chardet@^0.7.0:
   resolved "https://registry.yarnpkg.com/chardet/-/chardet-0.7.0.tgz#90094849f0937f2eedc2425d0d28a9e5f0cbad9e"
   integrity sha512-mT8iDcrh03qDGRRmoA2hmBJnxpllMR+0/0qlzjqZES6NdiWDcZkCNAk4rPFZ9Q85r27unkiNNg8ZOiwZXBHwcA==
 
-child_pty@^3.0.10:
-  version "3.0.10"
-  resolved "https://registry.yarnpkg.com/child_pty/-/child_pty-3.0.10.tgz#927934f2ce297b078b9476d97e77d808a92d2da9"
-  integrity sha512-gyO2VgOKWoS1WKwitQfTlPPv8J+U2dG6bLeRVblKdtIKDpCRy2XyFg+z8saJW/ck0hqEXdIPHaWTUxWjL0SFNg==
-  dependencies:
-    extend "^3.0.2"
-    nan "^2.12.0"
-    termios "^0.1.8"
-
 chokidar@^2.1.0:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-2.1.2.tgz#9c23ea40b01638439e0513864d362aeacc5ad058"
@@ -786,11 +777,6 @@ extend-shallow@^3.0.0, extend-shallow@^3.0.2:
   dependencies:
     assign-symbols "^1.0.0"
     is-extendable "^1.0.1"
-
-extend@^3.0.0, extend@^3.0.2:
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/extend/-/extend-3.0.2.tgz#f8b1136b4071fbd8eb140aff858b1019ec2915fa"
-  integrity sha512-fjquC59cD7CyW6urNXK0FBufkZcoiGG80wTuPujX590cB5Ttln20E2UB4S/WARVqhXffZl2LNgS+gQdPIIim/g==
 
 external-editor@^3.0.3:
   version "3.0.3"
@@ -1572,7 +1558,7 @@ mvdan-sh@^0.1.0:
   resolved "https://registry.yarnpkg.com/mvdan-sh/-/mvdan-sh-0.1.0.tgz#da67fd8b10e7aaac2c0b4bd715a76bfc6f42e3d0"
   integrity sha1-2mf9ixDnqqwsC0vXFadr/G9C49A=
 
-nan@2.12.1, nan@^2.12.0, nan@^2.9.2:
+nan@^2.9.2:
   version "2.12.1"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.12.1.tgz#7b1aa193e9aa86057e3c7bbd0ac448e770925552"
   integrity sha512-JY7V6lRkStKcKTvHO5NVSQRv+RV+FIL5pvDoLiAtSL9pKlC5x9PKQcZDsq7m4FO4d57mkhC6Z+QhAh3Jdk5JFw==
@@ -1633,13 +1619,6 @@ node-pre-gyp@^0.10.0:
     rimraf "^2.6.1"
     semver "^5.3.0"
     tar "^4"
-
-node-pty@^0.8.1:
-  version "0.8.1"
-  resolved "https://registry.yarnpkg.com/node-pty/-/node-pty-0.8.1.tgz#94b457bec013e7a09b8d9141f63b0787fa25c23f"
-  integrity sha512-j+/g0Q5dR+vkELclpJpz32HcS3O/3EdPSGPvDXJZVJQLCvgG0toEbfmymxAEyQyZEpaoKHAcoL+PvKM+4N9nlw==
-  dependencies:
-    nan "2.12.1"
 
 nodemon@^1.18.10:
   version "1.18.10"
@@ -2367,14 +2346,6 @@ term-size@^1.2.0:
   integrity sha1-RYuDiH8oj8Vtb/+/rSYuJmOO+mk=
   dependencies:
     execa "^0.7.0"
-
-termios@^0.1.8:
-  version "0.1.8"
-  resolved "https://registry.yarnpkg.com/termios/-/termios-0.1.8.tgz#10983e4aed4a2b3f75c1d7255b8c285a4031e77d"
-  integrity sha512-HWdf689pIqR7TmSNVYGz3toIYhVbZ0Tej794hS5h8yOPDFKusiSdD6X6ldqzRPhB67UtMEjnLseUOo9jgS5W3g==
-  dependencies:
-    extend "^3.0.0"
-    nan "^2.12.0"
 
 text-table@^0.2.0:
   version "0.2.0"
