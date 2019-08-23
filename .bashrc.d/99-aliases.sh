@@ -37,4 +37,8 @@ function vim {
     which nvim 2>&1 >/dev/null && nvim "$@" || vim "$@"
 }
 
-alias rm='rm -I'
+whichrm=$(which grm rm | head -1)
+
+function rm {
+    $whichrm -I "$@"
+}
