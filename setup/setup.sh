@@ -20,6 +20,10 @@ while [ -n "$1" ] ; do
     shift
 done
 
+curlorwget () {
+    curl -sL "$@" | wget -qO- "$@"
+}
+
 setuplink () {
     local SRCPATH="$1"
     local DEST="$2"
@@ -100,18 +104,18 @@ else
         sudo pacman -S python-pip python2-pip vim yarn ruby pstree silversearcher-ag neovim
         yay direnv
     elif ((IS_SUPERCOW)) ; then
-        curl -sL https://deb.nodesource.com/setup_11.x | sudo -E bash -
+        curlorwget https://deb.nodesource.com/setup_11.x | sudo -E bash -
 
-        curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+        curlorwget https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
 echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
 
         sudo apt install python3-pip fonts-powerline direnv vim-nox ruby silversearcher-ag neovim nodejs yarn jq
 
-        curl -L https://releases.hyper.is/download/deb > "$CACHEDIR/hyper.deb"
+        curlorwget https://releases.hyper.is/download/deb > "$CACHEDIR/hyper.deb"
         sudo dpkg -i "$CACHEDIR/hyper.deb"
         sudo apt install -f
 
-        curl -L http://http.us.debian.org/debian/pool/main/f/fonts-noto-color-emoji/fonts-noto-color-emoji_0~20180102-1_all.deb > "$CACHEDIR/noto-emoji.deb"
+        curlorwget http://http.us.debian.org/debian/pool/main/f/fonts-noto-color-emoji/fonts-noto-color-emoji_0~20180102-1_all.deb > "$CACHEDIR/noto-emoji.deb"
         sudo dpkg -i "$CACHEDIR/noto-emoji.deb"
         sudo apt install -f
     elif ((IS_BREW)) ; then
