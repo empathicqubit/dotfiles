@@ -1,5 +1,5 @@
 #! /bin/bash
-export PATH="$PATH:$HOME/script:$HOME/.vim/plugged/github:$HOME/bin:$HOME/.local/bin:~/.pyenv/bin:$HOME/c64-devkit/bin"
+export PATH="$PATH:$HOME/script:$HOME/.vim/plugged/github:$HOME/bin:$HOME/.local/bin:~/.pyenv/bin:$HOME/c64-devkit/bin:$HOME/.nix-profile/bin"
 
 function addpythonpath () {
     local PY3PATH
