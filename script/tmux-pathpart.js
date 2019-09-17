@@ -99,7 +99,7 @@ const getCmd = async (cmd) => {
     }
 
     const exe = _(stmt.Cmd.Args[0].Parts).map(x => x.Value).join('');
-    let firstArg;
+    let firstArg = '';
     try {
         firstArg = _(stmt.Cmd.Args[1].Parts).map(x => x.Value).join('')
     }
@@ -122,6 +122,14 @@ const getCmd = async (cmd) => {
         }
 
         return `\u{1f433}${firstArg}`;
+    }
+
+    if(/^python/gi.test(exe)) {
+        if(isCros) {
+            return `S\` ${firstArg}`;
+        }
+
+        return `\u{1f40d}${firstArg}`;
     }
 
     if(/^yarn/gi.test(exe)) {
