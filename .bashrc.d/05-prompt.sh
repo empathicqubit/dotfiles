@@ -128,7 +128,7 @@ function promptutil {
 
     PROMPTUTIL_CURLMSG=0
     if ! which curl 2>&1 >/dev/null ; then
-        echo 'curl?'
+        echo 'curl?' 2>&1
         return
     fi
 

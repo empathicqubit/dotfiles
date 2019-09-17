@@ -33,9 +33,6 @@ Syntax: ${FUNCNAME[0]} <PROFILE NUMBER>
 }
 
 alias ...='cd ..'
-function vim {
-    which nvim 2>&1 >/dev/null && nvim "$@" || vim "$@"
-}
 
 whichrm=$(which grm rm | head -1)
 
