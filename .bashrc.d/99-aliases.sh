@@ -32,6 +32,30 @@ Syntax: ${FUNCNAME[0]} <PROFILE NUMBER>
     fi
 }
 
+function yarn {
+    if which yarnpkg 2>&1 >/dev/null ; then
+        yarnpkg "$@"
+    else
+        command yarn "$@"
+    fi
+}
+
+function vim {
+    if which nvim 2>&1 >/dev/null ; then
+        nvim "$@"
+    else
+        command vim "$@"
+    fi
+}
+
+function dotnet {
+    if which dotnet-sdk.dotnet 2>&1 >/dev/null ; then
+        dotnet-sdk.dotnet "$@"
+    else
+        command dotnet "$@"
+    fi
+}
+
 alias ...='cd ..'
 
 whichrm=$(which grm rm | head -1)
