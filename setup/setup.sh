@@ -156,3 +156,5 @@ vim '+PlugInstall' '+qall!'
 
 echo "$PYPATH2"
 echo "$PYPATH3"
+
+curl https://sdk.cloud.google.com | bash
