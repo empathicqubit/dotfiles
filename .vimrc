@@ -21,7 +21,7 @@ Plug 'maxbane/vim-asm_ca65'
 Plug 'lambdalisue/suda.vim'
 Plug 'leafgarland/typescript-vim'
 Plug 'tikhomirov/vim-glsl'
-Plug 'mhartington/nvim-typescript', {'do': 'npm install -g neovim && ./install.sh'}
+"Plug 'mhartington/nvim-typescript', {'do': 'npm install -g neovim && ./install.sh'}
 Plug 'tpope/vim-fugitive'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'

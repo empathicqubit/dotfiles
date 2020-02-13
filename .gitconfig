@@ -11,6 +11,7 @@
     path="C:/Program Files/KDiff3/kdiff3.exe"
     trustExitCode=false
 [merge]
+    renamelimit=24000
     tool=fugitive
 [branch]
     autosetuprebase=always

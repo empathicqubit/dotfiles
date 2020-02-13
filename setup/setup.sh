@@ -104,7 +104,7 @@ else
         sudo pacman -S python-pip python2-pip vim yarn ruby pstree silversearcher-ag neovim
         yay direnv
     elif ((IS_SUPERCOW)) ; then
-        sudo apt install python3-pip fonts-powerline direnv vim-nox ruby silversearcher-ag neovim nodejs yarnpkg jq
+        sudo apt install python3-pip fonts-powerline direnv vim-nox ruby silversearcher-ag neovim nodejs yarn jq
 
         curlorwget https://releases.hyper.is/download/deb > "$CACHEDIR/hyper.deb"
         sudo dpkg -i "$CACHEDIR/hyper.deb"
