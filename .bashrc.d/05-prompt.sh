@@ -111,7 +111,7 @@ function __start_promptutil {
         return
     fi
 
-    PROMPTUTIL_PORT=$((RANDOM+1024))
+    PROMPTUTIL_PORT=$(promptutil.js --find-port)
     PROMPTUTIL_PORT="$PROMPTUTIL_PORT" promptutil.js &
     PROMPTUTIL_PID=$!
 }
