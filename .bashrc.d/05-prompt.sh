@@ -34,13 +34,14 @@ function seconds_since_epoch {
 function __preexec_tmux_title { 
     local this_command="$1"
     local title
-    IFS= read -r title < <(promptutil tmux-pathpart "pwd=$PWD" "cmd=$this_command")
-    tmux_set_title "$title"
+    local promptutil_tmuxPathpart
+    IFS= read -r promptutil_tmuxPathpart < <(promptutil tmuxPathpart '"pwd":"'"$PWD"'","cmd":"'"$this_command"'"')
+    tmux_set_title "$promptutil_tmuxPathpart"
 }
 
 add_preexec_function __preexec_tmux_title
 
-PROMPTUTIL_PORT=
+PROMPTUTIL=
 PROMPTUTIL_PID=
 
 function __precmd_start_promptutil {
@@ -59,9 +60,9 @@ function __precmd_ran_once {
 add_precmd_function __precmd_ran_once
 
 function __precmd_tmux_title {
-    local title
-    IFS= read -r title < <(promptutil tmux-pathpart "pwd=$PWD" "cmd=bash")
-    tmux_set_title "$title"
+    local promptutil_tmuxPathpart
+    IFS= read -r promptutil_tmuxPathpart < <(promptutil tmuxPathpart '"cmd":"bash","pwd":"'"$PWD"'"')
+    tmux_set_title "$promptutil_tmuxPathpart"
 }
 
 add_precmd_function __precmd_tmux_title
@@ -69,8 +70,9 @@ add_precmd_function __precmd_tmux_title
 PROMPT_HOOKS=()
 
 function __precmd_git_prompt {
-    local GIT_PROMPT
-    IFS= read -r GIT_PROMPT < <(promptutil git-prompt "pwd=$PWD")
+    local promptutil_gitPrompt
+    local promptutil_emojiWord
+    IFS= read -r promptutil_gitPrompt < <(promptutil gitPrompt '"pwd":"'"$PWD"'"')
 
     local RANDOM_CHARS=(
         # Grinning cat
@@ -81,14 +83,13 @@ function __precmd_git_prompt {
 
     local HOSTY="$(hostname)"
 
-    local HOST_EMOJI
-    IFS= read -r HOST_EMOJI < <(promptutil emoji-word "word=$HOSTY")
+    IFS= read -r promptutil_emojiWord < <(promptutil emojiWord '"word":"'"$HOSTY"'"')
 
-    if [ ! -z "$HOST_EMOJI" ] ; then
-        HOSTY="$HOST_EMOJI"
+    if [ ! -z "$promptutil_emojiWord" ] ; then
+        HOSTY="$promptutil_emojiWord"
     fi
 
-    local NEW_PROMPT='\u@'"$HOSTY"':\w '"${GIT_PROMPT}\n\[${GREEN}\]${PROMPT_CHAR:-$RANDOM_CHAR}\[${COLORSOFF}\] "
+    local NEW_PROMPT='\u@'"$HOSTY"':\w '"${promptutil_gitPrompt}\n\[${GREEN}\]${PROMPT_CHAR:-$RANDOM_CHAR}\[${COLORSOFF}\] "
 
     for each in "${PROMPT_HOOKS[@]}" ; do
         $each "$NEW_PROMPT"
@@ -102,8 +103,8 @@ function __precmd_git_prompt {
 add_precmd_function __precmd_git_prompt
 
 function __start_promptutil {
-    if [ ! -z "$PROMPTUTIL_PID" ] ; then
-        __kill_promptutil
+    if [ ! -z "$PROMPTUTIL_PID" ] && kill -0 "$PROMPTUTIL_PID" 2>&1 >/dev/null ; then
+        return
     fi
 
     if ! which node 2>&1 >/dev/null ; then
@@ -111,34 +112,19 @@ function __start_promptutil {
         return
     fi
 
-    PROMPTUTIL_PORT=$(promptutil.js --find-port)
-    PROMPTUTIL_PORT="$PROMPTUTIL_PORT" promptutil.js &
-    PROMPTUTIL_PID=$!
-}
-
-function __kill_promptutil {
-    kill "$PROMPTUTIL_PID" 2>&1 >/dev/null
-    PROMPTUTIL_PORT=
-    PROMPTUTIL_PID=
+    coproc PROMPTUTIL { promptutil.js --color=always ; }
 }
 
 function promptutil {
-    local PATHNAME="$1"
-    shift
-
-    PROMPTUTIL_CURLMSG=0
-    if ! which curl 2>&1 >/dev/null ; then
-        echo 'curl?' 2>&1
-        return
-    fi
-
-    local DATA_ARGS=()
-    for i in "$@" ; do
-        DATA_ARGS+=('--data-urlencode' "$1")
-        shift
-    done
-
-    curl -s -G 'http://localhost:'"$PROMPTUTIL_PORT"'/'"$PATHNAME" "${DATA_ARGS[@]}"
+    local COMMAND="$1"
+    local PARAMS="$2"
+    local JSON
+    IFS= read -r JSON <<JSON
+{ "command": "$COMMAND", ${PARAMS:-\"noparams\"\: true} }
+JSON
+    
+    echo "$JSON" >&${PROMPTUTIL[1]}
+    head -1 <&${PROMPTUTIL[0]}
 }
 
 function __main {

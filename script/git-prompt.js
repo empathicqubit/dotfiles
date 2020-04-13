@@ -430,7 +430,7 @@ const poshGitEcho = (params) => {
                     }
                 }
                 else if('true' == insideWorkTree) {
-                    let promises = [poshGitPs1UpstreamDivergence()];
+                    let promises = [poshGitPs1UpstreamDivergence(pwd)];
                     if(config.showStashState) {
                         let promise = execGit(pwd, 'rev-parse', '--verify', 'refs/stash')
                             .then(() => hasStash = true)
@@ -602,7 +602,7 @@ const poshGitPs1UpstreamDivergence = (pwd) => {
                     .spread((stdout, stderr) => {
                         let svnUpstream = stdout.trim().split(/[\s\r\n]+/g);
 
-                        if(svnUpstream.length) {
+                        if(false && svnUpstream.length) {
                             svnUpstream = svnUpstream[svnUpstream.length - 2];
                             // TODO
                             svnUpstream = svnUpstream.replace(/^@+/g, '');
@@ -659,8 +659,4 @@ const poshGitPs1UpstreamDivergence = (pwd) => {
 
 module.exports = (params) => {
     return poshGitEcho(params)
-        .catch(() => {
-            let match = new RegExp('^.*' + __filename + '.*$', 'gi').exec(error.stack)
-            return `[ERROR ${match[0]}]`
-        });
 }
