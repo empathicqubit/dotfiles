@@ -11,7 +11,7 @@
     "find-process": "^1.4.3",
     "get-port": "^5.1.1",
     "http-terminator": "^2.0.2",
-    "lodash": "^4.17.5",
+    "lodash": "^4.17.13",
     "mvdan-sh": "^0.1.0",
     "openport": "^0.0.4",
     "q": "^1.5.1",
