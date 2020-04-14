@@ -1,4 +1,6 @@
 #! /bin/bash
+__bashrc_promt_timings=${__bashrc_prompt_timings:-0}
+
 function tmux_set_title {
     if [ ! -z "$TMUX" ] ; then
         printf '\033]2;%s\033\\' "$1"
@@ -30,6 +32,16 @@ function add_precmd_function {
 function seconds_since_epoch {
     date '+%s'
 }
+
+function __precmd_debug_timings {
+    PS4='+ $EPOCHREALTIME\011 '
+    exec 3>&2 2>/tmp/bashstart.$$.log
+    set -x
+}
+
+if ((__bashrc_prompt_timings)) ; then
+    add_precmd_function __precmd_debug_timings
+fi
 
 function __preexec_tmux_title { 
     local this_command="$1"
@@ -115,16 +127,27 @@ function __start_promptutil {
     coproc PROMPTUTIL { promptutil.js --color=always ; }
 }
 
+function __precmd_debug_timings_end {
+    set +x
+    exec 2>&3 3>&-
+}
+
+if ((__bashrc_prompt_timings)) ; then
+    add_precmd_function __precmd_debug_timings_end
+fi
+
 function promptutil {
     local COMMAND="$1"
     local PARAMS="$2"
     local JSON
+    local RESULT
     IFS= read -r JSON <<JSON
 { "command": "$COMMAND", ${PARAMS:-\"noparams\"\: true} }
 JSON
     
     echo "$JSON" >&${PROMPTUTIL[1]}
-    head -1 <&${PROMPTUTIL[0]}
+    read -r RESULT <&${PROMPTUTIL[0]}
+    echo -n -e "$RESULT"
 }
 
 function __main {

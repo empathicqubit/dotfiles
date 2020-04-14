@@ -1,5 +1,13 @@
 #! /bin/bash
 # This is just a bootstrap file for the .d folder. Don't put anything meaninguful here.
+__bashrc_debug_startup=${__bashrc_debug_startup:-0}
+
+if ((_bashrc_debug_startup)) ; then
+    PS4='+ $EPOCHREALTIME\011 '
+    exec 3>&2 2>/tmp/bashstart.$$.log
+    set -x
+fi
+
 function rlbashrc {
     source "$HOME/.bashrc"
 }
@@ -114,3 +122,8 @@ function ${wrapper_name}() {
 eval "$(alias -p | sed -e 's/alias \([^=][^=]*\)='\''\([^ ][^ ]*\) *\(.*\)'\''/wrap_alias \1 \2 '\''\3'\'' /')"
 
 unset wrap_alias
+
+if ((_bashrc_debug_startup)) ; then
+    set +x
+    exec 2>&3 3>&-
+fi
