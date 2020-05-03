@@ -1,10 +1,38 @@
 #! /bin/bash
-__bashrc_promt_timings=${__bashrc_prompt_timings:-0}
+__bashrc_prompt_timings=${__bashrc_prompt_timings:-0}
 
 function tmux_set_title {
     if [ ! -z "$TMUX" ] ; then
         printf '\033]2;%s\033\\' "$1"
     fi
+}
+
+function middle_truncate {
+    local str="$1"
+    local max=$(($2))
+    local len=${#str}
+
+    local mid
+    local rem
+    local left
+    local right
+
+    if ((len <= max)) ; then
+        echo -n "$str"
+        return
+    fi
+
+    if ((max == 1)) ; then
+        echo -n "${str:0:1}"$'\U00002026'
+        return
+    fi
+
+    mid=$((len / 2))
+    rem=$((len - max + 1))
+    left=$((rem / 2))
+    right=$((rem - left))
+
+    echo "${str:0:$((mid - left))}"$'\U00002026'"${str:$((mid + right))}"
 }
 
 function add_preexec_function {
@@ -45,25 +73,14 @@ fi
 
 function __preexec_tmux_title { 
     local this_command="$1"
-    local title
-    local promptutil_tmuxPathpart
-    IFS= read -r promptutil_tmuxPathpart < <(promptutil tmuxPathpart '"pwd":"'"$PWD"'","cmd":"'"$this_command"'"')
-    tmux_set_title "$promptutil_tmuxPathpart"
+    for each in "${this_command[@]}" ; do
+        echo "$each"
+    done
+
+    tmux_set_title "$(middle_truncate "$(basename "$PWD")" 8) - $(middle_truncate "$this_command" 12)"
 }
 
 add_preexec_function __preexec_tmux_title
-
-PROMPTUTIL=
-PROMPTUTIL_PID=
-
-function __precmd_start_promptutil {
-    kill -0 "$PROMPTUTIL_PID" 2>&1 >/dev/null
-    if (($?)) ; then
-        __start_promptutil
-    fi 
-}
-
-add_precmd_function __precmd_start_promptutil
 
 function __precmd_ran_once {
     PROMPT_COMMAND_ONCE=1
@@ -72,20 +89,35 @@ function __precmd_ran_once {
 add_precmd_function __precmd_ran_once
 
 function __precmd_tmux_title {
-    local promptutil_tmuxPathpart
-    IFS= read -r promptutil_tmuxPathpart < <(promptutil tmuxPathpart '"cmd":"bash","pwd":"'"$PWD"'"')
-    tmux_set_title "$promptutil_tmuxPathpart"
+    tmux_set_title "$(middle_truncate "$(basename "$PWD")" 20)"
 }
 
 add_precmd_function __precmd_tmux_title
 
 PROMPT_HOOKS=()
 
-function __precmd_git_prompt {
-    local promptutil_gitPrompt
-    local promptutil_emojiWord
-    IFS= read -r promptutil_gitPrompt < <(promptutil gitPrompt '"pwd":"'"$PWD"'"')
+function git_prompty {
+    local OUTPUT
+    OUTPUT="$(git status --porcelain | grep -o '^..')"
 
+    echo -n "\[${GREEN}\][ git: "
+
+    if [[ "$OUTPUT" =~ "M" ]] ; then
+        echo -n "\[${YELLOW}\]~ "
+    fi
+
+    if [[ "$OUTPUT" =~ "D" ]] ; then
+        echo -n "\[${RED}\]- "
+    fi
+
+    if [[ "$OUTPUT" =~ "A" ]] ; then
+        echo -n "\[${GREEN}\]+ "
+    fi
+
+    echo -n "\[${GREEN}\]] ${COLORSOFF}"
+}
+
+function __precmd_host_prompt {
     local RANDOM_CHARS=(
         # Grinning cat
         $'\U0001f63a'
@@ -95,13 +127,11 @@ function __precmd_git_prompt {
 
     local HOSTY="$(hostname)"
 
-    IFS= read -r promptutil_emojiWord < <(promptutil emojiWord '"word":"'"$HOSTY"'"')
-
-    if [ ! -z "$promptutil_emojiWord" ] ; then
-        HOSTY="$promptutil_emojiWord"
+    if [ "$(type -t __host_alts)" == "function" ] ; then
+        __host_alts "$HOSTY"
     fi
 
-    local NEW_PROMPT='\u@'"$HOSTY"':\w '"${promptutil_gitPrompt}\n\[${GREEN}\]${PROMPT_CHAR:-$RANDOM_CHAR}\[${COLORSOFF}\] "
+    local NEW_PROMPT='\u@'"$HOSTY"':\w '"$(git_prompty)\n\[${GREEN}\]${PROMPT_CHAR:-$RANDOM_CHAR}\[${COLORSOFF}\] "
 
     for each in "${PROMPT_HOOKS[@]}" ; do
         $each "$NEW_PROMPT"
@@ -112,20 +142,7 @@ function __precmd_git_prompt {
     export PS1="$NEW_PROMPT"
 }
 
-add_precmd_function __precmd_git_prompt
-
-function __start_promptutil {
-    if [ ! -z "$PROMPTUTIL_PID" ] && kill -0 "$PROMPTUTIL_PID" 2>&1 >/dev/null ; then
-        return
-    fi
-
-    if ! which node 2>&1 >/dev/null ; then
-        echo 'Please install node'
-        return
-    fi
-
-    coproc PROMPTUTIL { promptutil.js --color=always ; }
-}
+add_precmd_function __precmd_host_prompt
 
 function __precmd_debug_timings_end {
     set +x
@@ -136,24 +153,8 @@ if ((__bashrc_prompt_timings)) ; then
     add_precmd_function __precmd_debug_timings_end
 fi
 
-function promptutil {
-    local COMMAND="$1"
-    local PARAMS="$2"
-    local JSON
-    local RESULT
-    IFS= read -r JSON <<JSON
-{ "command": "$COMMAND", ${PARAMS:-\"noparams\"\: true} }
-JSON
-    
-    echo "$JSON" >&${PROMPTUTIL[1]}
-    read -r RESULT <&${PROMPTUTIL[0]}
-    echo -n -e "$RESULT"
-}
-
 function __main {
     local CURDIR="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"
-
-    __start_promptutil
 }
 
 __main
