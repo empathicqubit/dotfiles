@@ -74,9 +74,6 @@ fi
 
 function __preexec_tmux_title { 
     local this_command="$1"
-    for each in "${this_command[@]}" ; do
-        echo "$each"
-    done
 
     tmux_set_title "$(middle_truncate "$(basename "$PWD")" 8) - $(middle_truncate "$this_command" 12)"
 }
@@ -100,9 +97,20 @@ PROMPT_HOOKS=()
 function git_prompty {
     local OUTPUT
     local SOMETHING
+    local UPSTREAM
+
+    if [ "$(git rev-parse --is-inside-work-tree 2>/dev/null)" != "true" ] ; then
+        return
+    fi
+
     OUTPUT="$(git status --porcelain | grep -o '^..')"
 
     echo -n "\[${GREEN}\][ git: "
+
+    UPSTREAM=$(git rev-list '@{upstream}..HEAD' | wc -l)
+    if ((UPSTREAM > 0)) ; then
+        echo -n "${PURPLE}ahead ${UPSTREAM} ${GREEN}| "
+    fi
 
     if [[ "$OUTPUT" =~ "M" ]] ; then
         SOMETHING=1
