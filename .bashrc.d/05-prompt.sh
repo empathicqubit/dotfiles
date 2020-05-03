@@ -7,6 +7,7 @@ function tmux_set_title {
     fi
 }
 
+
 function middle_truncate {
     local str="$1"
     local max=$(($2))
