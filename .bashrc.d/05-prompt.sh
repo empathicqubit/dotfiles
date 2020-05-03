@@ -98,20 +98,28 @@ PROMPT_HOOKS=()
 
 function git_prompty {
     local OUTPUT
+    local SOMETHING
     OUTPUT="$(git status --porcelain | grep -o '^..')"
 
     echo -n "\[${GREEN}\][ git: "
 
     if [[ "$OUTPUT" =~ "M" ]] ; then
+        SOMETHING=1
         echo -n "\[${YELLOW}\]~ "
     fi
 
     if [[ "$OUTPUT" =~ "D" ]] ; then
+        SOMETHING=1
         echo -n "\[${RED}\]- "
     fi
 
     if [[ "$OUTPUT" =~ "A" ]] ; then
+        SOMETHING=1
         echo -n "\[${GREEN}\]+ "
+    fi
+
+    if ((!SOMETHING)) ; then
+        echo -n "\[${CYAN}\]= "
     fi
 
     echo -n "\[${GREEN}\]] ${COLORSOFF}"
