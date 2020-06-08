@@ -4,14 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "body-parser": "^1.18.2",
-    "colors": "^1.1.2",
-    "emoji-from-word": "^1.2.11",
-    "express": "^4.16.2",
-    "lodash": "^4.17.5",
-    "mvdan-sh": "^0.1.0",
-    "openport": "^0.0.4",
-    "q": "^1.5.1"
+    "openport": "^0.0.4"
   },
   "scripts": {
     "lint": "eslint .",
