@@ -112,9 +112,14 @@ function git_prompty {
         echo -n "${PURPLE}ahead ${UPSTREAM} ${GREEN}| "
     fi
 
-    if [[ "$OUTPUT" =~ "M" ]] ; then
+    if [[ "$OUTPUT" =~ "M" ]]; then
         SOMETHING=1
         echo -n "\[${YELLOW}\]~ "
+    fi
+
+    if [[ "$OUTPUT" =~ "R" ]] ; then
+        SOMETHING=1
+        echo -n "\[${YELLOW}\]> "
     fi
 
     if [[ "$OUTPUT" =~ "D" ]] ; then
