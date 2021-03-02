@@ -1,10 +1,14 @@
 #! /bin/bash
 
 function tmux() {
+    local SOMMELIER=$(which sommelier 2>/dev/null)
+    if [[ ! -z "$SOMMELIER" ]] ; then
+        SOMMELIER="$SOMMELIER -X --glamor"
+    fi
     if [[ $# -eq 0 ]] ; then
-        command tmux new-session \; new-window \; new-window \; new-window \; new-window \; new-window
+        command $SOMMELIER tmux new-session \; new-window \; new-window \; new-window \; new-window \; new-window
     else
-        command tmux "$@"
+        command $SOMMELIER tmux "$@"
     fi
 }
 

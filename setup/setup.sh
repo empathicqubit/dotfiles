@@ -1,7 +1,7 @@
 #! /bin/bash
+set -e
 
-which gls 2>/dev/null
-IS_BREW=$((!$?))
+which gls 2>/dev/null && IS_BREW=1 || IS_BREW=0
 
 IS_DARWIN=$((0))
 IS_LINUX=$((0))
@@ -66,10 +66,9 @@ ADDG=
 CURDIR="$(dirname $(${ADDG}readlink -f "$0"))"
 CACHEDIR="$HOME/.cache/dotfiles"
 
-which pacman 2>&1 >/dev/null 
-IS_PACMAN=$((!$?))
-which apt 2>&1 >/dev/null
-IS_SUPERCOW=$((!IS_BREW && !$?))
+which pacman 2>&1 >/dev/null && IS_PACMAN=1 || IS_PACMAN=0
+which apt 2>&1 >/dev/null && IS_SUPERCOW=1 || IS_SUPERCOW=0
+IS_SUPERCOW=$((!IS_BREW && IS_SUPERCOW))
 
 PLUGINS_FILE="$HOME/.sbt/1.0/plugins/plugins.sbt"
 mkdir -p "$(dirname "$PLUGINS_FILE")"
@@ -85,39 +84,50 @@ setuplinks "$CURDIR/.." "$HOME"
 
 # We don't want to include this whole folder because lots of apps live here. Need some control...
 setuplinks "$CURDIR/../.config" "$HOME/.config"
+
+mkdir -p "$HOME/.config/xfce4"
 setuplinks "$CURDIR/../.config/xfce4" "$HOME/.config/xfce4"
 
 setuplink "$CURDIR/../.vim" "$HOME/vimfiles"
 
 setuplink "$CURDIR/../.nvim" "$HOME/.config/nvim"
 
-mkdir "$HOME/.bashrc.local.d"
+mkdir -p "$HOME/.bashrc.local.d"
 
 if ((IS_WINDOWS)) ; then
     # Git Bash: 'msys'
-    choco upgrade python nodejs yarn neovim
-    ((USE_NPM)) && yarn install -g tern
+    choco upgrade python nodejs neovim
+    ((USE_NPM)) && npm install -g pnpm
+    ((USE_NPM)) && pnpm add -g tern
 else
     if ((IS_PACMAN)) ; then
         # pstree untested
         # silversearcher-ag untested
-        sudo pacman -S python-pip python2-pip vim yarn ruby pstree silversearcher-ag neovim
+        sudo pacman -S python-pip python2-pip vim ruby pstree silversearcher-ag neovim
         yay direnv
     elif ((IS_SUPERCOW)) ; then
-        sudo apt install python3-pip fonts-powerline direnv vim-nox ruby silversearcher-ag neovim nodejs yarn jq
+        echo "USING APT"
+
+        wget -qO - https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg | gpg --dearmor | sudo dd of=/etc/apt/trusted.gpg.d/vscodium.gpg
+        echo 'deb https://paulcarroty.gitlab.io/vscodium-deb-rpm-repo/debs/ vscodium main' | sudo tee --append /etc/apt/sources.list.d/vscodium.list
+
+        curl -fsSL https://deb.nodesource.com/setup_15.x | sudo -E bash -
+
+        sudo apt update
+        sudo apt install python3-pip fonts-powerline direnv vim-nox-py2 ruby silversearcher-ag nodejs jq codium
 
         curlorwget https://releases.hyper.is/download/deb > "$CACHEDIR/hyper.deb"
-        sudo dpkg -i "$CACHEDIR/hyper.deb"
-        sudo apt install -f
+        sudo dpkg -i "$CACHEDIR/hyper.deb" || sudo apt install -f
 
-        curlorwget http://http.us.debian.org/debian/pool/main/f/fonts-noto-color-emoji/fonts-noto-color-emoji_0~20180102-1_all.deb > "$CACHEDIR/noto-emoji.deb"
+        curlorwget http://cloudfront.debian.net/debian/pool/main/f/fonts-noto-color-emoji/fonts-noto-color-emoji_0~20200916-1_all.deb > "$CACHEDIR/noto-emoji.deb"
         sudo dpkg -i "$CACHEDIR/noto-emoji.deb"
         sudo apt install -f
     elif ((IS_BREW)) ; then
         brew install python python@2 direnv ruby vim nodejs pstree bash-completion ag neovim pyenv
     fi
 
-    ((USE_NPM)) && sudo yarn global add tern
+    ((USE_NPM)) && sudo npm install -g pnpm
+    ((USE_NPM)) && sudo pnpm add -g tern
 fi
 
 # Find package.jsons and reinstall all node packages

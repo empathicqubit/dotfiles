@@ -141,8 +141,7 @@ function git_prompty {
 
 function __precmd_host_prompt {
     local RANDOM_CHARS=(
-        # Grinning cat
-        $'\U0001f63a'
+        ">"
     )
 
     local RANDOM_CHAR="${RANDOM_CHARS[RANDOM % ${#RANDOM_CHARS[@]}]}"
