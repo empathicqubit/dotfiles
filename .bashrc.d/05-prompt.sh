@@ -87,7 +87,11 @@ function __precmd_ran_once {
 add_precmd_function __precmd_ran_once
 
 function __precmd_tmux_title {
-    tmux_set_title "$(middle_truncate "$(basename "$PWD")" 20)"
+    if [[ "$PWD" == "$HOME" ]] ; then
+        tmux_set_title ""
+    else
+        tmux_set_title "$(middle_truncate "$(basename "$PWD")" 20)"
+    fi
 }
 
 add_precmd_function __precmd_tmux_title
