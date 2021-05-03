@@ -114,7 +114,7 @@ else
         curl -fsSL https://deb.nodesource.com/setup_15.x | sudo -E bash -
 
         sudo apt update
-        sudo apt install python3-pip fonts-powerline direnv vim-nox-py2 ruby silversearcher-ag nodejs jq codium
+        sudo apt install python3-pip fonts-powerline direnv vim-nox ruby silversearcher-ag nodejs jq codium
 
         curlorwget https://releases.hyper.is/download/deb > "$CACHEDIR/hyper.deb"
         sudo dpkg -i "$CACHEDIR/hyper.deb" || sudo apt install -f

@@ -146,6 +146,7 @@ map <Leader>rv :source $HOME/.vimrc<CR>
 map <Leader>pi :PlugInstall<CR>
 map <Leader>pt :set paste!<CR>
 map <Leader>ag :Ag<CR>
+map <Leader>_ f_x~<CR>
 
 noremap <C-p> :GFiles<CR>
 
