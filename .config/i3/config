@@ -38,6 +38,8 @@ exec --no-startup-id "gxkb"
 
 exec --no-startup-id "pasystray"
 
+exec_always --no-startup-id exec i3-workspace-names-daemon
+
 bindsym $mod+F1 exec setxkbmap us -variant dvorak
 bindsym $mod+F2 exec setxkbmap us
 bindsym $mod+F3 exec setxkbmap de

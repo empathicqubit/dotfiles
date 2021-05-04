@@ -160,6 +160,8 @@ pyenv activate neovim3
 pip install neovim
 PYPATH3=$(pyenv which python)
 
+pip3 install --upgrade --user i3-workspace-names-daemon
+
 pip3 install --upgrade --user neovim 
 pip install --upgrade --user neovim websocket-client sexpdata
 vim '+PlugInstall' '+qall!'
