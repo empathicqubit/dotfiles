@@ -112,6 +112,12 @@ bindsym $mod+t sticky toggle
 # toggle tiling / floating
 bindsym $mod+Shift+space floating toggle
 
+bindsym $mod+bracketright move scratchpad
+bindsym $mod+Shift+bracketright [workspace=__focused__] move scratchpad
+bindsym $mod+bracketleft scratchpad show
+bindsym $mod+Shift+bracketleft floating toggle
+
+
 # change focus between tiling / floating windows
 bindsym $mod+space focus mode_toggle
 
@@ -157,6 +163,9 @@ bindsym $mod+Shift+7 move container to workspace number $ws7
 bindsym $mod+Shift+8 move container to workspace number $ws8
 bindsym $mod+Shift+9 move container to workspace number $ws9
 bindsym $mod+Shift+0 move container to workspace number $ws10
+
+# Reset all window positions to root
+bindsym $mod+p [tiling workspace="__focused__"] move workspace "__reorder__"; [workspace="__reorder__"] move workspace current
 
 # reload the configuration file
 bindsym $mod+Shift+r reload
