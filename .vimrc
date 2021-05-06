@@ -42,7 +42,7 @@ Plug 'pearofducks/ansible-vim'
 " NOT ACTUALLY VIM PLUGINS
 " ========================
 Plug 'ofavre/vimcat', { 'do': 'make -j$(nproc)' }
-Plug 'klaxalk/i3-layout-manager'
+Plug 'empathicqubit/i3-layout-manager'
 " ========================
 " END OF NON-VIM PLUGINS
 

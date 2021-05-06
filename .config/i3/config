@@ -41,6 +41,7 @@ exec --no-startup-id "pasystray"
 exec --no-startup-id "xbattbar -c"
 
 bindsym $mod+m exec --no-startup-id "~/.vim/plugged/i3-layout-manager/layout_manager.sh"
+bindsym $mod+d exec --no-startup-id "i3-dmenu-desktop"
 
 exec_always --no-startup-id exec i3-workspace-names-daemon
 
@@ -118,7 +119,6 @@ bindsym $mod+bracketright move scratchpad
 bindsym $mod+Shift+bracketright [workspace=__focused__] move scratchpad
 bindsym $mod+bracketleft scratchpad show
 bindsym $mod+Shift+bracketleft floating toggle
-
 
 # change focus between tiling / floating windows
 bindsym $mod+space focus mode_toggle
