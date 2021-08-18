@@ -6,6 +6,7 @@
     "google-chrome": "chrome",
     "x-terminal-emulator": "terminal",
     "Xfce4-terminal": "terminal",
+    "keepassxc": "key",
     "thunderbird": "envelope",
     "jetbrains-idea-ce": "edit",
     "nautilus": "folder-open",
