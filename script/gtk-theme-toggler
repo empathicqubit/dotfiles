@@ -1,0 +1,8 @@
+#! /bin/bash
+
+function tog () {
+    sed -i 's/gtk-theme-name=.*/gtk-theme-name="'"$1"'"/g' "$HOME/.gtkrc-2.0"
+    sed -i 's/gtk-theme-name=.*/gtk-theme-name='"$1"'/g' "$HOME/.config/gtk-3.0/settings.ini"
+}
+
+tog "$1"
