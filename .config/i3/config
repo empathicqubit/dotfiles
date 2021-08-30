@@ -23,7 +23,7 @@ font pango:monospace 8
 
 exec_always --no-startup-id "bash ~/.config/i3/wallpaper.sh"
 
-exec --no-startup-id ~/.vim/plugged/i3-battery-popup/i3-battery-popup
+exec --no-startup-id "~/.vim/plugged/i3-battery-popup/i3-battery-popup -n"
 for_window [title="Battery Warning"] sticky enable
 
 # The combination of xss-lock, nm-applet and pactl is a popular choice, so
