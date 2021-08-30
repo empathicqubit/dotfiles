@@ -21,6 +21,11 @@ font pango:monospace 8
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
 #font pango:DejaVu Sans Mono 8
 
+for_window [class="Firefox"] title_format "<span background='#eda302'>%title</span>"
+for_window [class="(?i)office"] title_format "<span background='#111166'>%title</span>"
+for_window [class="Code"] title_format "<span background='#111166'>%title</span>"
+for_window [class="keepassxc"] title_format "<span background='#009900'>%title</span>"
+
 exec_always --no-startup-id "bash ~/.config/i3/wallpaper.sh"
 
 exec --no-startup-id "~/.vim/plugged/i3-battery-popup/i3-battery-popup -n"
