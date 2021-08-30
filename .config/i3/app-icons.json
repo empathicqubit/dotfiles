@@ -4,6 +4,7 @@
     "chromium-browser": "chrome",
     "chrome": "chrome",
     "google-chrome": "chrome",
+    "Blueman-manager": "bluetooth",
     "x-terminal-emulator": "terminal",
     "Xfce4-terminal": "terminal",
     "keepassxc": "key",
