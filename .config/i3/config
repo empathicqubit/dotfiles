@@ -30,6 +30,7 @@ for_window [title="Battery Warning"] sticky enable
 # they are included here as an example. Modify as you see fit.
 
 set $i3lockwall i3lock -i ~/lockwall.png -t
+bindsym $mod+semicolon exec $i3lockwall
 
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
 # screen before suspend. Use loginctl lock-session to lock your screen.
