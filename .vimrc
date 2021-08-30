@@ -43,6 +43,7 @@ Plug 'pearofducks/ansible-vim'
 " ========================
 Plug 'ofavre/vimcat', { 'do': 'make -j$(nproc)' }
 Plug 'empathicqubit/i3-layout-manager'
+Plug 'rjekker/i3-battery-popup'
 " ========================
 " END OF NON-VIM PLUGINS
 
