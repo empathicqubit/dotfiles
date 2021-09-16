@@ -21,12 +21,15 @@ font pango:monospace 8
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
 #font pango:DejaVu Sans Mono 8
 
+# Window colors
 for_window [class="Firefox"] title_format "<span background='#eda302'>%title</span>"
 for_window [class="(?i)office"] title_format "<span background='#111166'>%title</span>"
 for_window [class="Code"] title_format "<span background='#111166'>%title</span>"
 for_window [class="keepassxc"] title_format "<span background='#009900'>%title</span>"
 
-exec_always --no-startup-id "bash ~/.config/i3/wallpaper.sh"
+for_window [class="Firefox" floating] sticky enable
+
+# Misc window rules
 
 exec --no-startup-id "~/.vim/plugged/i3-battery-popup/i3-battery-popup -n"
 for_window [title="Battery Warning"] sticky enable
@@ -41,13 +44,15 @@ bindsym $mod+semicolon exec $i3lockwall
 # screen before suspend. Use loginctl lock-session to lock your screen.
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 
+exec_always --no-startup-id "bash ~/.config/i3/wallpaper.sh"
+
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
 exec --no-startup-id nm-applet
 
 exec --no-startup-id blueman-tray
 
-exec --no-startup-id "setxkbmap us -variant dvorak-intl"
+exec --no-startup-id "setxkbmap de -variant neo"
 
 exec --no-startup-id "gxkb"
 
@@ -62,7 +67,7 @@ exec_always --no-startup-id exec i3-workspace-names-daemon
 
 bindsym $mod+F1 exec setxkbmap us -variant dvorak-intl
 bindsym $mod+F2 exec setxkbmap us
-bindsym $mod+F3 exec setxkbmap de
+bindsym $mod+F4 exec setxkbmap de -variant neo
 
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
