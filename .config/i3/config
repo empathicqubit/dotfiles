@@ -37,12 +37,11 @@ for_window [title="Battery Warning"] sticky enable
 # The combination of xss-lock, nm-applet and pactl is a popular choice, so
 # they are included here as an example. Modify as you see fit.
 
-set $i3lockwall i3lock -i ~/lockwall.png -t
-bindsym $mod+semicolon exec $i3lockwall
+bindsym $mod+semicolon exec xautolock -locknow
 
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
 # screen before suspend. Use loginctl lock-session to lock your screen.
-exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
+exec --no-startup-id xss-lock --transfer-sleep-lock -- xautolock -locknow
 
 exec_always --no-startup-id "bash ~/.config/i3/wallpaper.sh"
 
@@ -59,6 +58,8 @@ exec --no-startup-id "gxkb"
 exec --no-startup-id "pasystray"
 
 exec --no-startup-id "xbattbar -c"
+
+exec --no-startup-id "xautolock -time 5 -locker 'i3lock -i ~/lockwall.png -t'"
 
 bindsym $mod+m exec --no-startup-id "~/.vim/plugged/i3-layout-manager/layout_manager.sh"
 bindsym $mod+d exec --no-startup-id "i3-dmenu-desktop"
