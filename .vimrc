@@ -71,7 +71,7 @@ function! _GitDiffWindowSetup() abort
     setlocal buftype=nofile 
     setlocal bufhidden=hide 
     setlocal noswapfile
-    .!git diff && git diff --staged
+    .!git diff -b && git diff --staged -b
     setlocal filetype=diff
 endfunction
 
