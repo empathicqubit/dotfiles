@@ -38,6 +38,7 @@ Plug 'junegunn/rainbow_parentheses.vim'
 Plug 'mzlogin/vim-smali'
 "Plug 'derekwyatt/vim-scala'
 Plug 'pearofducks/ansible-vim'
+Plug 'puremourning/vimspector'
 
 " NOT ACTUALLY VIM PLUGINS
 " ========================
@@ -48,6 +49,8 @@ Plug 'rjekker/i3-battery-popup'
 " END OF NON-VIM PLUGINS
 
 call plug#end()
+
+let g:vimspector_base_dir=$HOME.'/.vim/plugged/vimspector'
 
 let g:javascript_plugin_jsdoc = 1
 
