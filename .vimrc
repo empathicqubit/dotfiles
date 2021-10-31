@@ -145,6 +145,16 @@ endif
 
 let mapleader=","
 
+map <Leader>dl :call vimspector#Launch()<CR>
+map <Leader>dn :call vimspector#StepOver()<CR>
+map <Leader>dc :call vimspector#Continue()<CR>
+map <Leader>di :call vimspector#StepInto()<CR>
+map <Leader>do :call vimspector#StepOut()<CR>
+map <Leader>dr :VimspectorReset<CR>
+map <Leader>ds :call vimspector#Stop()<CR>
+map <Leader>dp :call vimspector#Pause()<CR>
+map <Leader>db :call vimspector#ToggleBreakpoint()<CR>
+
 map <Leader>cz :ColorHighlight<CR>
 map <Leader>ev :e $HOME/.vimrc<CR>
 map <Leader>rv :source $HOME/.vimrc<CR>
