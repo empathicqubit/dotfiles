@@ -71,6 +71,7 @@ exec_always --no-startup-id exec i3-workspace-names-daemon
 bindsym $mod+F1 exec setxkbmap us -variant dvorak-intl
 bindsym $mod+F2 exec setxkbmap us
 bindsym $mod+F4 exec setxkbmap de -variant neo
+bindsym $mod+F7 exec --no-startup-id "~/.config/i3/screen-switcher.sh"
 
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
