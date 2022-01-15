@@ -141,7 +141,7 @@ bindsym $mod+backslash layout toggle split
 bindsym $mod+t sticky toggle
 
 # toggle tiling / floating
-bindsym $mod+Shift+6 floating toggle
+bindsym $mod+Shift+f floating toggle
 
 bindsym $mod+bracketright move scratchpad
 bindsym $mod+Shift+bracketright [workspace=__focused__] move scratchpad
