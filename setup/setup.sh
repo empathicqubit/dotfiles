@@ -123,50 +123,52 @@ else
         sudo dpkg -i "$CACHEDIR/noto-emoji.deb"
         sudo apt install -f
     elif ((IS_BREW)) ; then
-        brew install python python@2 direnv ruby vim nodejs pstree bash-completion ag neovim pyenv
+        brew install ipython direnv ruby vim nodejs pstree bash-completion ag neovim pyenv jq coreutils findutils
     fi
 
-    ((USE_NPM)) && sudo npm install -g pnpm
-    ((USE_NPM)) && sudo pnpm add -g tern
+    ((USE_NPM && !IS_BREW)) && sudo npm install -g pnpm
+    ((USE_NPM && !IS_BREW)) && sudo pnpm add -g tern
 fi
 
-# Find package.jsons and reinstall all node packages
-find "$CURDIR" -iname package.json | while read FILENAME ; do
-    PACKAGEDIR="$(dirname "$FILENAME")"
-    if [[ -e "$PACKAGEDIR/node_modules" ]] ; then
-        continue
-    fi
+if ((!IS_BREW)) ; then
+    # Find package.jsons and reinstall all node packages
+    find "$CURDIR" -iname package.json | while read FILENAME ; do
+        PACKAGEDIR="$(dirname "$FILENAME")"
+        if [[ -e "$PACKAGEDIR/node_modules" ]] ; then
+            continue
+        fi
 
-    (
-        cd "$PACKAGEDIR"
-        yarn install
-    )
-done
+        (
+            cd "$PACKAGEDIR"
+            yarn install
+        )
+    done
 
-# For neovim
-pyenv update
+    # For neovim
+    pyenv update
 
-pyenv install 2.7.11
-pyenv install 3.4.4
+    pyenv install 2.7.11
+    pyenv install 3.4.4
 
-pyenv virtualenv 2.7.11 neovim2
-pyenv virtualenv 3.4.4 neovim3
+    pyenv virtualenv 2.7.11 neovim2
+    pyenv virtualenv 3.4.4 neovim3
 
-pyenv activate neovim2
-pip install neovim
-PYPATH2=$(pyenv which python)
+    pyenv activate neovim2
+    pip install neovim
+    PYPATH2=$(pyenv which python)
 
-pyenv activate neovim3
-pip install neovim
-PYPATH3=$(pyenv which python)
+    pyenv activate neovim3
+    pip install neovim
+    PYPATH3=$(pyenv which python)
 
-pip3 install --upgrade --user i3-workspace-names-daemon
+    pip3 install --upgrade --user i3-workspace-names-daemon
 
-pip3 install --upgrade --user neovim 
-pip install --upgrade --user neovim websocket-client sexpdata
-vim '+PlugInstall' '+qall!'
+    pip3 install --upgrade --user neovim 
+    pip install --upgrade --user neovim websocket-client sexpdata
+    vim '+PlugInstall' '+qall!'
 
-echo "$PYPATH2"
-echo "$PYPATH3"
+    echo "$PYPATH2"
+    echo "$PYPATH3"
 
-curl https://sdk.cloud.google.com | bash
+    curl https://sdk.cloud.google.com | bash
+fi
