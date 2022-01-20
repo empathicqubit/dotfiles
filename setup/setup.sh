@@ -123,7 +123,7 @@ else
         sudo dpkg -i "$CACHEDIR/noto-emoji.deb"
         sudo apt install -f
     elif ((IS_BREW)) ; then
-        brew install ipython direnv ruby vim nodejs pstree bash-completion ag neovim pyenv jq coreutils findutils
+        brew install ipython direnv ruby vim nodejs pstree bash-completion ag neovim pyenv jq coreutils findutils fzf
     fi
 
     ((USE_NPM && !IS_BREW)) && sudo npm install -g pnpm
