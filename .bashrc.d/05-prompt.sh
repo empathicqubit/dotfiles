@@ -115,20 +115,24 @@ function git_prompty {
     local SOMETHING
     local UPSTREAM
     local FAILURE
+    local STATUS
+    local TMP
 
-    IFS= read -r UPSTREAM < <(git rev-list --count '@{upstream}..HEAD' 2>/dev/null)
-    FAILURE=$?
-    if ((FAILURE)) ; then
+    IFS= read -r -d '' STATUS < <( git status --porcelain 2>/dev/null || echo 'FATAL')
+
+    if [[ "$STATUS" =~ ^FATAL ]] ; then
         return
     fi
 
+    IFS= read -r -d '' OUTPUT < <(grep -o '^..' <<< "$STATUS")
+
     echo -n "\[${GREEN}\][ git: "
 
+    IFS= read -r UPSTREAM < <(git rev-list --count '@{upstream}..HEAD' 2>/dev/null)
     if ((UPSTREAM > 0)) ; then
         echo -n "${PURPLE}ahead ${UPSTREAM} ${GREEN}| "
     fi
 
-    IFS= read -r -d '' OUTPUT < <( git status --porcelain 2>/dev/null | grep -o '^..' )
     if [[ "$OUTPUT" =~ "M" ]]; then
         SOMETHING=1
         echo -n "\[${YELLOW}\]~ "
