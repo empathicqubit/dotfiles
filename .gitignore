@@ -8,7 +8,15 @@
 !/.bashrc.d/**
 
 !/.config/
-!/.config/**
+
+!/.config/i3/
+!/.config/i3/**
+
+!/.config/i3-layout-manager/
+!/.config/i3-layout-manager/**
+
+!/.config/xfce4/
+!/.config/xfce4/**
 
 !/.tmux/
 !/.tmux/*
