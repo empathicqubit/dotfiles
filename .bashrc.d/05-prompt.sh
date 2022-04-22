@@ -114,20 +114,21 @@ function git_prompty {
     local OUTPUT
     local SOMETHING
     local UPSTREAM
+    local FAILURE
 
-    if [ "$(git rev-parse --is-inside-work-tree 2>/dev/null)" != "true" ] ; then
+    IFS= read -r UPSTREAM < <(git rev-list --count '@{upstream}..HEAD' 2>/dev/null)
+    FAILURE=$?
+    if ((FAILURE)) ; then
         return
     fi
 
-    IFS= read -r OUTPUT < <(git status --porcelain | grep -o '^..')
-
     echo -n "\[${GREEN}\][ git: "
 
-    IFS= read -r UPSTREAM < <(git rev-list '@{upstream}..HEAD' | wc -l)
     if ((UPSTREAM > 0)) ; then
         echo -n "${PURPLE}ahead ${UPSTREAM} ${GREEN}| "
     fi
 
+    IFS= read -r -d '' OUTPUT < <( git status --porcelain 2>/dev/null | grep -o '^..' )
     if [[ "$OUTPUT" =~ "M" ]]; then
         SOMETHING=1
         echo -n "\[${YELLOW}\]~ "
