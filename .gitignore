@@ -4,14 +4,23 @@
 
 # Folders
 
+!/.bashrc.d/
 !/.bashrc.d/**
+
+!/.config/
 !/.config/**
 
+!/.tmux/
 !/.tmux/*
 !/.tmux/plugins/tpm/**
 
+!/.vim/
 !/.vim/**
+
+!/script/
 !/script/**
+
+!/setup/
 !/setup/**
 
 # Files
@@ -28,10 +37,8 @@
 !/.vimrc
 !/.vsvimrc
 
-!yarn.lock
-!.gitignore
-
-!*/
+!/yarn.lock
+!/.gitignore
 
 # Then the generic excludes after
 
