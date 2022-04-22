@@ -17,7 +17,7 @@ function getmac {
 }
 
 function find {
-    if which gfind 2>&1 >/dev/null ; then
+    if which gfind &>/dev/null ; then
         gfind "$@"
     else
         command find "$@"
@@ -25,7 +25,7 @@ function find {
 }
 
 function readlink {
-    if which greadlink 2>&1 >/dev/null ; then
+    if which greadlink &>/dev/null ; then
         greadlink "$@"
     else
         command readlink "$@"

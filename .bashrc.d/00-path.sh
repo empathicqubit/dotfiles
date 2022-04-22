@@ -5,12 +5,12 @@ function addpythonpath () {
     local PY3PATH
     local PYPATH
 
-    if which python 2>&1 >/dev/null ; then
+    if which python &>/dev/null ; then
         PYPATH="$(python -c 'import sys ; print(sys.path)' | tr "'" '"' | jq -r ".[] | select(contains(\"$HOME\"))" | awk -F'/lib/' '{print $1}')/bin"
         PATH="$PATH:$PYPATH"
     fi
 
-    if which python3 2>&1 >/dev/null ; then
+    if which python3 &>/dev/null ; then
         PY3PATH="$(python3 -c 'import sys ; print(sys.path)' | tr "'" '"' | jq -r ".[] | select(contains(\"$HOME\"))" | awk -F'/lib/' '{print $1}')/bin"
         PATH="$PATH:$PY3PATH"
     fi
