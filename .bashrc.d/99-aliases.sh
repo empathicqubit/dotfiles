@@ -1,7 +1,7 @@
 #! /bin/bash
 # Random aliases without a home
 function xo {
-    if which open 2>&1 >/dev/null ; then
+    if which open &>/dev/null ; then
         open "$@"
     else
         xdg-open "$@"
@@ -33,7 +33,7 @@ Syntax: ${FUNCNAME[0]} <PROFILE NUMBER>
 }
 
 function yarn {
-    if which yarnpkg 2>&1 >/dev/null ; then
+    if which yarnpkg &>/dev/null ; then
         yarnpkg "$@"
     else
         command yarn "$@"
@@ -41,7 +41,7 @@ function yarn {
 }
 
 function vim {
-    if which nvim 2>&1 >/dev/null ; then
+    if which nvim &>/dev/null ; then
         nvim "$@"
     else
         command vim "$@"
@@ -58,7 +58,7 @@ function dotnet {
 
 alias ...='cd ..'
 
-whichrm=$(which grm rm | head -1)
+whichrm=$(which grm rm 2>/dev/null | head -1)
 
 function rm {
     $whichrm -I "$@"

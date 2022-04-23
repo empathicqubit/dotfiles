@@ -10,9 +10,11 @@
 [mergetool.kdiff3]
     path="C:/Program Files/KDiff3/kdiff3.exe"
     trustExitCode=false
+[mergetool "vscode"]
+  cmd = code --wait $MERGED
 [merge]
     renamelimit=24000
-    tool=fugitive
+    tool=vscode
 [branch]
     autosetuprebase=always
 [bash]

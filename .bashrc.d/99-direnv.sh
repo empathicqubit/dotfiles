@@ -19,8 +19,9 @@ direnv() {
 }
 
 __precmd_direnv_hook() {
-    which direnv 2>&1 1>/dev/null || return
-    eval "$(direnv export bash)"
+    which direnv 2>&1 >/dev/null || return
+    IFS= read -r DIRENV < <(direnv export bash)
+    eval "$DIRENV"
 }
 
 __main() {
