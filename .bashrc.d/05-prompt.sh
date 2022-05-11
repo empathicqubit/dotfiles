@@ -9,14 +9,15 @@ function tmux_set_title {
 
 
 function middle_truncate {
-    local str="$1"
-    local max=$(($2))
-    local len=${#str}
+    local max=$(($1))
 
     local mid
     local rem
     local left
     local right
+
+    IFS= read -r str
+    local len=${#str}
 
     if ((len <= max)) ; then
         echo -n "$str"
@@ -74,8 +75,14 @@ fi
 
 function __preexec_tmux_title { 
     local this_command="$1"
+    local TRUNC_PWD
+    local TRUNC_CMD
 
-    tmux_set_title "$(middle_truncate "$(basename "$PWD")" 8) - $(middle_truncate "$this_command" 12)"
+    IFS= read -r TRUNC_PWD < <(basename "$PWD")
+    IFS= read -r TRUNC_PWD < <(middle_truncate 8 <<< "$TRUNC_PWD")
+    IFS= read -r TRUNC_CMD < <(middle_truncate 12 <<< "$this_command")
+
+    tmux_set_title "$TRUNC_PWD - $TRUNC_CMD"
 }
 
 add_preexec_function __preexec_tmux_title
@@ -87,10 +94,15 @@ function __precmd_ran_once {
 add_precmd_function __precmd_ran_once
 
 function __precmd_tmux_title {
+    local TRUNC_PWD
+
     if [[ "$PWD" == "$HOME" ]] ; then
         tmux_set_title ""
     else
-        tmux_set_title "$(middle_truncate "$(basename "$PWD")" 20)"
+        IFS= read -r TRUNC_PWD < <(basename "$PWD")
+        IFS= read -r TRUNC_PWD < <(middle_truncate 20 <<< "$TRUNC_PWD")
+
+        tmux_set_title "$TRUNC_PWD"
     fi
 }
 
@@ -102,16 +114,21 @@ function git_prompty {
     local OUTPUT
     local SOMETHING
     local UPSTREAM
+    local FAILURE
+    local STATUS
+    local TMP
 
-    if [ "$(git rev-parse --is-inside-work-tree 2>/dev/null)" != "true" ] ; then
+    IFS= read -r -d '' STATUS < <( git status --porcelain 2>/dev/null || echo 'FATAL')
+
+    if [[ "$STATUS" =~ ^FATAL ]] ; then
         return
     fi
 
-    OUTPUT="$(git status --porcelain | grep -o '^..')"
+    IFS= read -r -d '' OUTPUT < <(grep -o '^..' <<< "$STATUS")
 
     echo -n "\[${GREEN}\][ git: "
 
-    UPSTREAM=$(git rev-list '@{upstream}..HEAD' | wc -l)
+    IFS= read -r UPSTREAM < <(git rev-list --count '@{upstream}..HEAD' 2>/dev/null)
     if ((UPSTREAM > 0)) ; then
         echo -n "${PURPLE}ahead ${UPSTREAM} ${GREEN}| "
     fi

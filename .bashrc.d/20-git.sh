@@ -5,42 +5,26 @@ function git {
         git log @{upstream}..
     fi
 
-    local CAPTURE=
-
-    # This causes git to behave differently, so we only do it when we need it.
-    if [ ! -z "$CAPTURE" ] ; then
-        local GITOUT
-        IFS= read -r GITOUT < <(mktemp)
-
-        local GITERR
-        IFS= read -r GITERR < <(mktemp)
-
-        command git "$@" > >(tee "$GITOUT") 2> >(tee "$GITERR" >&2)
-
-        rm "$GITOUT"
-        rm "$GITERR"
-    else
-        local HASHES=
-        local PULLSTATUS=
-        if [ "$1" == "pull" ] ; then
-            local SCRIPTTMP="$(mktemp)"
-            local SCRIPTCOMMAND=("script" "--return" "-c" "git $*" "$SCRIPTTMP")
-            if [ "$(type -t script)" == "file" ] ; then
-                SCRIPTCOMMAND=("script" "-q" "$SCRIPTTMP" "git" "$@")
-            fi
-
-            "${SCRIPTCOMMAND[@]}"
-
-            IFS= read -r HASHES < <(grep -i -o -E '[0-9a-f]+\.\.[0-9a-f]+' "$SCRIPTTMP")
-
-            rm "$SCRIPTTMP"
-
-            if [ ! -z "$HASHES" ] ; then
-                git diff "$HASHES"
-            fi
-        else
-            command git "$@"
+    local HASHES=
+    local PULLSTATUS=
+    if [ "$1" == "pull" ] && [ "$OSTYPE" != "msys" ] ; then
+        local SCRIPTTMP="$(mktemp)"
+        local SCRIPTCOMMAND=("script" "--return" "-c" "git $*" "$SCRIPTTMP")
+        if [ "$(type -t script)" == "file" ] ; then
+            SCRIPTCOMMAND=("script" "-q" "$SCRIPTTMP" "git" "$@")
         fi
+
+        "${SCRIPTCOMMAND[@]}"
+
+        IFS= read -r HASHES < <(grep -i -o -E '[0-9a-f]+\.\.[0-9a-f]+' "$SCRIPTTMP")
+
+        rm "$SCRIPTTMP"
+
+        if [ ! -z "$HASHES" ] ; then
+            git diff "$HASHES"
+        fi
+    else
+        command git "$@"
     fi
 }
 

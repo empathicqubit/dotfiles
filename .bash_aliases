@@ -17,7 +17,7 @@ function getmac {
 }
 
 function find {
-    if which gfind 2>&1 >/dev/null ; then
+    if which gfind &>/dev/null ; then
         gfind "$@"
     else
         command find "$@"
@@ -25,7 +25,7 @@ function find {
 }
 
 function readlink {
-    if which greadlink 2>&1 >/dev/null ; then
+    if which greadlink &>/dev/null ; then
         greadlink "$@"
     else
         command readlink "$@"
@@ -70,15 +70,17 @@ function wrap_alias() {
   local alias_name="$1"
   local aliased_command="$2"
   local alias_arguments="$3"
-  local num_alias_arguments=$(echo "$alias_arguments" | wc -w)
+  local num_alias_arguments
+  local completion
+  IFS= read -r num_alias_arguments < <(wc -w <<< "$alias_arguments")
 
   # The completion currently being used for the aliased command.
-  local completion=$(complete -p $aliased_command 2> /dev/null)
+  IFS= read -r completion < <(complete -p $aliased_command 2>/dev/null)
 
   # Only a completer based on a function can be wrapped so look for -F
   # in the current completion. This check will also catch commands
   # with no completer for which $completion will be empty.
-  echo $completion | grep -q -- -F || return 0
+  grep -q -- -F <<< "$completion" || return 0
 
   local namespace=alias_completion::
 
