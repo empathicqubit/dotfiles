@@ -1,5 +1,5 @@
 #! /bin/bash
-export PATH="$PATH:$HOME/script:$HOME/.vim/plugged/github:$HOME/bin:$HOME/.local/bin:~/.pyenv/bin:$HOME/c64-devkit/bin:/usr/lib/goattracker:$HOME/.nix-profile/bin:$HOME/google-cloud-sdk/bin"
+export PATH="$PATH:$HOME/script:$HOME/.vim/plugged/github:$HOME/bin:$HOME/.local/bin:~/.pyenv/bin:$HOME/c64-devkit/bin:/usr/lib/goattracker:$HOME/.nix-profile/bin:$HOME/google-cloud-sdk/bin:$HOME/go/bin:$HOME/flutter/bin"
 
 function addpythonpath () {
     local PY3PATH
