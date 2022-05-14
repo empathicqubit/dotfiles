@@ -2,6 +2,10 @@
     name=empathicqubit
     email=empathicqubit@entan.gl
 
+[diff "bin"]
+    textconv = xxd
+[diff]
+    colorMoved=zebra
 [core]
     autoclrf=input
     trustctime=false
