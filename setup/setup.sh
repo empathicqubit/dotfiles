@@ -88,6 +88,9 @@ setuplinks "$CURDIR/../.config" "$HOME/.config"
 mkdir -p "$HOME/.config/xfce4"
 setuplinks "$CURDIR/../.config/xfce4" "$HOME/.config/xfce4"
 
+mkdir -p "$HOME/.config/dark-mode-notify"
+setuplinks "$CURDIR/../.config/dark-mode-notify" "$HOME/.config/dark-mode-notify"
+
 setuplink "$CURDIR/../.vim" "$HOME/vimfiles"
 
 setuplink "$CURDIR/../.nvim" "$HOME/.config/nvim"
@@ -130,6 +133,8 @@ else
     ((USE_NPM && !IS_BREW)) && sudo pnpm add -g tern
 fi
 
+vim '+PlugInstall' '+qall!'
+
 if ((!IS_BREW)) ; then
     # Find package.jsons and reinstall all node packages
     find "$CURDIR" -iname package.json | while read FILENAME ; do
@@ -165,10 +170,12 @@ if ((!IS_BREW)) ; then
 
     pip3 install --upgrade --user neovim 
     pip install --upgrade --user neovim websocket-client sexpdata
-    vim '+PlugInstall' '+qall!'
 
     echo "$PYPATH2"
     echo "$PYPATH3"
 
     curl https://sdk.cloud.google.com | bash
+else
+    cd $HOME/.vim/plugged/dark-mode-notify
+    sudo make install
 fi

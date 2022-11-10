@@ -15,6 +15,9 @@
 !/.config/i3-layout-manager/
 !/.config/i3-layout-manager/**
 
+!/.config/dark-mode-notify*/
+!/.config/dark-mode-notify*/**
+
 !/.config/xfce4/
 !/.config/xfce4/**
 

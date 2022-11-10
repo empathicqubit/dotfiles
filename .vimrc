@@ -6,6 +6,7 @@ Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash install.s
 
 Plug 'junegunn/fzf', { 'do': './install --bin' }
 Plug 'empathicqubit/fzf.vim'
+Plug 'bouk/dark-mode-notify', { 'branch': 'next' }
 
 if has('nvim')
     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
