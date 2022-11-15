@@ -39,13 +39,15 @@ for_window [title="Battery Warning"] sticky enable
 
 bindsym $mod+semicolon exec xautolock -locknow
 
+bindsym $mod+Shift+e exec code ~/.config/i3
+
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
 # screen before suspend. Use loginctl lock-session to lock your screen.
 exec --no-startup-id xss-lock --transfer-sleep-lock -- xautolock -locknow
 
 exec_always --no-startup-id "bash ~/.config/i3/wallpaper.sh"
 
-exec --no-startup-id "polybar-git -r -c .config/i3/polybar example"
+exec --no-startup-id "polybar -r -c .config/i3/polybar example"
 
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
