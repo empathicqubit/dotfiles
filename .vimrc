@@ -132,6 +132,7 @@ set directory=$HOME/.vimswap//
 set modeline
 set secure
 set autoread
+set number
 
 set laststatus=2
 
