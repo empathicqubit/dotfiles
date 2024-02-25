@@ -65,6 +65,8 @@ exec --no-startup-id "xbattbar -c"
 
 exec --no-startup-id "xautolock -time 5 -corners ---- -locker 'i3lock -i ~/lockwall.png -t'"
 
+exec_always --no-startup-id autorandr docked
+
 bindsym $mod+m exec --no-startup-id "~/.vim/plugged/i3-layout-manager/layout_manager.sh"
 bindsym $mod+d exec --no-startup-id "i3-dmenu-desktop"
 
