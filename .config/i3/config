@@ -41,6 +41,8 @@ bindsym $mod+semicolon exec xautolock -locknow
 
 bindsym $mod+Shift+e exec code ~/.config/i3
 
+bindsym Print exec xfce4-screenshooter
+
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
 # screen before suspend. Use loginctl lock-session to lock your screen.
 exec --no-startup-id xss-lock --transfer-sleep-lock -- xautolock -locknow
