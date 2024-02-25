@@ -114,7 +114,7 @@ else
         wget -qO - https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg | gpg --dearmor | sudo dd of=/etc/apt/trusted.gpg.d/vscodium.gpg
         echo 'deb https://paulcarroty.gitlab.io/vscodium-deb-rpm-repo/debs/ vscodium main' | sudo tee --append /etc/apt/sources.list.d/vscodium.list
 
-        curl -fsSL https://deb.nodesource.com/setup_15.x | sudo -E bash -
+        curl -fsSL https://deb.nodesource.com/setup_19.x | sudo -E bash -
 
         sudo apt update
         sudo apt install python3-pip fonts-powerline direnv vim-nox ruby silversearcher-ag nodejs jq codium pasystray gxkb rofi xdotool x11-xserver-utils indent libanyevent-i3-perl feh tk i3lock xautolock fonts-noto fonts-material-design-icons-iconfont fonts-materialdesignicons-webfont polybar fonts-font-awesome i3 curl
