@@ -28,7 +28,7 @@ getWallpaper(){
 		tries=$((tries+1))
         [[ -z "$1" ]] || echo "that didn't work, let's try again"
         echo "getting wallpaper..."
-        curl -s -A "/u/xereeto's wallpaper bot" https://www.reddit.com/r/`grep -v "#" ~/.wallpapers/subreddits | shuf -n 1`/.json | python -m json.tool | grep -P '\"url\": \"htt(p|ps):\/\/((i.+)?imgur.com\/(?!.\/)[A-z0-9]{5,7}|i.redd.it|staticflickr.com)' | addJpegIfImgur | shuf -n 1 - | xargs wget --quiet -O ~/.wallpapers/$time.jpg 2>/dev/null
+        curl -s -A "/u/xereeto's wallpaper bot" https://www.reddit.com/r/`grep -v "#" ~/.wallpapers/subreddits | shuf -n 1`/.json | python3 -m json.tool | grep -P '\"url\": \"htt(p|ps):\/\/((i.+)?imgur.com\/(?!.\/)[A-z0-9]{5,7}|i.redd.it|staticflickr.com)' | addJpegIfImgur | shuf -n 1 - | xargs wget --quiet -O ~/.wallpapers/$time.jpg 2>/dev/null
         width=$(identify -format %w ~/.wallpapers/$time.jpg) 2>/dev/null
         height=$(identify -format %h ~/.wallpapers/$time.jpg) 2>/dev/null
         [[ "$width" -ge 1920 && "$height" -ge 1050 ]] || startOver  
