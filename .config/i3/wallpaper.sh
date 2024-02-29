@@ -5,7 +5,6 @@
 # author:   xereeto
 # licence:  wtfpl
 
-time=`date +%s`
 tries=0
 trap "exit 1" TERM
 export TOP_PID=$$
@@ -20,19 +19,25 @@ addJpegIfImgur(){
     done
 }
 startOver(){
-    rm "~/.wallpapers/$time.jpg" 2>/dev/null
     getWallpaper "shitsfucked"
 }
+wallargs=()
 getWallpaper(){
-		if [[ $tries > 10 ]]; then echo "too many failed attempts, exiting"; kill -s TERM $TOP_PID; fi 
-		tries=$((tries+1))
-        [[ -z "$1" ]] || echo "that didn't work, let's try again"
-        echo "getting wallpaper..."
-        curl -s -A "/u/xereeto's wallpaper bot" https://www.reddit.com/r/`grep -v "#" ~/.wallpapers/subreddits | shuf -n 1`/.json | python3 -m json.tool | grep -P '\"url\": \"htt(p|ps):\/\/((i.+)?imgur.com\/(?!.\/)[A-z0-9]{5,7}|i.redd.it|staticflickr.com)' | addJpegIfImgur | shuf -n 1 - | xargs wget --quiet -O ~/.wallpapers/$time.jpg 2>/dev/null
-        width=$(identify -format %w ~/.wallpapers/$time.jpg) 2>/dev/null
-        height=$(identify -format %h ~/.wallpapers/$time.jpg) 2>/dev/null
-        [[ "$width" -ge 1920 && "$height" -ge 1050 ]] || startOver  
-        feh --bg-fill ~/.wallpapers/$time.jpg 2>/dev/null || startOver 
+    local time=`date +%s-%N`
+            if [[ $tries > 10 ]]; then echo "too many failed attempts, exiting"; kill -s TERM $TOP_PID; fi 
+            tries=$((tries+1))
+    [[ -z "$1" ]] || echo "that didn't work, let's try again"
+    echo "getting wallpaper..."
+    curl -s -A "/u/xereeto's wallpaper bot" https://www.reddit.com/r/`grep -v "#" ~/.wallpapers/subreddits | shuf -n 1`/.json | python3 -m json.tool | grep -P '\"url\": \"htt(p|ps):\/\/((i.+)?imgur.com\/(?!.\/)[A-z0-9]{5,7}|i.redd.it|staticflickr.com)' | addJpegIfImgur | shuf -n 1 - | xargs wget --quiet -O ~/.wallpapers/$time.jpg 2>/dev/null
+    width=$(identify -format %w ~/.wallpapers/$time.jpg) 2>/dev/null
+    height=$(identify -format %h ~/.wallpapers/$time.jpg) 2>/dev/null
+    [[ "$width" -ge 1920 && "$height" -ge 1050 ]] || startOver  
+    wallargs+=("--bg-fill" "$HOME/.wallpapers/$time.jpg")
+    tries=0
 }
-getWallpaper
+NUMACTIVE=$(xrandr --listactivemonitors | head -1 | awk '{print $NF}')
+for (( i=0; i<NUMACTIVE; i++)) ; do
+    getWallpaper
+done
+feh "${wallargs[@]}" # 2>/dev/null || startOver 
 echo "hope you like your new wp"
