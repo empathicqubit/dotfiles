@@ -47,7 +47,7 @@ bindsym Print exec xfce4-screenshooter
 # screen before suspend. Use loginctl lock-session to lock your screen.
 exec --no-startup-id xss-lock --transfer-sleep-lock -- xautolock -locknow
 
-exec_always --no-startup-id "bash ~/.config/i3/wallpaper.sh"
+exec_always --no-startup-id "~/.config/i3/wallpaper.sh"
 
 exec --no-startup-id "polybar -r -c .config/i3/polybar example"
 

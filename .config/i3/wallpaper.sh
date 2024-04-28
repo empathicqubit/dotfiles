@@ -21,18 +21,24 @@ addJpegIfImgur(){
 startOver(){
     getWallpaper "shitsfucked"
 }
+CACHE_FOLDER="$HOME/.cache/xereeto-wallpaper"
+CONFIG_FOLDER="$HOME/.config/xereeto-wallpaper"
 wallargs=()
 getWallpaper(){
     local time=`date +%s-%N`
-            if [[ $tries > 10 ]]; then echo "too many failed attempts, exiting"; kill -s TERM $TOP_PID; fi 
-            tries=$((tries+1))
+    mkdir -p "$CACHE_FOLDER"
+    mkdir -p "$CONFIG_FOLDER"
+    [[ -e "$CONFIG_FOLDER/subreddits" ]] || { echo "Please create $CONFIG_FOLDER/subreddits" ; exit 1 ; }
+    local this_wallpaper="$CACHE_FOLDER/$time.jpg"
+    if [[ $tries > 10 ]]; then echo "too many failed attempts, exiting"; kill -s TERM $TOP_PID; fi 
+    tries=$((tries+1))
     [[ -z "$1" ]] || echo "that didn't work, let's try again"
     echo "getting wallpaper..."
-    curl -s -A "/u/xereeto's wallpaper bot" https://www.reddit.com/r/`grep -v "#" ~/.wallpapers/subreddits | shuf -n 1`/.json | python3 -m json.tool | grep -P '\"url\": \"htt(p|ps):\/\/((i.+)?imgur.com\/(?!.\/)[A-z0-9]{5,7}|i.redd.it|staticflickr.com)' | addJpegIfImgur | shuf -n 1 - | xargs wget --quiet -O ~/.wallpapers/$time.jpg 2>/dev/null
-    width=$(identify -format %w ~/.wallpapers/$time.jpg) 2>/dev/null
-    height=$(identify -format %h ~/.wallpapers/$time.jpg) 2>/dev/null
+    curl -s -A "/u/xereeto's wallpaper bot" https://www.reddit.com/r/`grep -v "#" "$CONFIG_FOLDER/subreddits" | shuf -n 1`/.json | python3 -m json.tool | grep -P '\"url\": \"htt(p|ps):\/\/((i.+)?imgur.com\/(?!.\/)[A-z0-9]{5,7}|i.redd.it|staticflickr.com)' | addJpegIfImgur | shuf -n 1 - | xargs wget --quiet -O "$this_wallpaper" 2>/dev/null
+    width=$(identify -format %w "$this_wallpaper") 2>/dev/null
+    height=$(identify -format %h "$this_wallpaper") 2>/dev/null
     [[ "$width" -ge 1920 && "$height" -ge 1050 ]] || startOver  
-    wallargs+=("--bg-fill" "$HOME/.wallpapers/$time.jpg")
+    wallargs+=("--bg-fill" "$this_wallpaper")
     tries=0
 }
 NUMACTIVE=$(xrandr --listactivemonitors | head -1 | awk '{print $NF}')
