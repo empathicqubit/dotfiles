@@ -117,7 +117,7 @@ else
         curl -fsSL https://deb.nodesource.com/setup_19.x | sudo -E bash -
 
         sudo apt update
-        sudo apt install python3-pip python3-configobj fonts-powerline direnv vim-nox ruby silversearcher-ag nodejs jq codium pasystray gxkb rofi xdotool x11-xserver-utils indent libanyevent-i3-perl feh tk i3lock xautolock fonts-noto fonts-material-design-icons-iconfont fonts-materialdesignicons-webfont polybar fonts-font-awesome i3 curl autorandr playerctl xfce4-screenshooter imagemagick diodon fcitx-bin fcitx-mozc fcitx-imlist
+        sudo apt install python3-pip python3-configobj fonts-powerline direnv vim-nox ruby silversearcher-ag nodejs jq codium pasystray gxkb rofi xdotool x11-xserver-utils indent libanyevent-i3-perl feh tk i3lock xautolock fonts-noto fonts-material-design-icons-iconfont fonts-materialdesignicons-webfont polybar fonts-font-awesome i3 curl playerctl xfce4-screenshooter imagemagick diodon fcitx-bin fcitx-mozc fcitx-imlist
 
         curlorwget https://releases.hyper.is/download/deb > "$CACHEDIR/hyper.deb"
         sudo dpkg -i "$CACHEDIR/hyper.deb" || sudo apt install -f
