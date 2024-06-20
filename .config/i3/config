@@ -34,18 +34,16 @@ for_window [class="Firefox" floating] sticky enable
 exec --no-startup-id "~/.vim/plugged/i3-battery-popup/i3-battery-popup -n"
 for_window [title="Battery Warning"] sticky enable
 
-# The combination of xss-lock, nm-applet and pactl is a popular choice, so
-# they are included here as an example. Modify as you see fit.
+bindsym $mod+semicolon exec xfce4-screensaver-command --activate
 
-bindsym $mod+semicolon exec xautolock -locknow
+# Cannabilize some xfce services
+exec --no-startup-id xfsettingsd
+exec --no-startup-id xfce4-screensaver
+exec --no-startup-id xfce4-power-manager --daemon
 
 bindsym $mod+Shift+e exec code ~/.config/i3
 
 bindsym Print exec xfce4-screenshooter
-
-# xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
-# screen before suspend. Use loginctl lock-session to lock your screen.
-exec --no-startup-id xss-lock --transfer-sleep-lock -- xautolock -locknow
 
 exec_always --no-startup-id "~/.config/i3/wallpaper.sh"
 
@@ -71,13 +69,10 @@ exec --no-startup-id "pasystray"
 
 exec --no-startup-id "xbattbar -c"
 
-exec --no-startup-id "xautolock -time 5 -corners ---- -locker 'i3lock -i ~/.local/share/lockwall.png -t'"
-
 bindsym $mod+m exec --no-startup-id "~/.vim/plugged/i3-layout-manager/layout_manager.sh"
 bindsym $mod+d exec --no-startup-id "i3-dmenu-desktop"
 
 exec_always --no-startup-id exec i3-workspace-names-daemon
-exec_always --no-startup-id exec xfsettingsd
 
 bindsym $mod+F1 exec setxkbmap us -variant dvorak-intl
 bindsym $mod+F2 exec setxkbmap us
