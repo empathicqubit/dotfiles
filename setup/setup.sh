@@ -6,6 +6,7 @@ which gls 2>/dev/null && IS_BREW=1 || IS_BREW=0
 IS_DARWIN=$((0))
 IS_LINUX=$((0))
 IS_WINDOWS=$((0))
+LINKS_ONLY=$((0))
 case "$OSTYPE" in
     linux-*) IS_LINUX=$((1)) ;;
     darwin*) IS_DARWIN=$((1)) ;;
@@ -15,7 +16,8 @@ esac
 USE_NPM=$((1))
 while [ -n "$1" ] ; do
     case "$1" in
-        --skip-npm) USE_NPM=$((0))
+        --skip-npm) USE_NPM=$((0)) ;;
+        --links-only) LINKS_ONLY=$((1)) ;;
     esac
     shift
 done
@@ -70,13 +72,6 @@ which pacman 2>&1 >/dev/null && IS_PACMAN=1 || IS_PACMAN=0
 which apt 2>&1 >/dev/null && IS_SUPERCOW=1 || IS_SUPERCOW=0
 IS_SUPERCOW=$((!IS_BREW && IS_SUPERCOW))
 
-PLUGINS_FILE="$HOME/.sbt/1.0/plugins/plugins.sbt"
-mkdir -p "$(dirname "$PLUGINS_FILE")"
-
-if ! grep '"sbt-ensime"' "$PLUGINS_FILE" ; then
-    echo 'addSbtPlugin("org.ensime" % "sbt-ensime" % "2.5.1")' | tee -a "$PLUGINS_FILE"
-fi
-
 mkdir -p "$CACHEDIR"
 
 # This will probably get annoying...
@@ -96,6 +91,8 @@ setuplink "$CURDIR/../.vim" "$HOME/vimfiles"
 setuplink "$CURDIR/../.nvim" "$HOME/.config/nvim"
 
 mkdir -p "$HOME/.bashrc.local.d"
+
+((LINKS_ONLY)) && exit 0
 
 if ((IS_WINDOWS)) ; then
     # Git Bash: 'msys'
