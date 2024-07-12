@@ -40,7 +40,6 @@ bindsym $mod+semicolon exec xfce4-screensaver-command --activate
 # Cannabilize some xfce services
 exec --no-startup-id xfsettingsd
 exec --no-startup-id xfce4-screensaver
-exec --no-startup-id xfce4-power-manager --daemon
 
 bindsym $mod+Shift+e exec code ~/.config/i3
 
@@ -48,25 +47,13 @@ bindsym Print exec xfce4-screenshooter
 
 exec_always --no-startup-id "~/.config/i3/wallpaper.sh"
 
-exec --no-startup-id "polybar -r -c .config/i3/polybar example"
-
-exec --no-startup-id "diodon"
-
 # Local modifications that won't work with every computer
 
 exec "~/.config/i3/local.sh"
 
-# NetworkManager is the most popular way to manage wireless networks on Linux,
-# and nm-applet is a desktop environment-independent system tray GUI for it.
-exec --no-startup-id nm-applet
-
-exec --no-startup-id blueman-applet
-
 exec --no-startup-id "gxkb"
 
 exec --no-startup-id "fcitx -d"
-
-exec --no-startup-id "pasystray"
 
 exec --no-startup-id "xbattbar -c"
 
@@ -74,6 +61,8 @@ bindsym $mod+m exec --no-startup-id "~/.vim/plugged/i3-layout-manager/layout_man
 bindsym $mod+d exec --no-startup-id "i3-dmenu-desktop"
 
 exec_always --no-startup-id exec i3-workspace-names-daemon
+
+exec dex -ae i3
 
 bindsym $mod+F1 exec setxkbmap us -variant dvorak-intl
 bindsym $mod+F2 exec setxkbmap us
@@ -248,5 +237,8 @@ bindsym $mod+r mode "resize"
 ## finds out, if available)
 #bar {
 #        position top
+#        tray_output primary
 #        status_command i3status --config ~/.config/i3/i3status.conf
 #}
+
+exec --no-startup-id "polybar -r -c .config/i3/polybar example"
