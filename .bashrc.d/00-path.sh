@@ -36,3 +36,9 @@ export HISTCONTROL=ignorespace:ignoredups:erasedups  # no duplicate entries
 export HISTSIZE=100000                   # big big history
 export HISTFILESIZE=100000               # big big history
 shopt -s histappend                      # append to history, don't overwrite it
+
+if [ ! -z "$DISPLAY" ] ; then
+    export TMOUT=                            # never time out if we're graphical
+else
+    export TMOUT=$((5*60))                   # use a less crazy timeout than the system default
+fi
