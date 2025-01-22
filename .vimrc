@@ -46,6 +46,8 @@ Plug 'puremourning/vimspector'
 Plug 'ofavre/vimcat', { 'do': 'make -j$(nproc)' }
 Plug 'empathicqubit/i3-layout-manager'
 Plug 'rjekker/i3-battery-popup'
+Plug 'ideasman42/nerd-dictation', { 'branch': 'main' }
+
 " ========================
 " END OF NON-VIM PLUGINS
 

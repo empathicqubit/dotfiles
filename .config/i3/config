@@ -43,6 +43,9 @@ exec --no-startup-id xfce4-screensaver
 
 bindsym $mod+Shift+e exec code ~/.config/i3
 
+bindsym $mod+Escape exec ~/.vim/plugged/nerd-dictation/nerd-dictation begin
+bindsym $mod+Shift+Escape exec ~/.vim/plugged/nerd-dictation/nerd-dictation end
+
 bindsym Print exec xfce4-screenshooter
 
 exec_always --no-startup-id "~/.config/i3/wallpaper.sh"
